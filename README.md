@@ -6,3 +6,10 @@
 This repository is the code corresponding to the hands-on lab Building Web Applications with React and Kotlin JS.
 
 **You can find the code of the lab after each step outlined in the tutorial in the corresponding branch.**
+
+## Enhancement: Cucumber BDD tests
+
+* This example has been enhanced with the changes needed to run cucumber tests against the React app 
+  - cucumber tests run in jvmTest rather than jsTest
+  - ReactApp is started from the commandline on a random port by a gradle task and shut down after the tests run
+  - The ReactApp port is available to the cucumber tests under the System property "org.example.reactPort"
