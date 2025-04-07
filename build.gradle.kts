@@ -77,7 +77,6 @@ kotlin {
 
                 implementation("io.cucumber:cucumber-java")
                 implementation("io.cucumber:cucumber-junit-platform-engine")
-                runtimeOnly("org.junit.platform:junit-platform-launcher")
 
                 implementation("org.junit.jupiter:junit-jupiter-api")
                 implementation("org.junit.platform:junit-platform-suite")
