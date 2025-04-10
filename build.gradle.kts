@@ -270,7 +270,12 @@ tasks.register("installPuppeteerChromium") {
             println(line)
             if (line.contains("Chrome") && line.contains("downloaded to")) {
                 val basePath = line.substringAfter("downloaded to").trim()
-                chromePath = "$basePath/chrome-linux64/chrome"
+                val chromeExecutable = when {
+                    org.gradle.internal.os.OperatingSystem.current().isWindows -> "chrome-win64\\chrome.exe"
+                    org.gradle.internal.os.OperatingSystem.current().isMacOsX -> "chrome-mac-arm64/Chromium.app/Contents/MacOS/Chromium"
+                    else -> "chrome-linux64/chrome"
+                }
+                chromePath = File(basePath, chromeExecutable).absolutePath
                 project.extensions.extraProperties["org.example.puppeteerChromePath"] = chromePath
                 println("✅ Chrome downloaded to: $chromePath")
                 process.destroy()
