@@ -28,15 +28,16 @@ kotlin {
     jvm { }
     js {
         browser {
-            // Configure the browser DSL to disable auto-opening when the org.example.headless property is set.
-            browser {
-                commonWebpackConfig {
-                    // Let the dev server pick a random port.
-                    devServer?.port = 0
-                    devServer?.open = !project.hasProperty("org.example.headless")
+            testTask {
+                useKarma {
+                    useFirefox()
                 }
             }
             commonWebpackConfig {
+                // Let the dev server pick a random port.
+                devServer?.port = 0
+                // Configure the browser DSL to disable auto-opening when the org.example.headless property is set.
+                devServer?.open = !project.hasProperty("org.example.headless")
                 cssSupport {
                     enabled.set(true)
                 }
