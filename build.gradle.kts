@@ -46,10 +46,14 @@ kotlin {
         binaries.executable()
     }
     sourceSets {
+        val kotlinWrapperVersion = "733"
+        val kotlinxCoroutinesVersion = "1.7.3"
+
         val jsMain by getting {
             dependencies {
+                implementation(project.dependencies.enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.$kotlinWrapperVersion"))
+
                 //React, React DOM + Wrappers (chapter 3)
-                implementation(enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.430"))
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
 
@@ -63,12 +67,19 @@ kotlin {
                 implementation(npm("react-share", "4.4.1"))
 
                 //Coroutines & serialization (chapter 8)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
             }
         }
-        // Our JVM tests (integration tests) reside in src/jvmTest.
         // (Client-side tests for Kotlin/JS would live in src/jsTest.)
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom-test-utils-js:18.2.0-pre.$kotlinWrapperVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
+            }
+        }
+        // Our JVM tests (integration tests) reside in src/jvmTest.
         val jvmTest by getting {
             dependencies {
                 implementation(platform("org.junit:junit-bom:5.12.1"))
