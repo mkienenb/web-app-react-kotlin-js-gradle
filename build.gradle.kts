@@ -13,8 +13,8 @@ import org.gradle.api.GradleException
 val reactAppStartupTimeoutInSeconds: Long = 20
 
 plugins {
-    kotlin("multiplatform") version "1.8.22"
-    kotlin("plugin.serialization") version "1.8.22"
+    kotlin("multiplatform") version "1.9.22"
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 group = "org.example"
