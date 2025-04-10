@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import org.gradle.api.GradleException
 
 // Shared variable for the startup timeout (in seconds) as a Long.
-val reactAppStartupTimeoutInSeconds: Long = 10
+val reactAppStartupTimeoutInSeconds: Long = 20
 
 plugins {
     kotlin("multiplatform") version "1.8.22"
@@ -73,7 +73,7 @@ kotlin {
                 implementation(platform("org.junit:junit-bom:5.12.1"))
                 implementation(platform("io.cucumber:cucumber-bom:7.22.0"))
                 implementation(platform("org.assertj:assertj-bom:3.27.3"))
-                implementation(platform("org.seleniumhq.selenium:selenium-dependencies-bom:4.30.0"))
+                implementation(platform("org.seleniumhq.selenium:selenium-dependencies-bom:4.31.0"))
 
                 implementation("io.cucumber:cucumber-java")
                 implementation("io.cucumber:cucumber-junit-platform-engine")
