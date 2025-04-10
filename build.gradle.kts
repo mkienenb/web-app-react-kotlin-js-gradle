@@ -206,7 +206,7 @@ gradle.buildFinished {
 }
 
 // Configure the test tasks to pass the discovered port to Cucumber tests.
-tasks.withType<Test>().configureEach {
+tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
 
     // Enable full Cucumber debug output.
