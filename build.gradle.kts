@@ -26,7 +26,7 @@ repositories {
 
 kotlin {
     jvm { }
-    js {
+    js(IR) {
         browser {
             testTask {
                 useKarma {
