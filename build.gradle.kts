@@ -30,7 +30,7 @@ kotlin {
         browser {
             testTask {
                 useKarma {
-                    useFirefox()
+                    useFirefoxHeadless()
                 }
             }
             commonWebpackConfig {
@@ -227,6 +227,10 @@ tasks.withType<Test>().configureEach {
 // Ensure JVM tests depend on starting the React app.
 tasks.named("jvmTest") {
     dependsOn("startReactApp")
+}
+
+tasks.named("check") {
+    dependsOn("jsTest", "jvmTest")
 }
 
 // Heroku Deployment (chapter 9)
