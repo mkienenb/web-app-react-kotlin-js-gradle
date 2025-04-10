@@ -17,9 +17,13 @@ class SampleStepDefinitions {
 
     @Before
     fun setUp() {
-        // Initialize ChromeDriver (ensure that chromedriver is set up correctly on your system)
-        driver = ChromeDriver()
-        // You may want to add additional logic here to verify the app is running.
+        val options = org.openqa.selenium.chrome.ChromeOptions().apply {
+            addArguments("--headless=new") // or "--headless" for older versions
+            addArguments("--disable-gpu")
+            addArguments("--window-size=1920,1080")
+        }
+
+        driver = ChromeDriver(options)
     }
 
     @After fun tearDown() {
