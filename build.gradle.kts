@@ -67,6 +67,7 @@ kotlin {
                 //React, React DOM + Wrappers (chapter 3)
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-tanstack-react-query")
 
                 //Kotlin React Emotion (CSS) (chapter 3)
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
