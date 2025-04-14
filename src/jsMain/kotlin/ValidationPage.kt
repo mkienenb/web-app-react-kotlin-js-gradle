@@ -20,6 +20,7 @@ val ValidationPage = FC<Props> { _ ->
     data class FormValues(val iban: String)
 
     var (formValues, setFormValues) = useState(FormValues(iban = ""))
+    var (iban, setIban) = useState(formValues.iban)
 
     FocusPageLayout {
         HeroTitle {
@@ -42,6 +43,10 @@ val ValidationPage = FC<Props> { _ ->
                         formValues = formValues.copy(iban = newIban)
                     }
                 }
+            }
+            onSubmit = { event ->
+                setIban(formValues.iban)
+                event.preventDefault()
             }
         }
         PositiveList {
