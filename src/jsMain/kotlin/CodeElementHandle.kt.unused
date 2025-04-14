@@ -1,0 +1,23 @@
+import react.dom.html.HTMLAttributes
+
+private const val CODE_ELEMENT_HANDLE_KEY = "code-element-handle"
+private const val DATA_TEST_HANDLE_KEY = "data-test"
+private const val PLACEHOLDER_KEY = "placeholder"
+
+var HTMLAttributes<*>.codeElementHandleAttribute: String
+    get() = asDynamic()[CODE_ELEMENT_HANDLE_KEY] as? String ?: ""
+    set(value) {
+        asDynamic()[CODE_ELEMENT_HANDLE_KEY] = value
+    }
+
+var HTMLAttributes<*>.dataTestAttribute: String
+    get() = asDynamic()[DATA_TEST_HANDLE_KEY] as? String ?: ""
+    set(value) {
+        asDynamic()[DATA_TEST_HANDLE_KEY] = value
+    }
+
+var HTMLAttributes<*>.placeholderAttribute: String
+    get() = asDynamic()[PLACEHOLDER_KEY] as? String ?: ""
+    set(value) {
+        asDynamic()[PLACEHOLDER_KEY] = value
+    }
