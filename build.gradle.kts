@@ -11,10 +11,12 @@ import org.gradle.api.GradleException
 
 // Shared variable for the startup timeout (in seconds) as a Long.
 val reactAppStartupTimeoutInSeconds: Long = 20
+val kotestVersion = "5.9.1"
 
 plugins {
-    kotlin("multiplatform") version "1.9.22"
-    kotlin("plugin.serialization") version "1.9.22"
+    kotlin("multiplatform") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
+    id("io.kotest.multiplatform") version "5.9.1"
 }
 
 group = "org.example"
@@ -49,6 +51,15 @@ kotlin {
         val kotlinWrapperVersion = "733"
         val kotlinxCoroutinesVersion = "1.7.3"
 
+        val commonTest by getting {
+            dependencies {
+                implementation("io.kotest:kotest-assertions-core:$kotestVersion")
+                implementation("io.kotest:kotest-framework-engine:$kotestVersion")
+                implementation("io.kotest:kotest-framework-datatest:$kotestVersion")
+                implementation(kotlin("test-common"))
+                implementation(kotlin("test-annotations-common"))
+            }
+        }
         val jsMain by getting {
             dependencies {
                 implementation(project.dependencies.enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.$kotlinWrapperVersion"))
@@ -84,6 +95,7 @@ kotlin {
         // Our JVM tests (integration tests) reside in src/jvmTest.
         val jvmTest by getting {
             dependencies {
+                implementation("io.kotest:kotest-runner-junit5:$kotestVersion")
                 implementation(platform("org.junit:junit-bom:5.12.1"))
                 implementation(platform("io.cucumber:cucumber-bom:7.22.0"))
                 implementation(platform("org.assertj:assertj-bom:3.27.3"))
