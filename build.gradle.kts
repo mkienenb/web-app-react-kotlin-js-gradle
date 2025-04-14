@@ -334,6 +334,13 @@ tasks.named("check") {
     dependsOn("jsTest", "jvmTest")
 }
 
+
+// error about missing or outdated package-lock.json can't be solved at present
+// Disabling kotlinStoreYarnLock could cause problems at some point
+tasks.named("kotlinStoreYarnLock") {
+    enabled = false
+}
+
 // Heroku Deployment (chapter 9)
 tasks.register("stage") {
     dependsOn("build")
