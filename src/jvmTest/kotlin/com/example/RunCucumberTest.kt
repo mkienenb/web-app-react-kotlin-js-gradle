@@ -8,5 +8,5 @@ import org.junit.platform.suite.api.Suite
 @Suite
 @SelectClasspathResource("features")
 // GLUE_PROPERTY_NAME setting is optional, but clears up run-time warnings
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.example.stepdefinitions")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.example")
 class RunCucumberTest
