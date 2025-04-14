@@ -2,8 +2,10 @@ import designsystemcomponents.*
 import react.FC
 import react.Props
 import react.create
-import react.createElement
+import react.dom.events.ChangeEvent
 import react.dom.html.ReactHTML.form
+import react.useState
+import web.html.HTMLInputElement
 import web.html.InputType
 
 //external interface ValidationPageProps : Props {
@@ -15,6 +17,10 @@ import web.html.InputType
 //}
 
 val ValidationPage = FC<Props> { _ ->
+    data class FormValues(val iban: String)
+
+    var (formValues, setFormValues) = useState(FormValues(iban = ""))
+
     FocusPageLayout {
         HeroTitle {
             title = "IBAN Validator"
@@ -29,6 +35,12 @@ val ValidationPage = FC<Props> { _ ->
 
                 TextInput {
                     dataTestAttribute = "iban-entry"
+                    onChange = { event: ChangeEvent<HTMLInputElement> ->
+                        // Read the new value from the input element.
+                        val newIban = event.target.value
+                        // Update state accordingly.
+                        formValues = formValues.copy(iban = newIban)
+                    }
                 }
             }
         }
