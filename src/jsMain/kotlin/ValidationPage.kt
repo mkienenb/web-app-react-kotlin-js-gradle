@@ -1,4 +1,5 @@
 import designsystemcomponents.*
+import js.promise.PromiseResult
 import react.FC
 import react.Props
 import react.create
@@ -35,6 +36,12 @@ val ValidationPage = FC<Props> { _ ->
             // Instead of a boolean literal, supply a lambda that takes the attempt and error and returns false.
             retry = { _: Int, _: dynamic -> false }
             // Optionally, add a query function if required.
+
+            queryFn = {
+                // Here you would normally call an API or perform asynchronous work.
+                // For demo purposes, we simply return a static string.
+                PromiseResult(ValidationResponse(iban, flags = emptyList(), bank = null))
+            }
         }
     )
     val data = queryResult.data
