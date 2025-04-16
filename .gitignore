@@ -3,3 +3,6 @@
 /build/
 /build/js/packages/confexplorer/kotlin/
 /kotlin-js-store/
+
+/buildSrc/.gradle/
+/buildSrc/build/

@@ -1,4 +1,5 @@
-import org.gradle.api.GradleException
+import org.example.puppeteer.InstallChromePlugin
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
 val kotestVersion = "5.9.1"
 
@@ -139,118 +140,6 @@ tasks.named<Test>("jvmTest") {
     }
 }
 
-tasks.register("installPuppeteerChromium") {
-    dependsOn("kotlinNodeJsSetup", "kotlinNpmInstall")
-
-    doLast {
-        val puppeteerDir = file("build/js/node_modules/puppeteer")
-        val installScript = File(puppeteerDir, "install.mjs")
-
-        if (!installScript.exists()) {
-            throw GradleException("Puppeteer install.mjs not found at: $installScript")
-        }
-
-        val nodeExecutable = File(System.getProperty("user.home"))
-            .resolve(".gradle/nodejs")
-            .listFiles()
-            ?.filter { it.isDirectory && it.name.startsWith("node-v") }
-            ?.flatMap { listOf(it, *it.listFiles().orEmpty()) }
-            ?.mapNotNull { dir ->
-                listOf("bin/node", "node.exe")
-                    .map { path -> dir.resolve(path) }
-                    .firstOrNull { it.exists() && it.canExecute() }
-            }
-            ?.firstOrNull()
-            ?: throw GradleException("Managed Node.js not found in ~/.gradle/nodejs")
-
-        /*val nodeExecutable = File(System.getProperty("user.home"))
-            .resolve(".gradle/nodejs")
-            .listFiles()
-            ?.filter { it.isDirectory && it.name.startsWith("node-v") }
-            ?.flatMap { dir ->
-                val children = dir.listFiles().orEmpty().toList()
-                listOf(dir) + children
-            }
-            ?.mapNotNull { dir ->
-                listOf("bin/node", "node.exe")
-                    .map { path -> dir.resolve(path) }
-                    .firstOrNull { it.exists() && it.canExecute() }
-            }
-            ?.firstOrNull()
-            ?: throw GradleException("Managed Node.js not found in ~/.gradle/nodejs")
-*/
-
-        val command = listOf(nodeExecutable.absolutePath, installScript.absolutePath)
-        println("Running Puppeteer install with: ${command.joinToString(" ")}")
-
-        val processBuilder = ProcessBuilder(command)
-            .directory(puppeteerDir)
-            .redirectErrorStream(true)
-            .apply {
-                environment()["CI"] = "true"
-                environment()["PUPPETEER_NO_PROGRESS"] = "true"
-                environment()["PUPPETEER_SKIP_POSTINSTALL"] = "true"
-                environment()["PUPPETEER_PRODUCT"] = "chrome"
-                environment()["PUPPETEER_CACHE_DIR"] = File(System.getProperty("user.home"))
-                    .resolve(".cache/puppeteer").absolutePath
-            }
-
-        val process = processBuilder.start()
-        val reader = process.inputStream.bufferedReader()
-
-        var chromePath: String? = null
-        while (true) {
-            val line = reader.readLine() ?: break
-            println(line)
-            if (line.contains("Chrome") && line.contains("downloaded to")) {
-                val basePath = line.substringAfter("downloaded to").trim()
-                val chromeExecutable = when {
-                    org.gradle.internal.os.OperatingSystem.current().isWindows -> "chrome-win64\\chrome.exe"
-                    org.gradle.internal.os.OperatingSystem.current().isMacOsX -> "chrome-mac-arm64/Chromium.app/Contents/MacOS/Chromium"
-                    else -> "chrome-linux64/chrome"
-                }
-                chromePath = File(basePath, chromeExecutable).absolutePath
-                project.extensions.extraProperties["org.example.puppeteerChromePath"] = chromePath
-                println("✅ Chrome downloaded to: $chromePath")
-                val isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows
-                if (!isWindows) {
-                    // Because Linux hangs
-                    process.destroy()
-                }
-                break
-            }
-        }
-
-        val timeUnit = Class.forName("java.util.concurrent.TimeUnit")
-            .getField("MINUTES")
-            .get(null) as java.util.concurrent.TimeUnit
-
-        val finished = process.waitFor(1, timeUnit)
-
-        if (!finished) {
-            process.destroyForcibly()
-            throw GradleException("Puppeteer install process hung and was forcibly terminated")
-        }
-
-        val exit = process.exitValue()
-        if (exit != 0 && !(exit == 143 && chromePath != null)) {
-            throw GradleException("Puppeteer install failed with exit code $exit")
-        }
-    }
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest>().configureEach {
-    dependsOn("installPuppeteerChromium")
-
-    doFirst {
-        val chromePath = project.extensions.extraProperties["org.example.puppeteerChromePath"] as? String
-            ?: throw GradleException("Chrome path was not discovered from Puppeteer install")
-
-        println("✅ Using Puppeteer Chrome at: $chromePath")
-        environment("CHROME_BIN", chromePath)
-    }
-}
-
 tasks.named("check") {
     dependsOn("jsTest", "jvmTest")
 }
@@ -258,4 +147,18 @@ tasks.named("check") {
 // Heroku Deployment (chapter 9)
 tasks.register("stage") {
     dependsOn("build")
+}
+
+apply<InstallChromePlugin>()
+
+tasks.withType<KotlinJsTest>().configureEach {
+    if (name == "jsBrowserTest") {
+        dependsOn("installPuppeteerChromium")
+
+        doFirst {
+            val chromePath = org.example.puppeteer.resolvePuppeteerChromePath(project)
+            println("✅ Using Puppeteer Chrome at: $chromePath")
+            environment("CHROME_BIN", chromePath)
+        }
+    }
 }
