@@ -275,9 +275,30 @@ tasks.register("installPuppeteerChromium") {
             .listFiles()
             ?.filter { it.isDirectory && it.name.startsWith("node-v") }
             ?.flatMap { listOf(it, *it.listFiles().orEmpty()) }
-            ?.mapNotNull { it.resolve("bin/node").takeIf { node -> node.exists() && node.canExecute() } }
+            ?.mapNotNull { dir ->
+                listOf("bin/node", "node.exe")
+                    .map { path -> dir.resolve(path) }
+                    .firstOrNull { it.exists() && it.canExecute() }
+            }
             ?.firstOrNull()
             ?: throw GradleException("Managed Node.js not found in ~/.gradle/nodejs")
+
+        /*val nodeExecutable = File(System.getProperty("user.home"))
+            .resolve(".gradle/nodejs")
+            .listFiles()
+            ?.filter { it.isDirectory && it.name.startsWith("node-v") }
+            ?.flatMap { dir ->
+                val children = dir.listFiles().orEmpty().toList()
+                listOf(dir) + children
+            }
+            ?.mapNotNull { dir ->
+                listOf("bin/node", "node.exe")
+                    .map { path -> dir.resolve(path) }
+                    .firstOrNull { it.exists() && it.canExecute() }
+            }
+            ?.firstOrNull()
+            ?: throw GradleException("Managed Node.js not found in ~/.gradle/nodejs")
+*/
 
         val command = listOf(nodeExecutable.absolutePath, installScript.absolutePath)
         println("Running Puppeteer install with: ${command.joinToString(" ")}")
@@ -311,7 +332,11 @@ tasks.register("installPuppeteerChromium") {
                 chromePath = File(basePath, chromeExecutable).absolutePath
                 project.extensions.extraProperties["org.example.puppeteerChromePath"] = chromePath
                 println("✅ Chrome downloaded to: $chromePath")
-                process.destroy()
+                val isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows
+                if (!isWindows) {
+                    // Because Linux hangs
+                    process.destroy()
+                }
                 break
             }
         }
