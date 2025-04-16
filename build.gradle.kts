@@ -150,7 +150,8 @@ tasks.register("startReactApp") {
     doLast {
         println("Starting React app in headless mode on a random port...")
         // Launch the React app with the org.example.headless property.
-        val process = ProcessBuilder("./gradlew", "jsBrowserDevelopmentRun", "-Porg.example.headless=true")
+        val gradleCommand = if(org.gradle.internal.os.OperatingSystem.current().isWindows) "./gradlew.bat" else "./gradlew"
+        val process = ProcessBuilder(gradleCommand, "jsBrowserDevelopmentRun", "-Porg.example.headless=true")
             .directory(file(projectDir))
             .redirectErrorStream(true)
             .start()
