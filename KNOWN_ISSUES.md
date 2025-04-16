@@ -120,9 +120,3 @@ tasks.named("kotlinStoreYarnLock") {
 * hacky/fragile gradle task to download puppeteer resolved problem but is a poor full solution
   - may also break under windows due to paths
   - is also slow as it currently re-downloads and installs after each gradle run
-
-## Design
-
-### StartReactApp happens only once 
-* That code needs to be moved out of a gradle task to a before-scenario and after-scenario function in jvmTest
-* Ideally, configure to be per-scenario or per-feature
