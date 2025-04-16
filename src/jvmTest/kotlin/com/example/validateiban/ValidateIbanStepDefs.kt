@@ -1,19 +1,18 @@
 package com.example.validateiban
 
+import com.example.stepdefinitions.common.ScenarioContext
 import com.example.stepdefinitions.common.ScenarioContextHolder
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.When
 import io.cucumber.java.en.Then
 
-public class ValidateIbanStepDefs {
+public class ValidateIbanStepDefs(private val scenarioContext : ScenarioContext) {
     // Get a reference to the shared ScenarioContext.
     private val context = ScenarioContextHolder.ValidateIbanScenarioContext
 
-    private val reactPort = System.getProperty("org.example.reactPort")
-
     @Given("I open a validation page")
     public fun iOpenAValidationPage() {
-        context.driver.get("http://localhost:${reactPort}") // Update the URL if necessary.
+        context.driver.get("http://localhost:${scenarioContext.reactPort}") // Update the URL if necessary.
     }
 
     @When("I provide an IBAN")
