@@ -112,7 +112,8 @@ tasks.named("kotlinStoreYarnLock") {
 
 ### Unable to add better test run output for jsBrowserTest
 * My best guess after trying to write/install a different reporter inside <root>/karma.config.d is that output only goes to the browser console
-
+* https://github.com/Kotlin/kotlin-web-helpers/blob/main/mocha-kotlin-reporter.js
+* 
 
 ### useChrome() useChromeHeadless() doesn't find browser
 
