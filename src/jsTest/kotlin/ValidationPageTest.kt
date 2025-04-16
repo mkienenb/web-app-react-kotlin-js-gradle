@@ -1,12 +1,14 @@
+//import kotlin.test.*
+//import kotlinx.coroutines.test.runTest
 //import react.create
 //import react.dom.client.createRoot
 //import react.dom.test.act
 //import web.dom.document
 //import web.html.HTMLDivElement
-//import kotlin.test.*
-//import kotlinx.coroutines.test.runTest
+//import web.html.HTMLInputElement
 //
-//class WelcomeComponentTest {
+//
+//class ValidationPageTest {
 //
 //    private lateinit var container: HTMLDivElement
 //
@@ -21,21 +23,14 @@
 //        container.remove()
 //    }
 //
-//
 //    @Test
-//    fun shouldRenderWelcomeMessage() = runTest {
+//    fun shouldRenderValidationForm() = runTest {
 //        act {
 //            val root = createRoot(container)
-//            root.render(
-//                WelcomeComponent.create {
-//                    userName = "TestUser"
-//                }
-//            )
+//            root.render(ValidationPage.create())
 //        }
 //
-//        assertTrue(
-//            container.innerHTML.contains("Welcome, TestUser!"),
-//            "Expected welcome message to be rendered"
-//        )
+//        val input = container.querySelector("[data-test='iban-entry']") as? HTMLInputElement
+//        assertNotNull(input, "Expected IBAN input field to be present")
 //    }
 //}

@@ -60,9 +60,11 @@ kotlin {
         binaries.executable()
     }
     sourceSets {
+        // kotlin.mpp.applyDefaultHierarchyTemplate = false has specifically turned off relationships between sourceSets
+
         val kotlinWrapperVersion = "733"
         val kotlinxCoroutinesVersion = "1.8.1"
-//        val koinVersion = "4.0.4"
+        val koinVersion = "4.0.4"
 
         val commonMain by getting {
             dependencies {
@@ -70,6 +72,7 @@ kotlin {
             }
         }
         val commonTest by getting {
+            dependsOn(commonMain)
             dependencies {
                 implementation("io.kotest:kotest-assertions-core:$kotestVersion")
                 implementation("io.kotest:kotest-framework-engine:$kotestVersion")
@@ -81,9 +84,10 @@ kotlin {
             }
         }
         val jsMain by getting {
+            dependsOn(commonMain)
             dependencies {
                 implementation(project.dependencies.enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.$kotlinWrapperVersion"))
-//                implementation("io.insert-koin:koin-core-js:$koinVersion")
+                implementation("io.insert-koin:koin-core-js:$koinVersion")
 
                 //React, React DOM + Wrappers (chapter 3)
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
@@ -103,10 +107,21 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
             }
         }
+
+        // New source set for Koin-based DI -- will break test coroutines if loaded
+        val diJsMain by creating {
+            dependsOn(jsMain)
+            dependencies {
+                implementation("io.insert-koin:koin-core-js:$koinVersion")
+            }
+        }
+
         // (Client-side tests for Kotlin/JS would live in src/jsTest.)
         val jsTest by getting {
+            dependsOn(commonTest)
+            dependsOn(jsMain)
             dependencies {
-//                implementation("io.insert-koin:koin-test:$koinVersion")
+                implementation("io.insert-koin:koin-test:$koinVersion")
                 implementation(kotlin("test"))
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom-test-utils-js:18.2.0-pre.$kotlinWrapperVersion")
                 // for chrome support
@@ -115,6 +130,8 @@ kotlin {
         }
         // Our JVM tests (integration tests) reside in src/jvmTest.
         val jvmTest by getting {
+            dependsOn(commonTest)
+            dependsOn(jvmMain)
             dependencies {
                 implementation("io.kotest:kotest-runner-junit5:$kotestVersion")
                 implementation(platform("org.junit:junit-bom:5.12.1"))
@@ -354,6 +371,25 @@ tasks.named("jvmTest") {
 tasks.named("check") {
     dependsOn("jsTest", "jvmTest")
 }
+
+// * What went wrong:
+//Execution failed for task ':kotlinStoreYarnLock'.
+//> Lock file was changed. Run the `kotlinUpgradePackageLock` task to actualize lock file
+// IS FIXED BY
+//   ./gradlew --stop
+//   rm -rf build/ node_modules/ package-lock.json yarn.lock .gradle ~/.gradle/npm-cache/ kotlin-js-store/ ~/.kotlin-js-node-modules/
+// OR MAYBE
+// ./gradlew build --refresh-dependencies
+//   PUT THIS ABOVE KOTLIN:
+//         rootProject.extensions.extraProperties["kotlin.js.experimental.forceFullNpmInstall"] = true
+//   ./gradlew build
+//
+// OLD FIX
+//// error about missing or outdated package-lock.json can't be solved at present
+//// Disabling kotlinStoreYarnLock could cause problems at some point
+//tasks.named("kotlinStoreYarnLock") {
+//    enabled = false
+//}
 
 // Heroku Deployment (chapter 9)
 tasks.register("stage") {

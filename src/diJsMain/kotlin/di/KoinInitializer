@@ -1,0 +1,7 @@
+fun startKoinIfNeeded() {
+    if (!GlobalContext.getOrNull().isPresent()) {
+        startKoin {
+            modules(ibanValidationModule)
+        }
+    }
+}

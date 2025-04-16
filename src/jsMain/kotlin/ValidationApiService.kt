@@ -3,6 +3,8 @@ import kotlinx.coroutines.await
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import org.w3c.fetch.Response
+import kotlin.js.Promise
 
 @Serializable
 enum class Flag {
@@ -15,36 +17,15 @@ data class Bank(val trustScore: Int?)
 @Serializable
 data class ValidationResponse(val iban: String, val flags: List<Flag>, val bank: Bank?)
 
+typealias IbanValidationFetchFunction = (String) -> Promise<Response>
 
-data class RequestOptions(val headers: Map<String, String>)
-data class Response(
-    val ok: Boolean,
-    // A suspend function to get the parsed body.
-    val json: suspend () -> ValidationResponse
-)
-
-data class RequestConfig(
-    // A suspend function that takes a URL and options and returns a Response.
-    val request: suspend (String, RequestOptions) -> Response
-)
-
-suspend fun defaultValidationRequest(url: String, options: RequestOptions): Response {
-    val requestInit = js("{ headers: options.headers }")
-    val rawResponse: org.w3c.fetch.Response = window.fetch(url, requestInit).await()
-    val bodyText = rawResponse.text().await()
-    val validationResponse: ValidationResponse = Json.decodeFromString(bodyText)
-    return Response(ok = rawResponse.ok) {
-        validationResponse
-    }
-}
-
-fun createIbanValidationApiAdapter(
-    iban: String, config: RequestConfig = RequestConfig(request = ::defaultValidationRequest)
-): suspend () -> ValidationResponse {
-    return {
+class ValidationApiService(
+    private val fetch: IbanValidationFetchFunction = { url -> window.fetch(url) }
+) {
+    suspend fun validateIban(iban: String): ValidationResponse {
         val url = "http://localhost:9080/validate?iban=$iban"
-        val options = RequestOptions(headers = mapOf("Content-Type" to "application/json"))
-        val response = config.request(url, options)
-        response.json()
+        val response = fetch(url).await()
+        val json = response.text().await()
+        return Json.decodeFromString(json)
     }
 }
