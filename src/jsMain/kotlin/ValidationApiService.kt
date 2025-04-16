@@ -19,6 +19,9 @@ data class ValidationResponse(val iban: String, val flags: List<Flag>, val bank:
 
 typealias IbanValidationFetchFunction = (String) -> Promise<Response>
 
+class RequestOptions(val headers: Map<String, String>) {
+}
+
 class ValidationApiService(
     private val fetch: IbanValidationFetchFunction = { url -> window.fetch(url) }
 ) {
