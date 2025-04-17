@@ -8,3 +8,7 @@ open class BrowserOnlyShouldSpec : ShouldSpec({
 })
 
 fun isBrowser(): Boolean = js("typeof window !== 'undefined'") as Boolean
+
+inline fun BrowserOnlyShouldSpec.browserOnlyCode(block: () -> Unit) {
+    if (isBrowser()) block()
+}

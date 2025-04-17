@@ -3,7 +3,8 @@
 ## Bugs
 
 ### koin breaks testing code that references coroutines
-* Tests such as these all fail
+* Tests such as these all fail with koin core installed
+* For now, don't use koin
 * 
 ```kotlin
 import kotlinx.coroutines.*
@@ -113,10 +114,27 @@ tasks.named("kotlinStoreYarnLock") {
 ### Unable to add better test run output for jsBrowserTest
 * My best guess after trying to write/install a different reporter inside <root>/karma.config.d is that output only goes to the browser console
 * https://github.com/Kotlin/kotlin-web-helpers/blob/main/mocha-kotlin-reporter.js
-* 
+
+### jsNodeTest cannot detect and skip/ignore test that only work in jsBrowserTests
+
+* Can't do it by setting a filter or tag as the js test frameworks ignore them
+* Can't do it by using specific sourceSets due to cycles and other convolutions
+* Can do it by detecting js("typeof window !== 'undefined'") when running test and then skipping test registration
+  - this requires code support per test
+  - Managed to encapsulate most of it in BrowserOnlyShouldSpec requiring all code be inside the init constructor
+```kotlin
+class ValidationPageTest : BrowserOnlyShouldSpec() {
+    init {
+        browserOnlyCode {
+          beforeTest { }
+          afterTest {  }
+          should("test something") { }
+        }
+    }
+}
+```
 
 ### useChrome() useChromeHeadless() doesn't find browser
 
 * hacky/fragile gradle task to download puppeteer resolved problem but is a poor full solution
-  - may also break under windows due to paths
-  - is also slow as it currently re-downloads and installs after each gradle run
+  - is also slow as it currently re-downloads and installs after each gradle clean

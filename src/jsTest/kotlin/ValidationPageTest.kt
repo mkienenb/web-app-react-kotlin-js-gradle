@@ -12,7 +12,7 @@ class ValidationPageTest : BrowserOnlyShouldSpec() {
     private lateinit var container: HTMLDivElement
 
     init {
-        if (isBrowser()) {
+        browserOnlyCode {
 
             beforeTest {
                 container = document.createElement("div") as HTMLDivElement
