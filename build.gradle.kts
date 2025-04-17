@@ -98,7 +98,8 @@ kotlin {
         val jsTest by getting {
             dependencies {
 //                implementation("io.insert-koin:koin-test:$koinVersion")
-                implementation(kotlin("test"))
+                implementation("io.kotest:kotest-framework-engine:$kotestVersion")
+                implementation("io.kotest:kotest-assertions-core:$kotestVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom-test-utils-js:18.2.0-pre.$kotlinWrapperVersion")
                 // for chrome support
                 implementation(npm("puppeteer", "21.3.8"))

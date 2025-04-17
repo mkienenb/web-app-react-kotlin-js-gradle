@@ -1,21 +1,17 @@
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.job
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.CompletableDeferred
 import org.w3c.fetch.Response
 import org.w3c.files.Blob
 import org.w3c.files.BlobPropertyBag
 import kotlin.js.Promise
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertIs
-import kotlin.test.assertNull
-import kotlinx.coroutines.CompletableDeferred
+import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.types.shouldBeInstanceOf
+import io.kotest.core.annotation.Tags
 
-class IbanValidationServiceViewModelTest {
+class IbanValidationServiceViewModelTest : ShouldSpec({
 
-
-    @Test
-    fun shouldReturnValidationResponse() = runTest {
+    should("shouldReturnValidationResponse") {
         val callbackCalled = CompletableDeferred<Unit>()
 
         val fakeFetchFunction: IbanValidationFetchFunction = {
@@ -29,15 +25,15 @@ class IbanValidationServiceViewModelTest {
         val viewModel = IbanValidationServiceViewModel(this, validationApiService)
 
         viewModel.validateIban("DE123") {
-            assertIs<ValidationResponse>(it)
+            it.shouldBeInstanceOf<ValidationResponse>()
             with(it) {
-                assertEquals("DE123", iban)
-                assertNull(bank)
-                assertEquals(emptyList(), flags)
+                iban shouldBe "DE123"
+                bank.shouldBeNull()
+                flags shouldBe emptyList()
             }
             callbackCalled.complete(Unit)
         }
 
         callbackCalled.await()
     }
-}
+})

@@ -1,32 +1,35 @@
 import kotlinx.coroutines.*
 import kotlin.coroutines.*
-import kotlin.test.*
 import kotlinx.coroutines.test.*
+import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.matchers.shouldBe
 
 
+class SanityTest : ShouldSpec({
 
-class SanityTest {
-    @Test
-    fun sanityCheckMainScopeLaunch() {
+    should("sanityCheckMainScopeLaunch") {
         val scope = MainScope()
         scope.launch {
             console.log("✅ Coroutine started without Dispatchers")
         }
     }
 
-    @Test
-    fun testSimpleSuspendFunInRunTest() = runTest {
-        suspendFun()
-    }
-
-    private suspend fun suspendFun(): Int {
+    suspend fun suspendFun(): Int {
         return 42
     }
 
-    @Test
-    fun testSuspendFunInGlobalScopePromise(): dynamic = GlobalScope.promise {
-        val result = suspendFun()
-        assertEquals(42, result)
+    should("testSimpleSuspendFunInRunTest") {
+        runTest {
+            suspendFun()
+        }
+    }
+
+    should("testSuspendFunInGlobalScopePromise") {
+        val result = GlobalScope.promise {
+            val result = suspendFun()
+            result
+        }
+        result.await() shouldBe 42
     }
 
 //    private val testScope = CoroutineScope(EmptyCoroutineContext)
@@ -58,26 +61,23 @@ class SanityTest {
 //            assertEquals(42, result)
 //        }
 //    }
-}
+})
 
-class SanityTestDebug {
+class SanityTestDebug : ShouldSpec({
 
-    @Test
-    fun logDispatcherKind() {
+    should("logDispatcherKind") {
         console.log("Dispatchers.Default = ", Dispatchers.Default.toString())
     }
 
 
-    @Test
-    fun logCoroutineContext() {
+    should("logCoroutineContext") {
         val context = Dispatchers.Default + CoroutineName("test")
         context.fold(Unit) { _, element ->
             console.log("Context element: ${element.key} = $element")
         }
     }
 
-    @Test
-    fun printVersions() {
+    should("printVersions") {
         console.log("Kotlin: ${KotlinVersion.CURRENT}")
     }
-}
+})
