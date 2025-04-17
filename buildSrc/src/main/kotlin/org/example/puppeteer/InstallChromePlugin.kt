@@ -52,7 +52,7 @@ class InstallChromePlugin : Plugin<Project> {
                     val nodeExecutable = File(System.getProperty("user.home"))
                         .resolve(".gradle/nodejs")
                         .walk()
-                        .firstOrNull { it.name in listOf("node", "node.exe") && it.canExecute() }
+                        .firstOrNull { it.name in listOf("node", "node.exe") && it.canExecute() && it.isFile() }
                         ?: throw GradleException("Managed Node.js not found in ~/.gradle/nodejs")
 
                     val command = listOf(nodeExecutable.absolutePath, installScript.absolutePath)
