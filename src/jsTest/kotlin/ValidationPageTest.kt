@@ -1,3 +1,4 @@
+import io.kotest.matchers.nulls.shouldNotBeNull
 import kotlinx.coroutines.test.runTest
 import react.create
 import react.dom.client.createRoot
@@ -5,7 +6,6 @@ import react.dom.test.act
 import web.dom.document
 import web.html.HTMLDivElement
 import web.html.HTMLInputElement
-import io.kotest.matchers.nulls.shouldNotBeNull
 
 class ValidationPageTest : BrowserOnlyShouldSpec() {
 
