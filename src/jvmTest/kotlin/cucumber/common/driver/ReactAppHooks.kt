@@ -102,12 +102,29 @@ class ReactAppHooks(private val scenarioContext : ScenarioContext) {
     @After(order = Int.MAX_VALUE - 1000)
     fun tearDown() {
         if (reactStarted && reactProcess != null && reactProcess!!.isAlive) {
-            println("Stopping React app with PID: ${reactProcess!!.pid()}")
-            reactProcess!!.destroy()
-            if (!reactProcess!!.waitFor(10, TimeUnit.SECONDS)) {
-                println("Force killing React app with PID: ${reactProcess!!.pid()}")
-                reactProcess!!.destroyForcibly()
+            val pid = reactProcess!!.pid()
+            println("Stopping React app with PID: $pid")
+
+            val os = System.getProperty("os.name").lowercase()
+            if (os.contains("win")) {
+                println("Windows detected. Using taskkill to terminate the process tree.")
+                try {
+                    ProcessBuilder("cmd.exe", "/c", "taskkill /PID $pid /T /F")
+                        .inheritIO() // optional: show output/errors
+                        .start()
+                        .waitFor()
+                } catch (e: Exception) {
+                    println("Failed to taskkill React app with PID $pid: ${e.message}")
+                }
+            } else {
+                println("Non-Windows OS detected. Using destroy()/destroyForcibly().")
+                reactProcess!!.destroy()
+                if (!reactProcess!!.waitFor(10, TimeUnit.SECONDS)) {
+                    println("Force killing React app with PID: $pid")
+                    reactProcess!!.destroyForcibly()
+                }
             }
         }
     }
+
 }
