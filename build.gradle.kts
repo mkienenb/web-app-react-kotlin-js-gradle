@@ -6,6 +6,7 @@ val kotestVersion = "5.9.1"
 plugins {
     kotlin("multiplatform") version "1.9.25"
     kotlin("plugin.serialization") version "1.9.25"
+    id("com.google.devtools.ksp") version "1.9.25-1.0.20"
     id("io.kotest.multiplatform") version "5.9.1"
 }
 
@@ -126,6 +127,10 @@ kotlin {
             }
         }
     }
+}
+
+dependencies {
+    add("kspJvmTest", project(":ksp-processor"))
 }
 
 tasks.named<Test>("jvmTest") {
