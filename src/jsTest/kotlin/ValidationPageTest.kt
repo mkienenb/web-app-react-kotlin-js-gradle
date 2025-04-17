@@ -1,28 +1,15 @@
 import io.kotest.matchers.nulls.shouldNotBeNull
+import kotest.ReactComponentTestBase
 import kotlinx.coroutines.test.runTest
 import react.create
 import react.dom.client.createRoot
 import react.dom.test.act
-import web.dom.document
-import web.html.HTMLDivElement
 import web.html.HTMLInputElement
 
-class ValidationPageTest : BrowserOnlyShouldSpec() {
-
-    private lateinit var container: HTMLDivElement
+class ValidationPageTest : ReactComponentTestBase() {
 
     init {
         browserOnlyCode {
-
-            beforeTest {
-                container = document.createElement("div") as HTMLDivElement
-                document.body.appendChild(container)
-            }
-
-            afterTest {
-                container.remove()
-            }
-
             should("shouldRenderValidationForm") {
                 runTest {
                     act {
