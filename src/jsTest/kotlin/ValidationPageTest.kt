@@ -1,4 +1,3 @@
-// import kotlin.test.*
 import kotlinx.coroutines.test.runTest
 import react.create
 import react.dom.client.createRoot
@@ -7,7 +6,6 @@ import web.dom.document
 import web.html.HTMLDivElement
 import web.html.HTMLInputElement
 import io.kotest.core.spec.style.ShouldSpec
-import io.kotest.core.annotation.Tags
 import io.kotest.matchers.nulls.shouldNotBeNull
 
 class ValidationPageTest : ShouldSpec() {
@@ -16,15 +14,21 @@ class ValidationPageTest : ShouldSpec() {
 
     init {
         beforeTest {
-            container = document.createElement("div") as HTMLDivElement
-            document.body.appendChild(container)
+            if (js("typeof window !== 'undefined'") as Boolean) {
+                container = document.createElement("div") as HTMLDivElement
+                document.body.appendChild(container)
+            }
         }
 
         afterTest {
-            container.remove()
+            if (js("typeof window !== 'undefined'") as Boolean) {
+                container.remove()
+            }
         }
 
-        should("shouldRenderValidationForm") {
+        should("shouldRenderValidationForm").config(
+            enabled = js("typeof window !== 'undefined'") as Boolean
+        ) {
             runTest {
                 act {
                     val root = createRoot(container)
@@ -32,7 +36,7 @@ class ValidationPageTest : ShouldSpec() {
                 }
 
                 val input = container.querySelector("[data-test='iban-entry']") as? HTMLInputElement
-                input.shouldNotBeNull() // "Expected IBAN input field to be present"
+                input.shouldNotBeNull()
             }
         }
     }
