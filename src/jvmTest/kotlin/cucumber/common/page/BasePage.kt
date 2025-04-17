@@ -1,4 +1,4 @@
-package com.example.stepdefinitions.common
+package cucumber.common.page
 
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
@@ -6,8 +6,12 @@ import org.openqa.selenium.WebElement
 import org.openqa.selenium.NoSuchElementException
 
 import org.assertj.core.api.Assertions.assertThat
+import org.openqa.selenium.support.PageFactory
 
 open class BasePage(protected val driver: WebDriver) {
+    init {
+        PageFactory.initElements(driver, this)
+    }
 
     /**
      * Finds the first element in the DOM containing the specified text.

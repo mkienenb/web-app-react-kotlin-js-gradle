@@ -1,5 +1,6 @@
-package com.example.stepdefinitions.common
+package cucumber.common.driver
 
+import cucumber.common.ScenarioContext
 import io.cucumber.java.After
 import io.cucumber.java.Before
 import kotlinx.coroutines.*
@@ -95,7 +96,7 @@ class ReactAppHooks(private val scenarioContext : ScenarioContext) {
             }
         }
 
-        scenarioContext.reactPort = discoveredPort
+        scenarioContext.applicationPort = discoveredPort
     }
 
     @After(order = Int.MAX_VALUE - 1000)

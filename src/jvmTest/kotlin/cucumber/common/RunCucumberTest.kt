@@ -1,4 +1,4 @@
-package com.example
+package cucumber.common
 
 import io.cucumber.junit.platform.engine.Constants.GLUE_PROPERTY_NAME
 import org.junit.platform.suite.api.ConfigurationParameter
@@ -8,5 +8,5 @@ import org.junit.platform.suite.api.Suite
 @Suite
 @SelectClasspathResource("features")
 // GLUE_PROPERTY_NAME setting is optional, but clears up run-time warnings
-@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "com.example")
+@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "cucumber")
 class RunCucumberTest
