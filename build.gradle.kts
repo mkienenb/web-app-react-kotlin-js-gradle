@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 val kotestVersion = "5.9.1"
 
 plugins {
-    kotlin("multiplatform") version "1.9.23"
-    kotlin("plugin.serialization") version "1.9.23"
+    kotlin("multiplatform") version "1.9.25"
+    kotlin("plugin.serialization") version "1.9.25"
     id("io.kotest.multiplatform") version "5.9.1"
 }
 
