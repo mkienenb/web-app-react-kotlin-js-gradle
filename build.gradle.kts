@@ -121,7 +121,7 @@ kotlin {
                 implementation("org.junit.jupiter:junit-jupiter-api")
                 implementation("org.junit.platform:junit-platform-suite")
 
-                implementation("org.assertj:assertj-core")
+                implementation ("io.kotest:kotest-assertions-core:$kotestVersion")
 
                 // Selenium dependency for browser automation in tests.
                 implementation("org.seleniumhq.selenium:selenium-java")

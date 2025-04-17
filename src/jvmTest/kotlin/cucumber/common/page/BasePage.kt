@@ -1,11 +1,12 @@
 package cucumber.common.page
 
+import io.kotest.assertions.withClue
+import io.kotest.matchers.booleans.shouldBeTrue
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.NoSuchElementException
 
-import org.assertj.core.api.Assertions.assertThat
 import org.openqa.selenium.support.PageFactory
 
 open class BasePage(protected val driver: WebDriver) {
@@ -32,9 +33,9 @@ open class BasePage(protected val driver: WebDriver) {
     fun assertThatTextIsVisible(text: String) {
         try {
             val element = findElementByContainsText(text)
-            assertThat(element.isDisplayed)
-                .`as`("Expected text '$text' to be visible on the page, but it was not.")
-                .isTrue()
+            withClue("Expected text '$text' to be visible on the page, but it was not.") {
+                element.isDisplayed.shouldBeTrue()
+            }
         } catch (e: NoSuchElementException) {
             throw AssertionError("Failed to find any element containing text '$text'.", e)
         }
