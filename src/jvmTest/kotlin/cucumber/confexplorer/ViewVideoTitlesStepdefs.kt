@@ -13,6 +13,16 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @Given("the following videos provided by the video service:")
     fun theFollowingVideosProvidedByTheVideoService(dataTable: DataTable) {
         val videoList = dataTable.asList()
+//        videoList.map {
+//            """
+//            {
+//              "id": 1,
+//              "videoUrl": "https://www.youtube.com/watch?v=PsaFVLr8t4E",
+//              "title": "Conference Opening Keynote",
+//              "speaker": "Andrey Breslav"
+//            }
+//        """.trimIndent()
+//        }
     }
 
     @Given("I have watched the following videos:")
