@@ -1,10 +1,12 @@
-import com.example.validateiban.withViewVideoPage
+package cucumber.confexplorer
+
 import cucumber.common.ScenarioContext
 import cucumber.common.driver.baseUrl
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 
 class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
 
@@ -27,9 +29,11 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
 
     @Then("I should see the following list of unwatched videos:")
     fun iShouldSeeTheFollowingListOfUnwatchedVideos(dataTable: DataTable) {
-        val expectedUnwatchedVideoList = dataTable.asList()
         scenarioContext.withViewVideoPage {
-            val actualUnwatchedVideoList = unwatchedVideoList
+            val expectedUnwatchedVideoList = dataTable.asList()
+            val actualUnwatchedVideoList = unwatchedVideoNameList
+
+            actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
         }
     }
 }
