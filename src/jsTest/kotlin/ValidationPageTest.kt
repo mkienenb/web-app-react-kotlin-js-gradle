@@ -5,38 +5,34 @@ import react.dom.test.act
 import web.dom.document
 import web.html.HTMLDivElement
 import web.html.HTMLInputElement
-import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 
-class ValidationPageTest : ShouldSpec() {
+class ValidationPageTest : BrowserOnlyShouldSpec() {
 
     private lateinit var container: HTMLDivElement
 
     init {
-        beforeTest {
-            if (js("typeof window !== 'undefined'") as Boolean) {
+        if (isBrowser()) {
+
+            beforeTest {
                 container = document.createElement("div") as HTMLDivElement
                 document.body.appendChild(container)
             }
-        }
 
-        afterTest {
-            if (js("typeof window !== 'undefined'") as Boolean) {
+            afterTest {
                 container.remove()
             }
-        }
 
-        should("shouldRenderValidationForm").config(
-            enabled = js("typeof window !== 'undefined'") as Boolean
-        ) {
-            runTest {
-                act {
-                    val root = createRoot(container)
-                    root.render(ValidationPage.create())
+            should("shouldRenderValidationForm") {
+                runTest {
+                    act {
+                        val root = createRoot(container)
+                        root.render(ValidationPage.create())
+                    }
+
+                    val input = container.querySelector("[data-test='iban-entry']") as? HTMLInputElement
+                    input.shouldNotBeNull()
                 }
-
-                val input = container.querySelector("[data-test='iban-entry']") as? HTMLInputElement
-                input.shouldNotBeNull()
             }
         }
     }
