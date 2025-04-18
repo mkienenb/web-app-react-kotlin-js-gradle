@@ -138,3 +138,45 @@ class ValidationPageTest : BrowserOnlyShouldSpec() {
 
 * hacky/fragile gradle task to download puppeteer resolved problem but is a poor full solution
   - is also slow as it currently re-downloads and installs after each gradle clean
+
+
+### too many files watched by node
+```
+<i> [webpack-dev-server] Content not from webpack is served from 'kotlin, ../../../processedResources/js/main' directory
+node:internal/fs/watchers:247
+    const error = new UVException({
+                  ^
+
+Error: EMFILE: too many open files, watch 'kotlin'
+Error: EMFILE: too many open files, watch 'kotlin'
+at FSWatcher.<computed> (node:internal/fs/watchers:247:19)
+at Object.watch (node:fs:2467:36)
+at createFsWatchInstance (/home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/lib/nodefs-handler.js:119:15)
+at setFsWatchListener (/home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/lib/nodefs-handler.js:166:15)
+at NodeFsHandler._watchWithNodeFs (/home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/lib/nodefs-handler.js:331:14)
+at NodeFsHandler._handleDir (/home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/lib/nodefs-handler.js:567:19)
+at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+at async NodeFsHandler._addToNodeFs (/home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/lib/nodefs-handler.js:617:16)
+at async /home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/index.js:451:21
+at async Promise.all (index 0)
+Emitted 'error' event on FSWatcher instance at:
+Emitted 'error' event on FSWatcher instance at:
+at FSWatcher._handleError (/home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/index.js:647:10)
+at NodeFsHandler._addToNodeFs (/home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/lib/nodefs-handler.js:645:18)
+at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+at async /home/mkienenb/IdeaProjects/gvea/web-app-react-kotlin-js-gradle/build/js/node_modules/chokidar/index.js:451:21
+at async Promise.all (index 0) {
+errno: -24,
+syscall: 'watch',
+code: 'EMFILE',
+path: 'kotlin',
+filename: 'kotlin'
+}
+```
+* Fix: create config file to limit what is being watched: `webpack.config.d/watch-options.js`
+```js
+config.watchOptions = {
+    ignored: /node_modules/,
+    poll: 1000,
+};
+```
