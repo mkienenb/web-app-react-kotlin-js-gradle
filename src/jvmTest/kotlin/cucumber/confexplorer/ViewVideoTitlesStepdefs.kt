@@ -52,6 +52,9 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
             val actualUnwatchedVideoList = unwatchedVideoNameList
 
             actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
+            withClue("unwatched video list") {
+                actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
+            }
         }
     }
 }
