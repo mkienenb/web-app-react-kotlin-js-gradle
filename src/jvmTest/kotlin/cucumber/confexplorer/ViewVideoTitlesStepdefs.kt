@@ -11,7 +11,7 @@ import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import io.kotest.mpp.start
+import io.kotest.assertions.withClue
 
 class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
 
