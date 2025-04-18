@@ -1,10 +1,11 @@
 Feature: View Video Titles
   Background:
-    Given the following videos provided by the video service:
+    Given the following videos are provided by the video service:
     | Learning kotlin     |
     | Learning koin       |
     | Learning kotest     |
     | Learning react      |
+    And the react app is started
     And I have watched the following videos:
       | Learning koin     |
       | Learning react     |

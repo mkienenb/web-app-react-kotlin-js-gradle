@@ -13,7 +13,8 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     // TODO: revisit if @FindBy works if element is found
     val unwatchedVideoNameList: List<String>
-        get() = driver.findElements(By.cssSelector("li[data-code-element-handle='unwatchedVideo']")).map { it.text }
+        get() = driver.findElements(By.cssSelector("li[data-code-element-handle='unwatchedVideo']"))
+            .mapNotNull { it.getDomProperty("textContent")?.trim() }
 
     init {
         PageFactory.initElements(driver, this)
