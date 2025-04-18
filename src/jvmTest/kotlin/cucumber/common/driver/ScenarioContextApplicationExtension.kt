@@ -2,13 +2,21 @@ package cucumber.common.driver
 
 import cucumber.common.ScenarioContext
 
-enum class Protocol(prefix: String) {
+enum class Protocol(val prefix: String) {
     @Suppress("HttpUrlsUsage")
     HTTP ( "http://"),
     HTTPS ( "https://")
 }
 
 fun ScenarioContext.baseUrl(): String {
-    val port = applicationPort ?: throw IllegalStateException("Application port is not set")
-    return "${Protocol.HTTP}localhost:$port"
+    val port = _reactApplication.port ?: throw IllegalStateException("Application port is not set")
+    return "${Protocol.HTTP.prefix}localhost:$port"
+}
+
+fun ScenarioContext.startReactApp(environmentVariables: Map<String, String> = emptyMap()) {
+    _reactApplication.start(environmentVariables)
+}
+
+fun ScenarioContext.addReactAppEnvironmentVariable(envName: String, envValue: String) {
+    _reactApplication.addEnvironmentVariable(envName, envValue)
 }
