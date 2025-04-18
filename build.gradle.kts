@@ -125,6 +125,11 @@ kotlin {
 
                 // Selenium dependency for browser automation in tests.
                 implementation("org.seleniumhq.selenium:selenium-java")
+
+                // dependencies to fake a video service
+                implementation("io.ktor:ktor-server-core:2.3.4")
+                implementation("io.ktor:ktor-server-netty:2.3.4")
+                implementation("io.ktor:ktor-server-cors:2.3.4")
             }
         }
     }
