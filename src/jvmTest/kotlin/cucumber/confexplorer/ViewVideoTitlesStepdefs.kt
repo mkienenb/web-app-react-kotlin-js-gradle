@@ -1,7 +1,9 @@
 package cucumber.confexplorer
 
+import CONTEXT_PATH
 import cucumber.common.ScenarioContext
 import cucumber.common.driver.baseUrl
+import cucumber.common.fakewebservice.fakeWebservice
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
@@ -13,16 +15,20 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @Given("the following videos provided by the video service:")
     fun theFollowingVideosProvidedByTheVideoService(dataTable: DataTable) {
         val videoList = dataTable.asList()
-//        videoList.map {
-//            """
-//            {
-//              "id": 1,
-//              "videoUrl": "https://www.youtube.com/watch?v=PsaFVLr8t4E",
-//              "title": "Conference Opening Keynote",
-//              "speaker": "Andrey Breslav"
-//            }
-//        """.trimIndent()
-//        }
+        val fakeWebservice = scenarioContext.fakeWebservice("videoWebService")
+        val urlToResponseMap = videoList.withIndex().associate { (index, videoName) ->
+            val videoIndex = index + 1
+            "$CONTEXT_PATH/${videoIndex}" to
+            """
+            {
+              "id": "${videoIndex}",
+              "videoUrl": "${fakeWebservice.url}$CONTEXT_PATH/${videoIndex}",
+              "title": "$videoName",
+              "speaker": "Pav"
+            }
+            """.trimIndent()
+        }
+        fakeWebservice.setPathToResponseMappings(urlToResponseMap)
     }
 
     @Given("I have watched the following videos:")

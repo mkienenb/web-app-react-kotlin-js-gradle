@@ -1,0 +1,1 @@
+const val CONTEXT_PATH = "/kotlin-hands-on/kotlinconf-json/videos/"
