@@ -2,43 +2,45 @@ package cucumber.confexplorer
 
 import CONTEXT_PATH
 import cucumber.common.ScenarioContext
+import cucumber.common.driver.addReactAppEnvironmentVariable
 import cucumber.common.driver.baseUrl
+import cucumber.common.driver.startReactApp
 import cucumber.common.fakewebservice.fakeWebservice
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.mpp.start
 
 class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
 
     @Given("the following videos provided by the video service:")
     fun theFollowingVideosProvidedByTheVideoService(dataTable: DataTable) {
-        val videoList = dataTable.asList()
-        val fakeWebservice = scenarioContext.fakeWebservice("videoWebService")
-        val urlToResponseMap = videoList.withIndex().associate { (index, videoName) ->
-            val videoIndex = index + 1
-            "$CONTEXT_PATH/${videoIndex}" to
-            """
+        with(scenarioContext) {
+            val videoList = dataTable.asList()
+            val fakeWebservice = fakeWebservice("videoWebService")
+            addReactAppEnvironmentVariable("URL", fakeWebservice.url)
+            val urlToResponseMap = videoList.withIndex().associate { (index, videoName) ->
+                val videoIndex = index + 1
+                "$CONTEXT_PATH/${videoIndex}" to
+                        """
             {
               "id": "${videoIndex}",
-              "videoUrl": "${fakeWebservice.url}$CONTEXT_PATH/${videoIndex}",
+              "videoUrl": "https://www.youtube.com/"
               "title": "$videoName",
               "speaker": "Pav"
             }
             """.trimIndent()
+            }
+            fakeWebservice.setPathToResponseMappings(urlToResponseMap)
         }
-        fakeWebservice.setPathToResponseMappings(urlToResponseMap)
-    }
-
-    @Given("I have watched the following videos:")
-    fun iHaveWatchedTheFollowingVideos(dataTable: DataTable) {
-        val videoList = dataTable.asList()
     }
 
     @When("I go to the conference explorer page")
     fun iGoToTheConferenceExplorerPage() {
         with(scenarioContext) {
+            startReactApp()
             driver.navigate().to(baseUrl())
         }
     }
