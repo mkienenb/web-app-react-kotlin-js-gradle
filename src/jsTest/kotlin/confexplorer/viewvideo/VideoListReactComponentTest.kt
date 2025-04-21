@@ -18,6 +18,16 @@ class VideoListReactComponentTest : ReactComponentTestBase() {
                     }
                 }
             }
+            should("show Unlearning Java video") {
+                ForComponent(VideoListReactComponent, {
+                    videos = listOf(Video(1, "Unlearning Java"))
+                }) {
+                    val firstVideoTitle = container.querySelector("ul li")?.textContent
+                    withClue("unordered list") {
+                        firstVideoTitle shouldBe "Unlearning Java"
+                    }
+                }
+            }
         }
     }
 }
