@@ -33,28 +33,30 @@ open class ReactComponentTestBase : BrowserOnlyShouldSpec() {
     }
 
     // Extracted helper for performing act and rendering the component
-    private suspend fun actRenderComponent(component: FC<Props>) {
+    private suspend fun <P : Props> actRenderComponent(component: FC<P>, propsBuilder: P.() -> Unit) {
         act {
             val root = createRoot(container)
-            root.render(component.create())
+            root.render(component.create(propsBuilder))
         }
     }
 
     // Use when your test block itself is suspendable (you need delay, await etc.)
-    protected suspend fun ForComponentCallingCoroutines(
-        component: FC<Props>,
+    protected suspend fun <P : Props> ForComponentCallingCoroutines(
+        component: FC<P>,
+        propsBuilder: P.() -> Unit = {},
         test: suspend () -> Unit  // suspend test block
     ) {
-        actRenderComponent(component)  // now we use our extracted act-render helper
+        actRenderComponent(component, propsBuilder)  // now we use our extracted act-render helper
         test()  // then run the suspendable test code
     }
 
     // Use for test blocks that are not suspend (fast DOM-only tests)
-    protected suspend fun ForComponent(
-        component: FC<Props>,
+    protected suspend fun <P : Props> ForComponent(
+        component: FC<P>,
+        propsBuilder: P.() -> Unit = {},
         test: () -> Unit  // non-suspend test block
     ) {
-        actRenderComponent(component)
+        actRenderComponent(component, propsBuilder)
         test()
     }
 }
