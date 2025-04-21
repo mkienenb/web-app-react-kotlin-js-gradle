@@ -9,10 +9,12 @@ external interface VideoListProps : Props {
     var videos: List<Video>
 }
 
-val VideoListReactComponent = FC<VideoListProps> {
+val VideoListReactComponent = FC<VideoListProps> { props ->
     ul {
         li {
-            +"Learning kotlin"
+            props.videos.first().let {
+                +it.title
+            }
         }
     }
 }
