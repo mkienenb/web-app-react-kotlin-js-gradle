@@ -11,8 +11,8 @@ external interface VideoListProps : Props {
 
 val VideoListReactComponent = FC<VideoListProps> { props ->
     ul {
-        li {
-            props.videos.first().let {
+        props.videos.forEach {
+            li {
                 +it.title
             }
         }
