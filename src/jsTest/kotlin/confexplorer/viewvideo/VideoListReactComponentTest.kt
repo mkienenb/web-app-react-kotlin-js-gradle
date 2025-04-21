@@ -14,11 +14,7 @@ class VideoListReactComponentTest : ReactComponentTestBase() {
     init {
         browserOnlyCode {
             should("render video list") {
-                runTest {
-                    act {
-                        val root = createRoot(container)
-                        root.render(VideoListReactComponent.create())
-                    }
+                ForComponent(VideoListReactComponent) {
                     val unorderedList = container.getElementsByTagName("ul")[0] as? HTMLUListElement
                     withClue("unordered list") {
                         unorderedList shouldNotBe null
