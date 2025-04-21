@@ -91,10 +91,16 @@ Execution failed for task ':kotlinStoreYarnLock'.
 * These commands seem to allow recovery
 ```bash
 ./gradlew --stop
-rm -rf build/ node_modules/ package-lock.json yarn.lock .gradle ~/.gradle/npm-cache/ kotlin-js-store/ ~/.kotlin-js-node-modules/
+rm -rf ./kotlin-js-store/
 ```
   - My suspicion is that it's these two: `kotlin-js-store/` and  `~/.kotlin-js-node-modules/`
 * Sometimes these commands have helped or assisted
+
+- If the above command does not work, try this:
+```bash
+rm -rf build/ node_modules/ package-lock.json yarn.lock .gradle ~/.gradle/npm-cache/ kotlin-js-store/ ~/.kotlin-js-node-modules/
+```
+
 ```bash
 ./gradlew build --refresh-dependencies
 ```
