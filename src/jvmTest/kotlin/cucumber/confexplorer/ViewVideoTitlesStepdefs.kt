@@ -1,6 +1,6 @@
 package cucumber.confexplorer
 
-import CONTEXT_PATH
+import api.VideoServiceLocator.CONTEXT_PATH
 import cucumber.common.ScenarioContext
 import cucumber.common.driver.addReactAppEnvironmentVariable
 import cucumber.common.driver.baseUrl
