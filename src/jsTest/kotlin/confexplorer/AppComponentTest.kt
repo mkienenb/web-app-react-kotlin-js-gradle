@@ -22,7 +22,12 @@ class AppComponentTest: ReactComponentTestBase() {
             }
 
             should("show unwatched video titles of 'Learning Kotlin' and 'Unlearning Java' on page") {
-                VideoService.setVideos(listOf(Video(1, "Learning Kotlin"), Video(2, "Unlearning Java")))
+                VideoService.setFetchFunction { videoId ->
+                    listOf(
+                        Video(1, "Learning Kotlin"),
+                        Video(2, "Unlearning Java")
+                    ).firstOrNull { it.id == videoId }
+                }
                 ForComponent(AppComponent) {
                     val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
                         .asList()
@@ -34,7 +39,7 @@ class AppComponentTest: ReactComponentTestBase() {
             }
 
             should("show unwatched video titles of 'Learning Kotlin' on page") {
-                VideoService.setVideos(listOf(Video(1, "Learning Kotlin")))
+                VideoService.setFetchFunction { Video(1, "Learning Kotlin") }
                 ForComponent(AppComponent) {
                     val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
                         .asList()
