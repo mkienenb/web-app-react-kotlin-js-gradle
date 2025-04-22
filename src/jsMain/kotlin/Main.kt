@@ -1,15 +1,16 @@
-import react.FC
-import react.Props
+import react.StrictMode
 import react.create
 import react.dom.client.createRoot
 import web.dom.document
 
 fun main() {
-    val container = document.createElement("div")
-    document.body.appendChild(container)
 
-    createRoot(container).render(root.create())
-}
+    val container = document.getElementById("root") ?: error("Root element not found")
+    val root = createRoot(container)
 
-val root = FC<Props> {
+    root.render(
+        StrictMode.create {
+            App {} // your root component goes here
+        }
+    )
 }
