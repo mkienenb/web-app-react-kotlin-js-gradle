@@ -53,6 +53,22 @@ class AppComponentTest: ReactComponentTestBase() {
                     }
                 }
             }
+
+            should("show unwatched video titles of 'Unlearning Java' on page 2") {
+                VideoService.setFetchURLFunction { url ->
+                    listOf(
+                        Video(1, "Unlearning Java")
+                    ).firstOrNull { it.id == url.substringAfterLast('/').toIntOrNull() }
+                }
+                ForComponent(AppComponent) {
+                    val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
+                        .asList()
+                        .map { it.textContent }
+                    withClue("unwatched video titles") {
+                        actualUnwatchedVideoTitlesList shouldContainExactly listOf("Unlearning Java")
+                    }
+                }
+            }
         }
     }
 }
