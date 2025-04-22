@@ -3,7 +3,12 @@ package api
 import confexplorer.viewvideo.Video
 
 object VideoService {
+    private var videos = emptyList<Video>()
     fun getVideos(): List<Video> {
-        return listOf(Video(1, "Learning Kotlin"), Video(2, "Unlearning Java"))
+        return videos
+    }
+
+    fun setVideos(videos: List<Video>) {
+        this.videos = videos
     }
 }
