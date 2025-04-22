@@ -1,24 +1,41 @@
 package api
 
 import confexplorer.viewvideo.Video
+import kotlinx.browser.window
+import kotlinx.coroutines.await
+import kotlinx.serialization.decodeFromString
+import org.w3c.fetch.Response
+import kotlin.js.Promise
+import kotlinx.serialization.json.Json
+
+const val serverPrefix = "https://my-json-server.typicode.com"
 
 object VideoService {
-    private var fetchURLFunction : (String) -> Video? = {null}
-    private var fetchURLToJsonFunction : (String) -> String? = {null}
+    private var fetchURLToJsonFunction : (String) -> Promise<Response> = { url -> window.fetch(url) }
 
-    fun getVideos(): List<Video> {
+    suspend fun getVideos(): List<Video> {
         return (1..2).mapNotNull{ getVideo(it) }
     }
 
-    fun setFetchURLFunction(fetchURLFunction: (String) -> Video?) {
-        this.fetchURLFunction = fetchURLFunction
-    }
-
-    fun setFetchURLToJsonFunction(fetchURLToJsonFunction: (String) -> String?) {
+    fun setFetchURLToJsonFunction(fetchURLToJsonFunction: (String) -> Promise<Response>) {
         this.fetchURLToJsonFunction = fetchURLToJsonFunction
     }
 
-    fun getVideo(videoId: Int): Video? {
-        return fetchURLFunction("/$videoId")
+    private suspend fun getVideo(videoId: Int): Video? {
+        val url = "${serverPrefix()}${VideoServiceLocator.CONTEXT_PATH}$videoId"
+        val data = fetchURLToJsonFunction(url)
+        val response = data.await()
+            .text()
+            .await()
+        return Json.decodeFromString(response)
     }
+
+    private fun serverPrefix(): String {
+        return Env.serviceVideoUrl
+    }
+}
+
+object Env {
+    val serviceVideoUrl: String
+        get() = js("process.env.SERVICE_VIDEO_URL") as String
 }

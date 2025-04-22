@@ -20,7 +20,7 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
         with(scenarioContext) {
             val videoList = dataTable.asList()
             val fakeWebservice = fakeWebservice("videoWebService")
-            addReactAppEnvironmentVariable("URL", fakeWebservice.url)
+            addReactAppEnvironmentVariable("SERVICE_VIDEO_URL", fakeWebservice.url)
             val urlToResponseMap = videoList.withIndex().associate { (index, videoName) ->
                 val videoIndex = index + 1
                 "$CONTEXT_PATH/${videoIndex}" to
@@ -49,6 +49,8 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     fun iShouldSeeTheFollowingListOfUnwatchedVideos(dataTable: DataTable) {
         scenarioContext.withViewVideoPage {
             val expectedUnwatchedVideoList = dataTable.asList()
+
+            Thread.sleep(20000)
             val actualUnwatchedVideoList = unwatchedVideoNameList
 
             actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
