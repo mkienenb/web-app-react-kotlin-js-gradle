@@ -1,6 +1,8 @@
 package confexplorer
 
+import api.VideoService
 import browserOnlyCode
+import confexplorer.viewvideo.Video
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -20,6 +22,7 @@ class AppComponentTest: ReactComponentTestBase() {
             }
 
             should("show unwatched video titles list on page") {
+                VideoService.setVideos(listOf(Video(1, "Learning Kotlin"), Video(2, "Unlearning Java")))
                 ForComponent(AppComponent) {
                     val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
                         .asList()
