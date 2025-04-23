@@ -15,6 +15,7 @@ val AppComponent = FC<Props> {
     }
 
     VideoListReactComponent {
-        videos = VideoService.getVideos()
+//        videos = VideoService.getVideos()
+        videos = TODO()
     }
 }
