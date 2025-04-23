@@ -1,5 +1,6 @@
 package api
 
+import api.VideoServiceLocator.CONTEXT_PATH
 import confexplorer.viewvideo.Video
 import kotlinx.coroutines.await
 import kotlinx.serialization.decodeFromString
@@ -24,7 +25,7 @@ object VideoService {
     }
 
     private suspend fun getVideo(videoId: Int): Video? {
-        val url = "https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/$videoId"
+        val url = "https://shady.videos$CONTEXT_PATH$videoId"
         val responsePromise = fetchURLToPromiseResponseFunction(url)
         val response = responsePromise.await()
         if (response.status == 404.toShort()) {
