@@ -1,15 +1,16 @@
 package api
 
 import confexplorer.viewvideo.Video
+import kotlinx.coroutines.await
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import org.w3c.fetch.Response
 
 object VideoService {
     private var fetchURLToJsonFunction : (String) -> String? = {null}
-    private var fetchURLToResponseFunction : (String) -> Response? = {null}
+    private lateinit var fetchURLToResponseFunction : (String) -> Response
 
-    fun getVideos(): List<Video> {
+    suspend fun getVideos(): List<Video> {
         return (1..2).mapNotNull{ getVideo(it) }
     }
 
@@ -17,22 +18,20 @@ object VideoService {
         this.fetchURLToJsonFunction = fetchURLToJsonFunction
     }
 
-    fun setFetchURLToResponseFunction(fetchURLToResponseFunction: (String) -> Response?) {
+    fun setFetchURLToResponseFunction(fetchURLToResponseFunction: (String) -> Response) {
         this.fetchURLToResponseFunction = fetchURLToResponseFunction
     }
 
-    private fun getVideo(videoId: Int): Video? {
+    private suspend fun getVideo(videoId: Int): Video? {
 
         // input url
 
 
-        // output json rep of a video
-        val json = fetchURLToJsonFunction("/$videoId")
-
-        return if (!json.isNullOrEmpty() && json != "{}") {
-            Json.decodeFromString<Video>(json)
-        } else {
-            null
+        val response = fetchURLToResponseFunction("/$videoId")
+        if (response.status == 404.toShort()) {
+            return null
         }
+
+        return Json.decodeFromString<Video>(response.text().await())
     }
 }
