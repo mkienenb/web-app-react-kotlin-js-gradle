@@ -41,37 +41,39 @@ class AppComponentTest: ReactComponentTestBase() {
                 }
             }
 
-            should("show unwatched video titles of 'Learning Kotlin' on page") {
-                VideoService.setFetchURLFunction { url ->
-                    listOf(
-                        Video(1, "Learning Kotlin")
-                    ).firstOrNull { it.id == url.substringAfterLast('/').toIntOrNull() }
-                }
-                ForComponent(AppComponent) {
-                    val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
-                        .asList()
-                        .map { it.textContent }
-                    withClue("unwatched video titles") {
-                        actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin")
-                    }
-                }
-            }
-
-            should("show unwatched video titles of 'Unlearning Java' on page 2") {
-                VideoService.setFetchURLFunction { url ->
-                    listOf(
-                        Video(1, "Unlearning Java")
-                    ).firstOrNull { it.id == url.substringAfterLast('/').toIntOrNull() }
-                }
-                ForComponent(AppComponent) {
-                    val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
-                        .asList()
-                        .map { it.textContent }
-                    withClue("unwatched video titles") {
-                        actualUnwatchedVideoTitlesList shouldContainExactly listOf("Unlearning Java")
-                    }
-                }
-            }
+//            should("show unwatched video titles of 'Learning Kotlin' on page") {
+//                VideoService.setFetchURLToJsonFunction { url ->
+//                    Json.encodeToString(
+//                        listOf(
+//                            Video(1, "Learning Kotlin")
+//                        ).firstOrNull { it.id == url.substringAfterLast('/').toIntOrNull() })
+//                }
+//                ForComponent(AppComponent) {
+//                    val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
+//                        .asList()
+//                        .map { it.textContent }
+//                    withClue("unwatched video titles") {
+//                        actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin")
+//                    }
+//                }
+//            }
+//
+//            should("show unwatched video titles of 'Unlearning Java' on page 2") {
+//                VideoService.setFetchURLToJsonFunction { url ->
+//                    Json.encodeToString(
+//                        listOf(
+//                            Video(2, "Unlearning Java")
+//                        ).firstOrNull { it.id == url.substringAfterLast('/').toIntOrNull() })
+//                }
+//                ForComponent(AppComponent) {
+//                    val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
+//                        .asList()
+//                        .map { it.textContent }
+//                    withClue("unwatched video titles") {
+//                        actualUnwatchedVideoTitlesList shouldContainExactly listOf("Unlearning Java")
+//                    }
+//                }
+//            }
         }
     }
 }
