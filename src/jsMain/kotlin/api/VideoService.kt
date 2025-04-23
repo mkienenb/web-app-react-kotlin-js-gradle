@@ -15,7 +15,7 @@ object VideoService {
         this.fetchURLToJsonFunction = fetchURLToJsonFunction
     }
 
-    fun getVideo(videoId: Int): Video? {
+    private fun getVideo(videoId: Int): Video? {
 
         // input url
 
