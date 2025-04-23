@@ -23,7 +23,7 @@ object VideoService {
         // output json rep of a video
         val json = fetchURLToJsonFunction("/$videoId")
 
-        return if (!json.isNullOrEmpty()) {
+        return if (!json.isNullOrEmpty() && json != "{}") {
             Json.decodeFromString<Video>(json)
         } else {
             null
