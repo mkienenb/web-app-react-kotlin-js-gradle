@@ -9,7 +9,6 @@ import kotlin.js.Promise
 
 object VideoService {
     private var fetchURLToJsonFunction : (String) -> String? = {null}
-    private lateinit var fetchURLToResponseFunction : (String) -> Response
     private lateinit var fetchURLToPromiseResponseFunction : (String) -> Promise<Response>
 
     suspend fun getVideos(): List<Video> {
@@ -29,7 +28,7 @@ object VideoService {
         // input url
 
 
-        val response = fetchURLToResponseFunction("/$videoId")
+        val response = fetchURLToPromiseResponseFunction("/$videoId").await()
         if (response.status == 404.toShort()) {
             return null
         }
