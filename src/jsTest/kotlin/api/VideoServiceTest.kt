@@ -10,6 +10,7 @@ import org.w3c.fetch.Response
 import org.w3c.fetch.ResponseInit
 import org.w3c.files.Blob
 import org.w3c.files.BlobPropertyBag
+import kotlin.js.Promise
 
 class VideoServiceTest : ShouldSpec({
 
@@ -17,7 +18,7 @@ class VideoServiceTest : ShouldSpec({
         val videoList = listOf(
             Video(1, "Learning Kotlin"), Video(2, "Unlearning Java")
         )
-        VideoService.setFetchURLToResponseFunction(createResponseFetchFunction(videoList))
+        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
         val actualVideoTitleList = VideoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualVideoTitleList shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
@@ -26,7 +27,7 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video title Strings of 'Learning Kotlin'") {
         val videoList = listOf(Video(1, "Learning Kotlin"))
-        VideoService.setFetchURLToResponseFunction(createResponseFetchFunction(videoList))
+        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
         val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin")
@@ -35,7 +36,7 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video title Strings of 'Unlearning Java'") {
         val videoList = listOf(Video(2, "Unlearning Java"))
-        VideoService.setFetchURLToResponseFunction(createResponseFetchFunction(videoList))
+        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
         val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Unlearning Java")
@@ -44,7 +45,7 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video title Responses of 'Learning Kotlin'") {
         val videoList = listOf(Video(1, "Learning Kotlin"))
-        VideoService.setFetchURLToResponseFunction(createResponseFetchFunction(videoList))
+        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
         val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin")
@@ -53,7 +54,7 @@ class VideoServiceTest : ShouldSpec({
 
 })
 
-private fun createResponseFetchFunction(videoList: List<Video>): (String) -> Response {
+private fun createPromiseResponseFetchFunction(videoList: List<Video>): (String) -> Promise<Response> {
     return {
             url ->
         val video = videoList.firstOrNull {
@@ -65,6 +66,6 @@ private fun createResponseFetchFunction(videoList: List<Video>): (String) -> Res
         }
         val blob = Blob(arrayOf(json), BlobPropertyBag(type = "application/json"))
         val responseInit = ResponseInit(status = if (video != null) 200 else 404)
-        Response(blob, responseInit)
+        Promise.resolve(Response(blob, responseInit))
     }
 }
