@@ -9,29 +9,29 @@ import kotlinx.serialization.json.Json
 
 class VideoServiceTest : ShouldSpec({
 
-    should("show unwatched video titles of 'Learning Kotlin' and 'Unlearning Java' on page") {
+    should("fetch video title Strings of 'Learning Kotlin' and 'Unlearning Java'") {
         val videoList = listOf(
             Video(1, "Learning Kotlin"), Video(2, "Unlearning Java")
         )
-        VideoService.setFetchURLToJsonFunction(createFetchFunction(videoList))
+        VideoService.setFetchURLToJsonFunction(createJsonFetchFunction(videoList))
         val actualVideoTitleList = VideoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualVideoTitleList shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
         }
     }
 
-    should("show unwatched video titles of 'Learning Kotlin' on page") {
+    should("fetch video title Strings of 'Learning Kotlin'") {
         val videoList = listOf(Video(1, "Learning Kotlin"))
-        VideoService.setFetchURLToJsonFunction(createFetchFunction(videoList))
+        VideoService.setFetchURLToJsonFunction(createJsonFetchFunction(videoList))
         val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin")
         }
     }
 
-    should("show unwatched video titles of 'Unlearning Java' on page 2") {
+    should("fetch video title Strings of 'Unlearning Java'") {
         val videoList = listOf(Video(2, "Unlearning Java"))
-        VideoService.setFetchURLToJsonFunction(createFetchFunction(videoList))
+        VideoService.setFetchURLToJsonFunction(createJsonFetchFunction(videoList))
         val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Unlearning Java")
@@ -39,7 +39,7 @@ class VideoServiceTest : ShouldSpec({
     }
 })
 
-private fun createFetchFunction(videoList: List<Video>): (String) -> String {
+private fun createJsonFetchFunction(videoList: List<Video>): (String) -> String {
     return {
         url ->
             val video = videoList.firstOrNull {
