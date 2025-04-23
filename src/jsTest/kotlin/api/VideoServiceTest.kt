@@ -3,7 +3,9 @@ package api
 import confexplorer.viewvideo.Video
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.shouldBe
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.w3c.fetch.Response
@@ -52,6 +54,19 @@ class VideoServiceTest : ShouldSpec({
         }
     }
 
+    should("fetch video with title of 'Learning Kotlin' from url 'https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/1'") {
+        val requestedUrls = mutableListOf<String>()
+        VideoService.setFetchURLToPromiseResponseFunction { url ->
+            requestedUrls += url
+            val blob = Blob(arrayOf("{}"), BlobPropertyBag(type = "application/json"))
+            val responseInit = ResponseInit(status = 404)
+            Promise.resolve(Response(blob, responseInit))
+        }
+        VideoService.getVideos()
+        withClue("requested video url") {
+            requestedUrls.shouldContain("https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/1")
+        }
+    }
 })
 
 private fun createPromiseResponseFetchFunction(videoList: List<Video>): (String) -> Promise<Response> {
