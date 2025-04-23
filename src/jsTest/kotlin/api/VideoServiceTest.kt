@@ -4,26 +4,24 @@ import confexplorer.viewvideo.Video
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainExactly
-import js.array.asList
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class VideoServiceTest: ShouldSpec() {
-    init {
+class VideoServiceTest: ShouldSpec( {
 
-            should("show unwatched video titles of 'Learning Kotlin' and 'Unlearning Java' on page") {
-                VideoService.setFetchURLToJsonFunction { url ->
-                    Json.encodeToString(
-                    listOf(
-                        Video(1, "Learning Kotlin"),
-                        Video(2, "Unlearning Java")
-                    ).firstOrNull { it.id == url.substringAfterLast('/').toIntOrNull() })
-                }
-                val actualVideoTitleList = VideoService.getVideos().map { it.title }
-                withClue("unwatched video titles") {
-                    actualVideoTitleList shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
-                }
-            }
+    should("show unwatched video titles of 'Learning Kotlin' and 'Unlearning Java' on page") {
+        VideoService.setFetchURLToJsonFunction { url ->
+            Json.encodeToString(
+            listOf(
+                Video(1, "Learning Kotlin"),
+                Video(2, "Unlearning Java")
+            ).firstOrNull { it.id == url.substringAfterLast('/').toIntOrNull() })
+        }
+        val actualVideoTitleList = VideoService.getVideos().map { it.title }
+        withClue("unwatched video titles") {
+            actualVideoTitleList shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
+        }
+    }
 
 //            should("show unwatched video titles of 'Learning Kotlin' on page") {
 //                VideoService.setFetchURLToJsonFunction { url ->
@@ -58,5 +56,5 @@ class VideoServiceTest: ShouldSpec() {
 //                    }
 //                }
 //            }
-    }
 }
+)
