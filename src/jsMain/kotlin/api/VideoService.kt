@@ -24,15 +24,14 @@ object VideoService {
     }
 
     private suspend fun getVideo(videoId: Int): Video? {
-
-        // input url
-
-
-        val response = fetchURLToPromiseResponseFunction("/$videoId").await()
+        val url = "/$videoId"
+        val responsePromise = fetchURLToPromiseResponseFunction(url)
+        val response = responsePromise.await()
         if (response.status == 404.toShort()) {
             return null
         }
 
-        return Json.decodeFromString<Video>(response.text().await())
+        val json = response.text().await()
+        return Json.decodeFromString<Video>(json)
     }
 }
