@@ -24,7 +24,7 @@ object VideoService {
     }
 
     private suspend fun getVideo(videoId: Int): Video? {
-        val url = "/$videoId"
+        val url = "https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/$videoId"
         val responsePromise = fetchURLToPromiseResponseFunction(url)
         val response = responsePromise.await()
         if (response.status == 404.toShort()) {
