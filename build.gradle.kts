@@ -1,13 +1,11 @@
 import org.example.puppeteer.InstallChromePlugin
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 
-val kotestVersion = "5.9.1"
-
 plugins {
-    kotlin("multiplatform") version "1.9.25"
-    kotlin("plugin.serialization") version "1.9.25"
-    id("com.google.devtools.ksp") version "1.9.25-1.0.20"
-    id("io.kotest.multiplatform") version "5.9.1"
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotest)
 }
 
 group = "org.example"
@@ -51,82 +49,56 @@ kotlin {
         binaries.executable()
     }
     sourceSets {
-        val kotlinWrapperVersion = "733"
-        val kotlinxCoroutinesVersion = "1.8.1"
-//        val koinVersion = "4.0.4"
-
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation("io.kotest:kotest-assertions-api:$kotestVersion")
-                implementation("io.kotest:kotest-assertions-core:$kotestVersion")
-                implementation("io.kotest:kotest-framework-api:$kotestVersion")
-                implementation("io.kotest:kotest-framework-datatest:$kotestVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxCoroutinesVersion")
+                implementation(libs.kotest.assertions.api)
+                implementation(libs.kotest.assertions.core)
+                implementation(libs.kotest.framework.api)
+                implementation(libs.kotest.framework.datatest)
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
         val jsMain by getting {
             dependencies {
-                implementation(project.dependencies.enforcedPlatform("org.jetbrains.kotlin-wrappers:kotlin-wrappers-bom:1.0.0-pre.$kotlinWrapperVersion"))
-//                implementation("io.insert-koin:koin-core-js:$koinVersion")
-
-                //React, React DOM + Wrappers (chapter 3)
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-tanstack-react-query")
-
-                //Kotlin React Emotion (CSS) (chapter 3)
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion")
-
-                //Video Player (chapter 7)
-                implementation(npm("react-player", "2.12.0"))
-
-                //Share Buttons (chapter 7)
-                implementation(npm("react-share", "4.4.1"))
-
-                //Coroutines & serialization (chapter 8)
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+                implementation(project.dependencies.enforcedPlatform(libs.kotlin.wrappers.bom))
+                implementation(libs.kotlin.react)
+                implementation(libs.kotlin.react.dom)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
-        // (Client-side tests for Kotlin/JS would live in src/jsTest.)
         val jsTest by getting {
             dependencies {
-//                implementation("io.insert-koin:koin-test:$koinVersion")
-                implementation("io.kotest:kotest-framework-engine:$kotestVersion")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom-test-utils-js:18.2.0-pre.$kotlinWrapperVersion")
-                // for chrome support
-                implementation(npm("puppeteer", "21.3.8"))
+                implementation(libs.kotest.framework.engine)
+                implementation(libs.kotlin.react.dom.test.utils.js)
+                implementation(npm("puppeteer", libs.versions.puppeteer.get()))
             }
         }
-        // Our JVM tests (integration tests) reside in src/jvmTest.
         val jvmTest by getting {
             dependencies {
-                implementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-                implementation(platform("org.junit:junit-bom:5.12.1"))
-                implementation(platform("io.cucumber:cucumber-bom:7.22.0"))
-                implementation(platform("org.assertj:assertj-bom:3.27.3"))
-                implementation(platform("org.seleniumhq.selenium:selenium-dependencies-bom:4.31.0"))
+                implementation(libs.kotest.runner.junit5)
 
-                implementation("io.cucumber:cucumber-java")
-                implementation("io.cucumber:cucumber-junit-platform-engine")
-                implementation("io.cucumber:cucumber-picocontainer")
-
+                implementation(project.dependencies.platform("org.junit:junit-bom:${libs.versions.junit.get()}"))
                 implementation("org.junit.jupiter:junit-jupiter-api")
                 implementation("org.junit.platform:junit-platform-suite")
 
-                implementation ("io.kotest:kotest-assertions-core:$kotestVersion")
+                implementation(project.dependencies.platform("io.cucumber:cucumber-bom:${libs.versions.cucumber.get()}"))
+                implementation(project.dependencies.platform("org.seleniumhq.selenium:selenium-dependencies-bom:${libs.versions.selenium.get()}"))
 
-                // Selenium dependency for browser automation in tests.
-                implementation("org.seleniumhq.selenium:selenium-java")
+                implementation(libs.cucumber.java)
+                implementation(libs.cucumber.junit.platform.engine)
+                implementation(libs.cucumber.picocontainer)
 
-                // dependencies to fake a video service
-                implementation("io.ktor:ktor-server-core:2.3.4")
-                implementation("io.ktor:ktor-server-netty:2.3.4")
-                implementation("io.ktor:ktor-server-cors:2.3.4")
+                implementation(libs.kotest.assertions.core)
+                implementation(libs.selenium.java)
+
+                implementation(libs.ktor.server.core)
+                implementation(libs.ktor.server.netty)
+                implementation(libs.ktor.server.cors)
             }
         }
     }
@@ -152,17 +124,11 @@ tasks.named("check") {
     dependsOn("jsTest", "jvmTest")
 }
 
-// Heroku Deployment (chapter 9)
-tasks.register("stage") {
-    dependsOn("build")
-}
-
 apply<InstallChromePlugin>()
 
 tasks.withType<KotlinJsTest>().configureEach {
     if (name == "jsBrowserTest") {
         dependsOn("installPuppeteerChromium")
-
         doFirst {
             val chromePath = org.example.puppeteer.resolvePuppeteerChromePath(project)
             println("✅ Using Puppeteer Chrome at: $chromePath")

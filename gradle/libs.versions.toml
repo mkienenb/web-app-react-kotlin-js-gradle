@@ -1,0 +1,58 @@
+[versions]
+# kotlin libs
+kotlin = "2.1.20"
+serialization = "1.8.1"
+ksp = "2.1.20-2.0.0"
+kotest = "5.9.1"
+coroutines = "1.10.2"
+kotlinWrapper = "2025.4.14"
+kotlinWrapperKotlinReactDomTestUtilsJs = "2025.4.14-19.1.0"
+ktor = "3.1.2"
+# java libs
+junit = "5.12.1"
+cucumber = "7.22.0"
+selenium = "4.31.0"
+# js libs
+puppeteer = "21.3.8"
+
+[libraries]
+# Kotlin core + plugins
+kotlin-gradle-plugin-api = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin-api", version.ref = "kotlin" }
+ksp-symbol-processing-api = { group = "com.google.devtools.ksp", name = "symbol-processing-api", version.ref = "ksp" }
+
+# Kotlinx
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+
+# Kotest
+kotest-assertions-api = { group = "io.kotest", name = "kotest-assertions-api", version.ref = "kotest" }
+kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+kotest-framework-api = { group = "io.kotest", name = "kotest-framework-api", version.ref = "kotest" }
+kotest-framework-datatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
+kotest-framework-engine = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
+kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
+
+# Kotlin/JS React ecosystem
+kotlin-wrappers-bom = { group = "org.jetbrains.kotlin-wrappers", name = "kotlin-wrappers-bom", version.ref = "kotlinWrapper" }
+kotlin-react = { group = "org.jetbrains.kotlin-wrappers", name = "kotlin-react", version.ref = "kotlinWrapper" }
+kotlin-react-dom = { group = "org.jetbrains.kotlin-wrappers", name = "kotlin-react-dom", version.ref = "kotlinWrapper" }
+kotlin-react-dom-test-utils-js = { group = "org.jetbrains.kotlin-wrappers", name = "kotlin-react-dom-test-utils-js", version.ref = "kotlinWrapperKotlinReactDomTestUtilsJs" }
+
+# Ktor
+ktor-server-core = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
+ktor-server-cors = { group = "io.ktor", name = "ktor-server-cors", version.ref = "ktor" }
+
+# JUnit, Cucumber, AssertJ, Selenium
+cucumber-java = { group = "io.cucumber", name = "cucumber-java", version.ref = "cucumber" }
+cucumber-junit-platform-engine = { group = "io.cucumber", name = "cucumber-junit-platform-engine", version.ref = "cucumber" }
+cucumber-picocontainer = { group = "io.cucumber", name = "cucumber-picocontainer", version.ref = "cucumber" }
+
+selenium-java = { group = "org.seleniumhq.selenium", name = "selenium-java", version.ref = "selenium" }
+
+[plugins]
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotest = { id = "io.kotest.multiplatform", version.ref = "kotest" }

@@ -17,7 +17,7 @@ class FakeWebService {
             return "http://localhost:$port"
         }
 
-    private lateinit var server: NettyApplicationEngine
+    private lateinit var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>
 
     private var pathToResponseMap: Map<String, String> = emptyMap()
     private var responseForRequestedUrlResolver: (String) -> String? = { pathToResponseMap[it] }
@@ -64,7 +64,7 @@ class FakeWebService {
 
         // resolvedConnectors() is a suspend‑fn on NettyApplicationEngine
         port = runBlocking {
-            server.resolvedConnectors().first().port
+            server.engine.resolvedConnectors().first().port
         }
 
         println("FakeWebService listening on port $port")

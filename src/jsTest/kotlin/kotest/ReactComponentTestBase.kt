@@ -8,7 +8,7 @@ import react.FC
 import react.Props
 import react.create
 import react.dom.client.createRoot
-import react.dom.test.act
+import react.act
 import web.dom.document
 import web.html.HTMLDivElement
 
