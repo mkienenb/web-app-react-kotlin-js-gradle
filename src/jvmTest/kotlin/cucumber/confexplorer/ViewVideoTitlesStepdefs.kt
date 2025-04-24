@@ -23,7 +23,7 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
             addReactAppEnvironmentVariable("URL", fakeWebservice.url)
             val urlToResponseMap = videoList.withIndex().associate { (index, videoName) ->
                 val videoIndex = index + 1
-                "$CONTEXT_PATH/${videoIndex}" to
+                "$CONTEXT_PATH${videoIndex}" to
                         """
             {
               "id": "${videoIndex}",
