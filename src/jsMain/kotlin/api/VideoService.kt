@@ -25,7 +25,7 @@ object VideoService {
     }
 
     private suspend fun getVideo(videoId: Int): Video? {
-        val url = "https://shady.videos$CONTEXT_PATH$videoId"
+        val url = "${Env.serviceVideoUrl}$CONTEXT_PATH$videoId"
         val responsePromise = fetchURLToPromiseResponseFunction(url)
         val response = responsePromise.await()
         if (response.status == 404.toShort()) {
