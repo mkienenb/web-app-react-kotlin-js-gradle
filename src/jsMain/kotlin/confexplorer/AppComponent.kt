@@ -26,7 +26,14 @@ val AppComponent = FC<Props> {
         +"Conference Explorer"
     }
 
-    VideoListReactComponent {
-        videos = videoList
+    if (videoList.isNotEmpty()) {
+        VideoListReactComponent {
+            videos = videoList
+        }
+    } else {
+        p {
+            dataCodeElementHandleAttribute="loading"
+            +"Loading..."
+        }
     }
 }
