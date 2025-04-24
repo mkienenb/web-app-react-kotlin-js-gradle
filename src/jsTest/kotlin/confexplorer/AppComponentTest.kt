@@ -10,7 +10,6 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.ReactComponentTestBase
-import kotlinx.coroutines.delay
 
 class AppComponentTest: ReactComponentTestBase() {
     init {
@@ -39,6 +38,21 @@ class AppComponentTest: ReactComponentTestBase() {
                         .map { it.textContent }
                     withClue("unwatched video titles") {
                         actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
+                    }
+                }
+            }
+
+            should("show 'Loading...' when video list is null") {
+                Env.testServiceVideoUrl = "http://localhost"
+                val videoList = listOf(
+                    Video(1, "Learning Kotlin"),
+                    Video(2, "Unlearning Java")
+                )
+                VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
+                ForComponentCallingCoroutines(AppComponent) {
+                    val actualVideoListsElement = container.querySelector("[data-code-element-handle='videoLists']")
+                    withClue("video lists element") {
+                        actualVideoListsElement?.textContent shouldBe "Loading..."
                     }
                 }
             }
