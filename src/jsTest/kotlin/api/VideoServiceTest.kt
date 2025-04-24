@@ -5,7 +5,6 @@ import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
-import io.kotest.matchers.shouldBe
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.w3c.fetch.Response
@@ -16,6 +15,9 @@ import kotlin.js.Promise
 
 class VideoServiceTest : ShouldSpec({
 
+    beforeTest() {
+        setServiceVideoUrlEnvironmentVariable("http://localhost")
+    }
     should("fetch video title Strings of 'Learning Kotlin' and 'Unlearning Java'") {
         val videoList = listOf(
             Video(1, "Learning Kotlin"), Video(2, "Unlearning Java")
@@ -56,7 +58,7 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video with title of 'Learning Kotlin' from url 'https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/1'") {
         val requestedUrls = mutableListOf<String>()
-        setEnvironmentVariable("URL", "https://shady.videos")
+        setServiceVideoUrlEnvironmentVariable("https://shady.videos")
         VideoService.setFetchURLToPromiseResponseFunction { url ->
             requestedUrls += url
             val blob = Blob(arrayOf("{}"), BlobPropertyBag(type = "application/json"))
@@ -71,7 +73,7 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video with title of 'Learning Kotlin' from url 'https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1'") {
         val requestedUrls = mutableListOf<String>()
-        setEnvironmentVariable("URL", "https://good.videos")
+        setServiceVideoUrlEnvironmentVariable("https://good.videos")
         VideoService.setFetchURLToPromiseResponseFunction { url ->
             requestedUrls += url
             val blob = Blob(arrayOf("{}"), BlobPropertyBag(type = "application/json"))
@@ -85,62 +87,9 @@ class VideoServiceTest : ShouldSpec({
     }
 })
 
-private fun setEnvironmentVariable(key: String, value: String) {
+private fun setServiceVideoUrlEnvironmentVariable(value: String) {
+    Env.testServiceVideoUrl = value
 }
-
-// SOME IDEAS
-//private fun setEnvironmentVariable(key: String, value: String) {
-//    EnvironmentVariableService.setEnvVar(key) { js("code") as String }
-//}
-//
-//object EnvironmentVariableService {
-//    fun setEnvVar(key: String, valueProvider: () -> String) {
-//
-//    }
-//}
-//
-//
-//object EnvService {
-//    fun getEnvVar(key: String): String? {
-//        // Tries JS-style process.env
-//        val processEnv = js("typeof process !== 'undefined' && process.env ? process.env[key] : undefined")
-//        if (processEnv != undefined && processEnv != null) {
-//            return processEnv as? String
-//        }
-//
-//        // Fallback: check if injected on window (e.g., in index.html or test setup)
-//        val windowVar = kotlinx.browser.window.asDynamic()[key]
-//        return windowVar as? String
-//    }
-//
-//    fun setEnvVar(key: String, value: String) {
-//        // For test environments or client-side mocks
-//        kotlinx.browser.window.asDynamic()[key] = value
-//    }
-//}
-//
-//
-//object EnvService {
-//    private val global = js("typeof globalThis !== 'undefined' ? globalThis : {}")
-//
-//    fun getEnvVar(key: String): String? {
-//        // First try global.process.env (for Node/Webpack)
-//        val processEnv = global.process?.env?.unsafeCast<dynamic>()?.let { it[key] }
-//        if (processEnv != undefined && processEnv != null) {
-//            return processEnv as? String
-//        }
-//
-//        // Then try global[key] directly (for browser-style injection)
-//        val globalVar = global[key]
-//        return globalVar as? String
-//    }
-//
-//    fun setEnvVar(key: String, value: String) {
-//        // Injects into globalThis directly
-//        global[key] = value
-//    }
-//}
-//
 
 private fun createPromiseResponseFetchFunction(videoList: List<Video>): (String) -> Promise<Response> {
     return {
