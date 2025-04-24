@@ -49,7 +49,7 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     fun iShouldSeeTheFollowingListOfUnwatchedVideos(dataTable: DataTable) {
         scenarioContext.withViewVideoPage {
             val expectedUnwatchedVideoList = dataTable.asList()
-            Thread.sleep(20000)
+            Thread.sleep(1000)
             val actualUnwatchedVideoList = unwatchedVideoNameList
 
             actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
