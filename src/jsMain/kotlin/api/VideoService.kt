@@ -2,6 +2,7 @@ package api
 
 import api.VideoServiceLocator.CONTEXT_PATH
 import confexplorer.viewvideo.Video
+import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -9,7 +10,7 @@ import org.w3c.fetch.Response
 import kotlin.js.Promise
 
 object VideoService {
-    private lateinit var fetchURLToPromiseResponseFunction : (String) -> Promise<Response>
+    private var fetchURLToPromiseResponseFunction : (String) -> Promise<Response> = {url -> window.fetch(url)}
 
     suspend fun getVideos(): List<Video> {
         return (1..2).mapNotNull{ getVideo(it) }
