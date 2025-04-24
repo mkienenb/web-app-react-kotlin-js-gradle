@@ -7,6 +7,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import react.FC
 import react.Props
+import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.p
 import react.useEffectOnce
@@ -26,14 +27,17 @@ val AppComponent = FC<Props> {
         +"Conference Explorer"
     }
 
-    if (videoList.isNotEmpty()) {
-        VideoListReactComponent {
-            videos = videoList
-        }
-    } else {
-        p {
-            dataCodeElementHandleAttribute="loading"
-            +"Loading..."
+    div {
+        dataCodeElementHandleAttribute="videoLists"
+        if (videoList.isNotEmpty()) {
+            VideoListReactComponent {
+                videos = videoList
+            }
+        } else {
+            p {
+                dataCodeElementHandleAttribute="loading"
+                +"Loading..."
+            }
         }
     }
 }
