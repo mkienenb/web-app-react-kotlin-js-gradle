@@ -9,15 +9,10 @@ import org.w3c.fetch.Response
 import kotlin.js.Promise
 
 object VideoService {
-    private var fetchURLToJsonFunction : (String) -> String? = {null}
     private lateinit var fetchURLToPromiseResponseFunction : (String) -> Promise<Response>
 
     suspend fun getVideos(): List<Video> {
         return (1..2).mapNotNull{ getVideo(it) }
-    }
-
-    fun setFetchURLToJsonFunction(fetchURLToJsonFunction: (String) -> String?) {
-        this.fetchURLToJsonFunction = fetchURLToJsonFunction
     }
 
     fun setFetchURLToPromiseResponseFunction(fetchURLToPromiseResponseFunction: (String) -> Promise<Response>) {
