@@ -13,7 +13,7 @@ object VideoService {
     private var fetchURLToPromiseResponseFunction : (String) -> Promise<Response> = {url -> window.fetch(url)}
 
     suspend fun getVideos(): List<Video> {
-        return (1..2).mapNotNull{ getVideo(it) }
+        return (1..4).mapNotNull{ getVideo(it) }
     }
 
     fun setFetchURLToPromiseResponseFunction(fetchURLToPromiseResponseFunction: (String) -> Promise<Response>) {
