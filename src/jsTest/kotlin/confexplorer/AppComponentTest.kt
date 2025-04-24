@@ -10,6 +10,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.ReactComponentTestBase
+import kotlinx.coroutines.delay
 
 class AppComponentTest: ReactComponentTestBase() {
     init {
@@ -23,6 +24,7 @@ class AppComponentTest: ReactComponentTestBase() {
                 }
             }
 
+
             should("show unwatched video titles of 'Learning Kotlin' and 'Unlearning Java' on page") {
                 Env.testServiceVideoUrl = "http://localhost"
                 val videoList = listOf(
@@ -30,7 +32,8 @@ class AppComponentTest: ReactComponentTestBase() {
                     Video(2, "Unlearning Java")
                 )
                 VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
-                ForComponent(AppComponent) {
+                ForComponentCallingCoroutines(AppComponent) {
+                    waitUntilElementGone("[data-code-element-handle='loading']")
                     val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
                         .asList()
                         .map { it.textContent }
