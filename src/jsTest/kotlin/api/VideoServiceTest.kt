@@ -68,6 +68,21 @@ class VideoServiceTest : ShouldSpec({
             requestedUrls.shouldContain("https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/1")
         }
     }
+
+    should("fetch video with title of 'Learning Kotlin' from url 'https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1'") {
+        val requestedUrls = mutableListOf<String>()
+        setEnvironmentVariable("URL", "https://good.videos")
+        VideoService.setFetchURLToPromiseResponseFunction { url ->
+            requestedUrls += url
+            val blob = Blob(arrayOf("{}"), BlobPropertyBag(type = "application/json"))
+            val responseInit = ResponseInit(status = 404)
+            Promise.resolve(Response(blob, responseInit))
+        }
+        VideoService.getVideos()
+        withClue("requested video url") {
+            requestedUrls.shouldContain("https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1")
+        }
+    }
 })
 
 private fun setEnvironmentVariable(key: String, value: String) {
