@@ -6,5 +6,6 @@ config.plugins.push(
     new webpack.DefinePlugin({
         // Add env vars to inject into react app here like so
         'process.env.URL': JSON.stringify(process.env.URL || '')
+        // 'process.env.URL': JSON.stringify('https://my-json-server.typicode.com')
     })
 );
