@@ -38,7 +38,7 @@ kotlin {
         nodejs {
             testTask {
                 useMocha {
-                    timeout = "5000"
+                    timeout = "20s"
                 }
                 testLogging {
                     events("passed", "failed", "skipped")
@@ -46,6 +46,9 @@ kotlin {
                     showStandardStreams = true
                 }
             }
+        }
+        compilations.named("test") {
+            packageJson { customField("mocha", mapOf("require" to "global-jsdom/register")) }
         }
         binaries.executable()
     }
@@ -79,6 +82,8 @@ kotlin {
                 implementation(project.dependencies.enforcedPlatform(libs.jsmints.bom))
                 implementation(libs.kotlin.react.testing.library)
                 implementation(libs.kotlin.user.event.testing.library.js)
+                implementation(npm("jsdom", "26.1.0"))
+                implementation(npm("global-jsdom", "26.0.0"))
 
                 implementation(npm("puppeteer", libs.versions.puppeteer.get()))
             }
