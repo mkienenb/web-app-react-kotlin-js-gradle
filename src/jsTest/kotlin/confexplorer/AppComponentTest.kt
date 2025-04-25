@@ -42,7 +42,7 @@ class AppComponentTest: ReactComponentTestBase() {
                 }
             }
 
-            should("show 'Loading...' when video list is null") {
+            should("show 'Loading...' when video list is still loading") {
                 Env.testServiceVideoUrl = "http://localhost"
                 val videoList = listOf(
                     Video(1, "Learning Kotlin"),
