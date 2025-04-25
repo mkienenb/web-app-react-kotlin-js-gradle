@@ -9,14 +9,16 @@ import kotlinx.serialization.json.Json
 import org.w3c.fetch.Response
 import kotlin.js.Promise
 
+typealias URLToPromiseResponseFunction = suspend (String) -> Promise<Response>
+
 object VideoService {
-    private var fetchURLToPromiseResponseFunction : (String) -> Promise<Response> = {url -> window.fetch(url)}
+    private var fetchURLToPromiseResponseFunction : URLToPromiseResponseFunction = {url -> window.fetch(url)}
 
     suspend fun getVideos(): List<Video> {
         return (1..4).mapNotNull{ getVideo(it) }
     }
 
-    fun setFetchURLToPromiseResponseFunction(fetchURLToPromiseResponseFunction: (String) -> Promise<Response>) {
+    fun setFetchURLToPromiseResponseFunction(fetchURLToPromiseResponseFunction: URLToPromiseResponseFunction) {
         this.fetchURLToPromiseResponseFunction = fetchURLToPromiseResponseFunction
     }
 

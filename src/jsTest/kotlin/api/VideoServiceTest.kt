@@ -91,7 +91,7 @@ private fun setServiceVideoUrlEnvironmentVariable(value: String) {
     Env.testServiceVideoUrl = value
 }
 
-fun createPromiseResponseFetchFunction(videoList: List<Video>): (String) -> Promise<Response> {
+fun createPromiseResponseFetchFunction(videoList: List<Video>): URLToPromiseResponseFunction {
     return {
             url ->
         val video = videoList.firstOrNull {
