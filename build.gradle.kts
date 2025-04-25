@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
+    alias(libs.plugins.jspackage)
 }
 
 group = "org.example"
@@ -75,6 +76,10 @@ kotlin {
             dependencies {
                 implementation(libs.kotest.framework.engine)
                 implementation(libs.kotlin.react.dom.test.utils.js)
+                implementation(project.dependencies.enforcedPlatform(libs.jsmints.bom))
+                implementation(libs.kotlin.react.testing.library)
+                implementation(libs.kotlin.user.event.testing.library.js)
+
                 implementation(npm("puppeteer", libs.versions.puppeteer.get()))
             }
         }
@@ -107,6 +112,10 @@ kotlin {
 dependencies {
     add("kspJvmTest", project(":ksp-processor"))
 }
+configurations.named("jsTestImplementation") {
+    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-debug")
+}
+
 
 tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
