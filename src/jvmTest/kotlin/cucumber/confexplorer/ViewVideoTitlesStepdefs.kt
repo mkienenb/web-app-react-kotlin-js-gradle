@@ -12,6 +12,7 @@ import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.shouldBe
 
 
 class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
@@ -77,6 +78,9 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @Then("I should see the video title {string} in the video details")
     fun iShouldSeeTheVideoTitleInTheVideoDetails (videoName: String) {
         scenarioContext.withViewVideoPage {
+            withClue("video detail title") {
+                videoDetailTitle shouldBe videoName
+            }
         }
     }
 
