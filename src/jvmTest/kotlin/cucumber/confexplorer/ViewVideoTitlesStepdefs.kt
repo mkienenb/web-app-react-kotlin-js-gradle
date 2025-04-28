@@ -7,12 +7,12 @@ import cucumber.common.driver.baseUrl
 import cucumber.common.driver.startReactApp
 import cucumber.common.fakewebservice.fakeWebservice
 import io.cucumber.datatable.DataTable
-import io.cucumber.java.en.And
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+
 
 class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
 
@@ -50,7 +50,7 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     fun iShouldSeeTheFollowingListOfUnwatchedVideos(dataTable: DataTable) {
         scenarioContext.withViewVideoPage {
             val expectedUnwatchedVideoList = dataTable.asList()
-            Thread.sleep(1000)
+            waitUntilDoneLoading()
             val actualUnwatchedVideoList = unwatchedVideoNameList
 
             actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
@@ -63,6 +63,7 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @When("I select the video {string} from the unwatched list")
     fun iSelectTheVideoFromTheUnwatchedList (videoName: String) {
         scenarioContext.withViewVideoPage {
+            waitUntilDoneLoading()
             selectVideo(videoName)
         }
     }
