@@ -12,4 +12,6 @@ object PageFactory {
             constructor.newInstance(driver)
         } as T
     }
+
+    fun reset() = cache.clear()
 }
