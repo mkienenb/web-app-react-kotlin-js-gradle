@@ -90,6 +90,7 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @Then("I should see the selection indicator next to the {string} video")
     fun iShouldSeeTheSelectionIndicatorNextToTheVideo (videoName: String) {
         scenarioContext.withViewVideoPage {
+            selectedVideoTitle shouldBe videoName
         }
     }
 }
