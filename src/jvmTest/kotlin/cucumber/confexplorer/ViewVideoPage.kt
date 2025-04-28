@@ -1,4 +1,4 @@
-package cucumber.confexlorer
+package cucumber.confexplorer
 
 import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import cucumber.common.page.BasePage
