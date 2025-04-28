@@ -20,10 +20,10 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getUnwatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String
-        get() = driver.findElement(By.cssSelector("[data-code-element-handle='videoDetailTitle']")).text
+        get() = getWebElementByCodeElementHandle("videoDetailTitle").text
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        driver.findElements(By.cssSelector("[data-code-element-handle='unwatchedVideo']"))
+        getWebElementsByCodeElementHandle("unwatchedVideo")
 
     init {
         PageFactory.initElements(driver, this)
