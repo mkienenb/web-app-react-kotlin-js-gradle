@@ -63,6 +63,7 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @When("I select the video {string} from the unwatched list")
     fun iSelectTheVideoFromTheUnwatchedList (videoName: String) {
         scenarioContext.withViewVideoPage {
+            selectVideo(videoName)
         }
     }
 

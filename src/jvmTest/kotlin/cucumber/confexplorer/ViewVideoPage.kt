@@ -13,9 +13,22 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     // TODO: revisit if @FindBy works if element is found
     val unwatchedVideoNameList: List<String>
-        get() = driver.findElements(By.cssSelector("[data-code-element-handle='unwatchedVideo']")).map { it.text }
+        get() = getUnwatchedVideoElements().map { it.text }
+
+    private fun getUnwatchedVideoElements(): MutableList<WebElement> =
+        driver.findElements(By.cssSelector("[data-code-element-handle='unwatchedVideo']"))
 
     init {
         PageFactory.initElements(driver, this)
+    }
+
+    fun selectVideo(videoName: String) {
+        for (video in getUnwatchedVideoElements()) {
+            if (video.text == videoName) {
+                video.click()
+                return
+            }
+        }
+        throw RuntimeException("Video not found")
     }
 }
