@@ -69,9 +69,12 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
         }
     }
 
-    @Then("I should see that the video {string} is in the video player")
-    fun iShouldSeeThatTheVideoIsInTheVideoPlayer (videoName: String) {
+    @Then("I should see that the video player has queued {string} url")
+    fun iShouldSeeThatTheVideoPlayerHasQueuedUrl (videoUrl: String) {
         scenarioContext.withViewVideoPage {
+            withClue("videoPlayerUrl"){
+                videoPlayerUrl shouldBe videoUrl
+            }
         }
     }
 
