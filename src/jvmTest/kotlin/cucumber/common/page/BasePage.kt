@@ -14,6 +14,11 @@ open class BasePage(protected val driver: WebDriver) {
         PageFactory.initElements(driver, this)
     }
 
+    protected fun getWebElementByCodeElementHandle(codeElementHandle: String): WebElement =
+        driver.findElement(By.cssSelector("[data-code-element-handle='${codeElementHandle}']"))
+    protected fun getWebElementsByCodeElementHandle(codeElementHandle: String): MutableList<WebElement> =
+        driver.findElements(By.cssSelector("[data-code-element-handle='${codeElementHandle}']"))
+
     /**
      * Finds the first element in the DOM containing the specified text.
      *
