@@ -11,6 +11,7 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.ReactComponentTestBase
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
 
 class AppComponentTest: ReactComponentTestBase() {
@@ -50,17 +51,19 @@ class AppComponentTest: ReactComponentTestBase() {
                     Video(1, "Learning Kotlin"),
                     Video(2, "Unlearning Java")
                 )
-
+                val fetchGate = CompletableDeferred<Unit>()
                 val controlledFetchFunction : URLToPromiseResponseFunction = { url ->
-                    delay(1)
+                    fetchGate.await()
                     createPromiseResponseFetchFunction(videoList)(url)
                 }
+
                 VideoService.setFetchURLToPromiseResponseFunction(controlledFetchFunction)
                 ForComponentCallingCoroutines(AppComponent) {
                     val actualVideoListsElement = container.querySelector("[data-code-element-handle='videoLists']")
                     withClue("video lists element") {
                         actualVideoListsElement?.textContent shouldBe "Loading..."
                     }
+                    fetchGate.complete(Unit)
                 }
             }
         }
