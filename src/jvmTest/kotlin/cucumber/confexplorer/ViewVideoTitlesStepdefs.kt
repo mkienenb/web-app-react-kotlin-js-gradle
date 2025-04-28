@@ -7,11 +7,12 @@ import cucumber.common.driver.baseUrl
 import cucumber.common.driver.startReactApp
 import cucumber.common.fakewebservice.fakeWebservice
 import io.cucumber.datatable.DataTable
+import io.cucumber.java.en.And
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
-import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.assertions.withClue
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 
 class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
 
@@ -56,6 +57,30 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
             withClue("unwatched video list") {
                 actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
             }
+        }
+    }
+
+    @When("I select the video {string} from the unwatched list")
+    fun iSelectTheVideoFromTheUnwatchedList (videoName: String) {
+        scenarioContext.withViewVideoPage {
+        }
+    }
+
+    @Then("I should see that the video {string} is in the video player")
+    fun iShouldSeeThatTheVideoIsInTheVideoPlayer (videoName: String) {
+        scenarioContext.withViewVideoPage {
+        }
+    }
+
+    @Then("I should see the video title {string} in the video details")
+    fun iShouldSeeTheVideoTitleInTheVideoDetails (videoName: String) {
+        scenarioContext.withViewVideoPage {
+        }
+    }
+
+    @Then("I should see the selection indicator next to the {string} video")
+    fun iShouldSeeTheSelectionIndicatorNextToTheVideo (videoName: String) {
+        scenarioContext.withViewVideoPage {
         }
     }
 }
