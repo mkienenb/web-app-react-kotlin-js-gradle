@@ -1,10 +1,8 @@
 package cucumber.confexplorer
 
-import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
 import org.openqa.selenium.By
-import org.openqa.selenium.NoSuchElementException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.PageFactory
@@ -29,12 +27,12 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getWebElementByCodeElementHandle("react-player-url").text
 
     val selectedVideoTitle: String
-        get() = driver.findElement(
-            By.xpath(
-                """//span[@data-code-element-handle='video-selection-indicator']
-                    /following-sibling::span[@data-code-element-handle='unwatched-video-title']"""
-            )
-        ).text
+        get() {
+            val unwatchedVideoTitleForSelectedVideoXpathExpression = """
+                //span[@data-code-element-handle='video-selection-indicator']
+                /following-sibling::span[@data-code-element-handle='unwatched-video-title']"""
+            return driver.findElement(By.xpath(unwatchedVideoTitleForSelectedVideoXpathExpression)).text
+        }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
         getWebElementsByCodeElementHandle("unwatched-video-title")
