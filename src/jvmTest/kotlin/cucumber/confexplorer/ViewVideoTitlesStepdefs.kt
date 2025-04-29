@@ -54,11 +54,9 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
         scenarioContext.withViewVideoPage {
             val expectedUnwatchedVideoList = dataTable.asList()
             waitUntilDoneLoading()
-            val actualUnwatchedVideoList = unwatchedVideoNameList
 
-            actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
             withClue("unwatched video list") {
-                actualUnwatchedVideoList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
+                unwatchedVideoNameList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
             }
         }
     }
