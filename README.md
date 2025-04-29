@@ -7,14 +7,26 @@ This repository is the code corresponding to the hands-on lab Building Web Appli
 
 **You can find the code of the lab after each step outlined in the tutorial in the corresponding branch.**
 
+## Enhancement: all dependencies updated
+
+* All dependencies have been updated to the latest version of kotlin, kotlin-wrappers, gradle, kotest, etc.
+
 ## Enhancement: Cucumber BDD tests
 
 * This example has been enhanced with the changes needed to run cucumber tests against the React app 
   - cucumber tests run in jvmTest rather than jsTest
-  - ReactApp is started before and after each scenario
+  - ReactApp is started on demand during a scenario and is shut down after after each scenario
 
-## Enhancement: React Component tests
+## Enhancement: react-testing-library and user-event-testing-library jsNodeTests
 
+* Added support for using react-testing-library and user-event-testing-library kotlin wrappers from https://github.com/robertfmurdock/jsmints/
+* React component tests no longer have to be run using jsBrowserTest/karma but can now run using jsNodeTest/mocha
+* Running tests in mocha provides a faster and improved experience than using jsBrowserTest/karma
+
+## Enhancement: kotlin-react-dom-test-utils-js React Component jsBrowserTests
+
+* Added support for using kotlin-react-dom-test-utils-js
 * Only run in `jsBrowserTest` task and not in `jsNodeTest`
 * Downloads Chrome before running `jsBrowserTest`
   * Chrome is removed on task `clean`
+* Note: this support is still here but no longer the recommended approach
