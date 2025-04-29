@@ -2,7 +2,7 @@ package confexplorer
 
 import api.VideoService
 import confexplorer.viewvideo.Video
-import confexplorer.viewvideo.VideoListReactComponent
+import confexplorer.viewvideo.VideoList
 import confexplorer.viewvideo.VideoPlayer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ val App = FC<Props> {
     div {
         dataCodeElementHandleAttribute="videoLists"
         if (videoList.isNotEmpty()) {
-            VideoListReactComponent {
+            VideoList {
                 videos = videoList
             }
         } else {

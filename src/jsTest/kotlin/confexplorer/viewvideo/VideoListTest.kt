@@ -4,15 +4,14 @@ import browserOnlyCode
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldHave
 import js.array.asList
 import kotest.ReactComponentTestBase
 
-class VideoListReactComponentTest : ReactComponentTestBase() {
+class VideoListTest : ReactComponentTestBase() {
     init {
         browserOnlyCode {
             should("show Learning kotlin video") {
-                ForComponent(VideoListReactComponent, {
+                ForComponent(VideoList, {
                     videos = listOf(Video(1, "Learning kotlin"))
                 }) {
                     val firstVideoTitle = container.querySelector("ul li")?.textContent
@@ -22,7 +21,7 @@ class VideoListReactComponentTest : ReactComponentTestBase() {
                 }
             }
             should("show Unlearning Java video") {
-                ForComponent(VideoListReactComponent, {
+                ForComponent(VideoList, {
                     videos = listOf(Video(1, "Unlearning Java"))
                 }) {
                     val firstVideoTitle = container.querySelector("ul li")?.textContent
@@ -32,7 +31,7 @@ class VideoListReactComponentTest : ReactComponentTestBase() {
                 }
             }
             should("show Learning kotlin and Unlearning Java videos") {
-                ForComponent(VideoListReactComponent, {
+                ForComponent(VideoList, {
                     videos = listOf(Video(1, "Learning Kotlin"), Video(2, "Unlearning Java"))
                 }) {
                     val actualVideoTitles = container.querySelectorAll("ul li").asList().map { it.textContent }

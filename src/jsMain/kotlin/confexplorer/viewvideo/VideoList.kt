@@ -10,7 +10,7 @@ external interface VideoListProps : Props {
     var videos: List<Video>
 }
 
-val VideoListReactComponent = FC<VideoListProps> { props ->
+val VideoList = FC<VideoListProps> { props ->
     ul {
         props.videos.forEach {
             li {
