@@ -23,7 +23,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getUnwatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String
-        get() = getWebElementByCodeElementHandle("videoDetailTitle").text
+        get() = getWebElementByCodeElementHandle("video-detail-title").text
 
     val videoPlayerUrl: String
         get() = getWebElementByCodeElementHandle("react-player-url").text
