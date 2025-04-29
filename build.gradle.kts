@@ -130,7 +130,11 @@ tasks.named<Test>("jvmTest") {
 }
 
 tasks.named("check") {
-    dependsOn("jsTest", "jvmTest")
+    dependsOn("jsNodeTest", "jvmTest")
+}
+
+tasks.named("jsBrowserTest") {
+    enabled = false
 }
 
 apply<InstallChromePlugin>()
