@@ -49,15 +49,10 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     }
 
     fun selectVideo(videoName: String) {
-        for (video in getUnwatchedVideoElements()) {
-            if (video.text == videoName) {
-                video.click()
-                return
-            }
-        }
-        throw RuntimeException("Video not found")
+        val unwatchedVideoElements = getUnwatchedVideoElements()
+        check(unwatchedVideoElements.isNotEmpty()) { "No unwatched videos" }
+        unwatchedVideoElements.firstOrNull { it.text == videoName}?.click() ?: throw RuntimeException("Video not found")
     }
-
 
     fun waitUntilDoneLoading(
         timeout: Duration = 5000.milliseconds
