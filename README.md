@@ -1,20 +1,20 @@
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 
-Original README Text:
-> [![official JetBrains project](https://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
-> [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
-> 
-> # Building Web Applications with React and Kotlin JS Hands-On Lab
-> 
-> This repository is the code corresponding to the hands-on lab Building Web Applications with React and Kotlin JS.
-> 
-> **You can find the code of the lab after each step outlined in the tutorial in the corresponding branch.**
-
 ## Goal: Provide starting template to develop Kotlin React apps using TDD
 
 * Our team is committed to developing React-Kotlin/js apps using a TDD approach. 
   To this end, we are developing a starting project template to facilitate such development
   building off the Kotlin JS Hands-On Lab tutorial
+
+## Original README Text:
+> [![official JetBrains project](https://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
+> [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
+>
+> # Building Web Applications with React and Kotlin JS Hands-On Lab
+>
+> This repository is the code corresponding to the hands-on lab Building Web Applications with React and Kotlin JS.
+>
+> **You can find the code of the lab after each step outlined in the tutorial in the corresponding branch.**
 
 ## Enhancement: all dependencies updated
 
