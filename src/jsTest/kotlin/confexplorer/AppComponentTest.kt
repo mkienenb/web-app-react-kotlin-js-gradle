@@ -66,6 +66,10 @@ class AppComponentTest: ReactComponentTestBase() {
                     fetchGate.complete(Unit)
                 }
             }
+
+            should("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
+                TODO()
+            }
         }
     }
 }
