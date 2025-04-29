@@ -40,4 +40,9 @@ val AppComponent = FC<Props> {
             }
         }
     }
+
+    div {
+        dataCodeElementHandleAttribute="react-player-url"
+        +"www.youtube.com/learning-kotlin"
+    }
 }
