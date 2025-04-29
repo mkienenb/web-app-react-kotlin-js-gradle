@@ -40,6 +40,9 @@ class VideoListTest : ReactComponentTestBase() {
                     }
                 }
             }
+            xshould("show video selection symbol when 'Learning react' video is selected") {
+                TODO()
+            }
         }
     }
 }
