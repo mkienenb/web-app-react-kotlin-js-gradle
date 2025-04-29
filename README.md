@@ -7,6 +7,12 @@ This repository is the code corresponding to the hands-on lab Building Web Appli
 
 **You can find the code of the lab after each step outlined in the tutorial in the corresponding branch.**
 
+## Goal: Provide starting template to develop Kotlin React apps using TDD
+
+* Our team is committed to developing React-Kotlin/js apps using a TDD approach. 
+  To this end, we are developing a starting project template to facilitate such development
+  building off the Kotlin JS Hands-On Lab tutorial
+
 ## Enhancement: all dependencies updated
 
 * All dependencies have been updated to the latest version of kotlin, kotlin-wrappers, gradle, kotest, etc.
