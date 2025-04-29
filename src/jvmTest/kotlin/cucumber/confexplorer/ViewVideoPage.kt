@@ -39,9 +39,6 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
         getWebElementsByCodeElementHandle("unwatched-video-title")
 
-    private fun getWatchedVideoElements(): MutableList<WebElement> =
-        getWebElementsByCodeElementHandle("watchedVideo")
-
     init {
         PageFactory.initElements(driver, this)
     }
