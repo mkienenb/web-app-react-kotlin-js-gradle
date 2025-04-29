@@ -1,5 +1,6 @@
 package confexplorer.viewvideo
 
+import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.ul
@@ -15,7 +16,9 @@ val VideoList = FC<VideoListProps> { props ->
         props.videos.forEach {
             li {
                 dataCodeElementHandleAttribute="unwatchedVideo"
-                +it.title
+
+
+                +"${if(it.title == "Learning kotlin") VIDEO_SELECTOR_SYMBOL else ""}${it.title}"
             }
         }
     }
