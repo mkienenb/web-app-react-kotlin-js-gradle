@@ -33,7 +33,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
             val videoElements = getUnwatchedVideoElements() + getWatchedVideoElements()
             val selectedVideoElement = videoElements.firstOrNull { it.text.startsWith(VIDEO_SELECTOR_SYMBOL) }
             if (selectedVideoElement == null) {
-                throw NoSuchElementException("Selected video not found.")
+                throw NoSuchElementException("No video selector symbol found in watched or unwatched video list")
             }
             return selectedVideoElement.findElement(By.cssSelector("[data-code-element-handle='videoTitle']")).text
         }
