@@ -12,13 +12,12 @@ import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.ReactComponentTestBase
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.delay
 
-class AppComponentTest: ReactComponentTestBase() {
+class AppTest: ReactComponentTestBase() {
     init {
         browserOnlyCode {
             should("show 'Conference Explorer' on page") {
-                ForComponent(AppComponent) {
+                ForComponent(App) {
                     val pageHeader = container.querySelector("h1")?.textContent
                     withClue("page header") {
                         pageHeader shouldBe "Conference Explorer"
@@ -34,7 +33,7 @@ class AppComponentTest: ReactComponentTestBase() {
                     Video(2, "Unlearning Java")
                 )
                 VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
-                ForComponentCallingCoroutines(AppComponent) {
+                ForComponentCallingCoroutines(App) {
                     waitUntilElementGone("[data-code-element-handle='loading']")
                     val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
                         .asList()
@@ -58,7 +57,7 @@ class AppComponentTest: ReactComponentTestBase() {
                 }
 
                 VideoService.setFetchURLToPromiseResponseFunction(controlledFetchFunction)
-                ForComponentCallingCoroutines(AppComponent) {
+                ForComponentCallingCoroutines(App) {
                     val actualVideoListsElement = container.querySelector("[data-code-element-handle='videoLists']")
                     withClue("video lists element") {
                         actualVideoListsElement?.textContent shouldBe "Loading..."

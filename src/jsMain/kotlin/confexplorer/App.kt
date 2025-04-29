@@ -16,7 +16,7 @@ import react.useState
 import testsupport.dataCodeElementHandleAttribute
 
 
-val AppComponent = FC<Props> {
+val App = FC<Props> {
     var videoList: List<Video> by useState(emptyList())
 
     useEffectOnce {
