@@ -65,14 +65,6 @@ class AppTest: ReactComponentTestBase() {
                     fetchGate.complete(Unit)
                 }
             }
-
-            xshould("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
-                TODO()
-            }
-
-            xshould("show 'Learning react' as video detail title when 'Learning react' video is selected") {
-                TODO()
-            }
         }
     }
 }
