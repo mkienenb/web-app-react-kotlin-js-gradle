@@ -20,17 +20,19 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @Given("the following videos provided by the video service:")
     fun theFollowingVideosProvidedByTheVideoService(dataTable: DataTable) {
         with(scenarioContext) {
-            val videoList = dataTable.asList()
+            val rows = dataTable.asMaps()
             val fakeWebservice = fakeWebservice("videoWebService")
             addReactAppEnvironmentVariable("URL", fakeWebservice.url)
-            val urlToResponseMap = videoList.withIndex().associate { (index, videoName) ->
+            val urlToResponseMap = rows.withIndex().associate { (index, row) ->
                 val videoIndex = index + 1
+                val title = row.get("Title")
+                val url = row.get("URL")
                 "$CONTEXT_PATH${videoIndex}" to
                         """
             {
               "id": "${videoIndex}",
-              "videoUrl": "https://www.youtube.com/"
-              "title": "$videoName",
+              "videoUrl": "$url"
+              "title": "$title",
               "speaker": "Pav"
             }
             """.trimIndent()
