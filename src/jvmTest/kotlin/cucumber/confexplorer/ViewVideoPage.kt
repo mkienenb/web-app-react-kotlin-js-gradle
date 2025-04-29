@@ -32,12 +32,12 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = driver.findElement(
             By.xpath(
                 """//span[@data-code-element-handle='video-selection-indicator']
-                    /following-sibling::span[@data-code-element-handle='unwatchedVideo']"""
+                    /following-sibling::span[@data-code-element-handle='unwatched-video-title']"""
             )
         ).text
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        getWebElementsByCodeElementHandle("unwatchedVideo")
+        getWebElementsByCodeElementHandle("unwatched-video-title")
 
     private fun getWatchedVideoElements(): MutableList<WebElement> =
         getWebElementsByCodeElementHandle("watchedVideo")
