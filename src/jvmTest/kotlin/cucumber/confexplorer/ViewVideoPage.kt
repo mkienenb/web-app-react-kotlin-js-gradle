@@ -1,5 +1,6 @@
 package cucumber.confexplorer
 
+import confexplorer.ElementLocator.UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
 import org.openqa.selenium.By
@@ -28,10 +29,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String
         get() {
-            val unwatchedVideoTitleForSelectedVideoXpathExpression = """
-                //span[@data-code-element-handle='video-selection-indicator']
-                /following-sibling::span[@data-code-element-handle='unwatched-video-title']"""
-            return driver.findElement(By.xpath(unwatchedVideoTitleForSelectedVideoXpathExpression)).text
+            return driver.findElement(By.xpath(UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION)).text
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
