@@ -1,11 +1,14 @@
-[![official JetBrains project](https://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 
-# Building Web Applications with React and Kotlin JS Hands-On Lab
-
-This repository is the code corresponding to the hands-on lab Building Web Applications with React and Kotlin JS.
-
-**You can find the code of the lab after each step outlined in the tutorial in the corresponding branch.**
+Original README Text:
+> [![official JetBrains project](https://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
+> [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
+> 
+> # Building Web Applications with React and Kotlin JS Hands-On Lab
+> 
+> This repository is the code corresponding to the hands-on lab Building Web Applications with React and Kotlin JS.
+> 
+> **You can find the code of the lab after each step outlined in the tutorial in the corresponding branch.**
 
 ## Goal: Provide starting template to develop Kotlin React apps using TDD
 
@@ -36,3 +39,7 @@ This repository is the code corresponding to the hands-on lab Building Web Appli
 * Downloads Chrome before running `jsBrowserTest`
   * Chrome is removed on task `clean`
 * Note: this support is still here but no longer the recommended approach
+
+## Licensing disclosure
+
+* Original code provided by Jetbrains under the Apache 2.0 license.   Additional code changes also provided under the Apache 2.0 license.
