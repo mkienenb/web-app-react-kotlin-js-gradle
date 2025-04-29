@@ -14,7 +14,7 @@ class VideoListTest : ReactComponentTestBase() {
                 ForComponent(VideoList, {
                     videos = listOf(Video(1, "Learning kotlin"))
                 }) {
-                    val firstVideoTitle = container.querySelector("ul li")?.textContent
+                    val firstVideoTitle = container.querySelector("[data-code-element-handle='unwatchedVideo']")?.textContent
                     withClue("unordered list") {
                         firstVideoTitle shouldBe "Learning kotlin"
                     }
