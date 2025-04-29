@@ -29,14 +29,12 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getWebElementByCodeElementHandle("react-player-url").text
 
     val selectedVideoTitle: String
-        get() {
-            val videoElements = getUnwatchedVideoElements() + getWatchedVideoElements()
-            val selectedVideoElement = videoElements.firstOrNull { it.text.startsWith(VIDEO_SELECTOR_SYMBOL) }
-            if (selectedVideoElement == null) {
-                throw NoSuchElementException("No video selector symbol found in watched or unwatched video list")
-            }
-            return selectedVideoElement.findElement(By.cssSelector("[data-code-element-handle='videoTitle']")).text
-        }
+        get() = driver.findElement(
+            By.xpath(
+                """//span[@data-code-element-handle='video-selection-indicator']
+                    /following-sibling::span[@data-code-element-handle='unwatchedVideo']"""
+            )
+        ).text
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
         getWebElementsByCodeElementHandle("unwatchedVideo")
