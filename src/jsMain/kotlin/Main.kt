@@ -1,4 +1,5 @@
 import org.kodein.di.DI
+import confexplorer.App
 import react.StrictMode
 import react.create
 import react.dom.client.createRoot
@@ -14,7 +15,7 @@ fun main() {
         StrictMode.create {
             KodeinProvider {
                 di = DI {
-//                    import(productionModule)
+                    import(productionModule)
                 }
                 App {}
             }
