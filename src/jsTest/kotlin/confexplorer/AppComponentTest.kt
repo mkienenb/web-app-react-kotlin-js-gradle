@@ -67,7 +67,11 @@ class AppComponentTest: ReactComponentTestBase() {
                 }
             }
 
-            should("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
+            xshould("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
+                TODO()
+            }
+
+            should("show 'Learning react' as video detail title when 'Learning react' video is selected") {
                 TODO()
             }
         }
