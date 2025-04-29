@@ -23,7 +23,7 @@ val VideoList = FC<VideoListProps> { props ->
                     }
                 }
                 span {
-                    dataCodeElementHandleAttribute = "unwatchedVideo"
+                    dataCodeElementHandleAttribute = "unwatched-video-title"
                     +it.title
                 }
             }

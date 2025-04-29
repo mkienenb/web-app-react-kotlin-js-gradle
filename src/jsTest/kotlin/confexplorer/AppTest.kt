@@ -35,7 +35,7 @@ class AppTest: ReactComponentTestBase() {
                 VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
                 ForComponentCallingCoroutines(App) {
                     waitUntilElementGone("[data-code-element-handle='loading']")
-                    val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatchedVideo']")
+                    val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatched-video-title']")
                         .asList()
                         .map { it.textContent }
                     withClue("unwatched video titles") {
