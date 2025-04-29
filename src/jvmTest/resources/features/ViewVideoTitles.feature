@@ -1,10 +1,11 @@
 Feature: View Video Titles
   Background:
     Given the following videos provided by the video service:
-    | Learning kotlin     |
-    | Learning koin       |
-    | Learning kotest     |
-    | Learning react      |
+    | Title               | URL                               |
+    | Learning kotlin     | www.youtube.com/learning-kotlin   |
+    | Learning koin       | www.youtube.com/learning-koin     |
+    | Learning kotest     | www.youtube.com/learning-kotest   |
+    | Learning react      | www.youtube.com/learning-react    |
 
 Scenario: See list of unwatched videos
   When I go to the conference explorer page
