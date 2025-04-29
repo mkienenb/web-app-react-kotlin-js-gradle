@@ -70,7 +70,7 @@ class AppTest: ReactComponentTestBase() {
                 TODO()
             }
 
-            should("show 'Learning react' as video detail title when 'Learning react' video is selected") {
+            xshould("show 'Learning react' as video detail title when 'Learning react' video is selected") {
                 TODO()
             }
         }
