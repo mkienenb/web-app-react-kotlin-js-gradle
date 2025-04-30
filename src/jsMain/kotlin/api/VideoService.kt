@@ -12,11 +12,8 @@ import kotlin.js.Promise
 typealias URLToPromiseResponseFunction = suspend (String) -> Promise<Response>
 
 class VideoService(
-    private var fetchURLToPromiseResponseFunction: URLToPromiseResponseFunction = { url ->
-        window.fetch(
-            url
-        )
-    }
+    private var fetchURLToPromiseResponseFunction: URLToPromiseResponseFunction,
+    private var urlProvider: UrlProvider
 ) {
 
     suspend fun getVideos(): List<Video> {
@@ -28,7 +25,7 @@ class VideoService(
     }
 
     private suspend fun getVideo(videoId: Int): Video? {
-        val url = "${Env.serviceVideoUrl}$CONTEXT_PATH$videoId"
+        val url = "${urlProvider.getBaseUrl()}$CONTEXT_PATH$videoId"
         val responsePromise = fetchURLToPromiseResponseFunction(url)
         val response = responsePromise.await()
         if (response.status == 404.toShort()) {
