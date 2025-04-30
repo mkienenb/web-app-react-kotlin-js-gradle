@@ -3,7 +3,7 @@
 kotlin = "2.1.20"
 serialization = "1.8.1"
 ksp = "2.1.20-2.0.0"
-kotest = "5.9.1"
+kotest = "6.0.0.M3"
 coroutines = "1.10.2"
 kotlinWrapper = "2025.4.14"
 kotlinWrapperKotlinReactDomTestUtilsJs = "2025.4.14-19.1.0"
@@ -27,11 +27,8 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 # Kotest
-kotest-assertions-api = { group = "io.kotest", name = "kotest-assertions-api", version.ref = "kotest" }
 kotest-assertions-core = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
-kotest-framework-api = { group = "io.kotest", name = "kotest-framework-api", version.ref = "kotest" }
-kotest-framework-datatest = { group = "io.kotest", name = "kotest-framework-datatest", version.ref = "kotest" }
-kotest-framework-engine = { group = "io.kotest", name = "kotest-framework-engine", version.ref = "kotest" }
+kotest-framework-engine-js = { group = "io.kotest", name = "kotest-framework-engine-js", version.ref = "kotest" }
 kotest-runner-junit5 = { group = "io.kotest", name = "kotest-runner-junit5", version.ref = "kotest" }
 
 # Kotlin/JS React ecosystem

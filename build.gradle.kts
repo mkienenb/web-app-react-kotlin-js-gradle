@@ -60,10 +60,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
-                implementation(libs.kotest.assertions.api)
                 implementation(libs.kotest.assertions.core)
-                implementation(libs.kotest.framework.api)
-                implementation(libs.kotest.framework.datatest)
                 implementation(libs.kotlinx.coroutines.test)
             }
         }
@@ -77,7 +74,7 @@ kotlin {
         }
         val jsTest by getting {
             dependencies {
-                implementation(libs.kotest.framework.engine)
+                implementation(libs.kotest.framework.engine.js)
                 implementation(libs.kotlin.react.dom.test.utils.js)
                 implementation(project.dependencies.enforcedPlatform(libs.jsmints.bom))
                 implementation(libs.kotlin.react.testing.library)
@@ -117,10 +114,6 @@ kotlin {
 dependencies {
     add("kspJvmTest", project(":ksp-processor"))
 }
-configurations.named("jsTestImplementation") {
-    exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-debug")
-}
-
 
 tasks.named<Test>("jvmTest") {
     useJUnitPlatform()
