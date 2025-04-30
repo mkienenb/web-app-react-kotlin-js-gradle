@@ -1,5 +1,6 @@
 import org.kodein.di.DI
 import confexplorer.App
+import confexplorer.productionModule
 import react.StrictMode
 import react.create
 import react.dom.client.createRoot
