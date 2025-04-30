@@ -1,7 +1,9 @@
+import org.kodein.di.DI
 import react.StrictMode
 import react.create
 import react.dom.client.createRoot
 import web.dom.document
+import reactdi.KodeinProvider
 
 fun main() {
 
@@ -10,7 +12,12 @@ fun main() {
 
     root.render(
         StrictMode.create {
-            App {} // your root component goes here
+            KodeinProvider {
+                di = DI {
+//                    import(productionModule)
+                }
+                App {}
+            }
         }
     )
 }

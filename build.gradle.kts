@@ -56,6 +56,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.kotlinx.coroutines.core)
+                implementation("org.kodein.di:kodein-di:7.25.0")
             }
         }
         val commonTest by getting {
@@ -70,6 +71,7 @@ kotlin {
                 implementation(libs.kotlin.react)
                 implementation(libs.kotlin.react.dom)
                 implementation(libs.kotlinx.serialization.json)
+                implementation("org.kodein.di:kodein-di-js:7.25.0")
             }
         }
         val jsTest by getting {
