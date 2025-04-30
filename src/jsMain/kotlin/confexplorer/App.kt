@@ -6,13 +6,12 @@ import confexplorer.viewvideo.VideoList
 import confexplorer.viewvideo.VideoPlayer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import react.FC
-import react.Props
+import org.kodein.di.instance
+import react.*
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.p
-import react.useEffectOnce
-import react.useState
+import reactdi.DIContext
 import testsupport.dataCodeElementHandleAttribute
 
 
@@ -21,7 +20,9 @@ val App = FC<Props> {
 
     useEffectOnce {
         MainScope().launch {
-            videoList = VideoService.getVideos()
+            val di = use(DIContext)
+            val videoService: VideoService by di?.instance()
+            videoList = videoService.getVideos()
         }
     }
     h1 {

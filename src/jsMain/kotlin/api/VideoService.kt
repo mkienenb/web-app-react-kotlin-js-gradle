@@ -11,8 +11,13 @@ import kotlin.js.Promise
 
 typealias URLToPromiseResponseFunction = suspend (String) -> Promise<Response>
 
-object VideoService {
-    private var fetchURLToPromiseResponseFunction : URLToPromiseResponseFunction = {url -> window.fetch(url)}
+class VideoService(
+    private var fetchURLToPromiseResponseFunction: URLToPromiseResponseFunction = { url ->
+        window.fetch(
+            url
+        )
+    }
+) {
 
     suspend fun getVideos(): List<Video> {
         return (1..4).mapNotNull{ getVideo(it) }

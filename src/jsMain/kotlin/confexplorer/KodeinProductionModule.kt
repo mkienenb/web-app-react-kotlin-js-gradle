@@ -2,8 +2,10 @@ package confexplorer
 
 import api.URLToPromiseResponseFunction
 import api.UrlProvider
-import org.kodein.di.*
+import api.VideoService
+import confexplorer.viewvideo.Video
 import kotlinx.browser.window
+import org.kodein.di.*
 
 val productionModule = DI.Module("production") {
     bind<URLToPromiseResponseFunction>() with singleton {
@@ -14,4 +16,7 @@ val productionModule = DI.Module("production") {
             override fun getBaseUrl(): String = "https://my-json-server.typicode.com"
         }
     }
+
+    bind<VideoService> {singleton { VideoService(instance()) }}
+
 }
