@@ -17,11 +17,11 @@ import testsupport.dataCodeElementHandleAttribute
 
 val App = FC<Props> {
     var videoList: List<Video> by useState(emptyList())
+    val di = use(DIContext)!!
+    val videoService: VideoService by di.instance()
 
     useEffectOnce {
         MainScope().launch {
-            val di = use(DIContext)
-            val videoService: VideoService by di?.instance()
             videoList = videoService.getVideos()
         }
     }
