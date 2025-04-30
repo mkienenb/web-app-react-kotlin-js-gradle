@@ -17,6 +17,6 @@ val productionModule = DI.Module("production") {
         }
     }
 
-    bind<VideoService> {singleton { VideoService(instance()) }}
+    bind<VideoService> {singleton { VideoService(instance(), instance()) }}
 
 }

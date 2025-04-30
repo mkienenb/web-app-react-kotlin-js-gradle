@@ -22,8 +22,8 @@ class VideoServiceTest : ShouldSpec({
         val videoList = listOf(
             Video(1, "Learning Kotlin"), Video(2, "Unlearning Java")
         )
-        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
-        val actualVideoTitleList = VideoService.getVideos().map { it.title }
+        val videoService = createVideoService(videoList)
+        val actualVideoTitleList = videoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualVideoTitleList shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
         }
@@ -31,8 +31,8 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video title Strings of 'Learning Kotlin'") {
         val videoList = listOf(Video(1, "Learning Kotlin"))
-        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
-        val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
+        val videoService = createVideoService(videoList)
+        val actualUnwatchedVideoTitlesList = videoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin")
         }
@@ -40,8 +40,8 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video title Strings of 'Unlearning Java'") {
         val videoList = listOf(Video(2, "Unlearning Java"))
-        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
-        val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
+        val videoService = createVideoService(videoList)
+        val actualUnwatchedVideoTitlesList = videoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Unlearning Java")
         }
@@ -49,8 +49,8 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video title Responses of 'Learning Kotlin'") {
         val videoList = listOf(Video(1, "Learning Kotlin"))
-        VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
-        val actualUnwatchedVideoTitlesList = VideoService.getVideos().map { it.title }
+        val videoService = createVideoService(videoList)
+        val actualUnwatchedVideoTitlesList = videoService.getVideos().map { it.title }
         withClue("unwatched video titles") {
             actualUnwatchedVideoTitlesList shouldContainExactly listOf("Learning Kotlin")
         }
@@ -59,13 +59,11 @@ class VideoServiceTest : ShouldSpec({
     should("fetch video with title of 'Learning Kotlin' from url 'https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/1'") {
         val requestedUrls = mutableListOf<String>()
         setServiceVideoUrlEnvironmentVariable("https://shady.videos")
-        VideoService.setFetchURLToPromiseResponseFunction { url ->
-            requestedUrls += url
-            val blob = Blob(arrayOf("{}"), BlobPropertyBag(type = "application/json"))
-            val responseInit = ResponseInit(status = 404)
-            Promise.resolve(Response(blob, responseInit))
-        }
-        VideoService.getVideos()
+        val videoService = VideoService(createURLVerificationFetchFunction(requestedUrls),
+            object : UrlProvider {
+                override fun getBaseUrl(): String = "https://shady.videos"
+            })
+        videoService.getVideos()
         withClue("requested video url") {
             requestedUrls.shouldContain("https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/1")
         }
@@ -73,19 +71,35 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video with title of 'Learning Kotlin' from url 'https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1'") {
         val requestedUrls = mutableListOf<String>()
-        setServiceVideoUrlEnvironmentVariable("https://good.videos")
-        VideoService.setFetchURLToPromiseResponseFunction { url ->
-            requestedUrls += url
-            val blob = Blob(arrayOf("{}"), BlobPropertyBag(type = "application/json"))
-            val responseInit = ResponseInit(status = 404)
-            Promise.resolve(Response(blob, responseInit))
-        }
-        VideoService.getVideos()
+        val videoService = VideoService(createURLVerificationFetchFunction(requestedUrls),
+            object : UrlProvider {
+                override fun getBaseUrl(): String = "https://good.videos"
+            })
+        videoService.getVideos()
         withClue("requested video url") {
             requestedUrls.shouldContain("https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1")
         }
     }
+    xshould("fetch video with title of 'Learning Kotlin' from url 'https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1' using environment variable") {
+        setServiceVideoUrlEnvironmentVariable("https://good.videos")
+        TODO()
+    }
 })
+
+private fun createURLVerificationFetchFunction(requestedUrls: MutableList<String>): URLToPromiseResponseFunction {
+    return { url: String ->
+        requestedUrls += url
+        val blob = Blob(arrayOf("{}"), BlobPropertyBag(type = "application/json"))
+        val responseInit = ResponseInit(status = 404)
+        Promise.resolve(Response(blob, responseInit))
+    }
+}
+
+fun createVideoService(videoList: List<Video>) =
+    VideoService(createPromiseResponseFetchFunction(videoList),
+        object : UrlProvider {
+            override fun getBaseUrl(): String = "http://localhost"
+        })
 
 private fun setServiceVideoUrlEnvironmentVariable(value: String) {
     Env.testServiceVideoUrl = value

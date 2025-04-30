@@ -1,9 +1,6 @@
 package confexplorer
 
-import api.Env
-import api.URLToPromiseResponseFunction
-import api.VideoService
-import api.createPromiseResponseFetchFunction
+import api.*
 import browserOnlyCode
 import confexplorer.viewvideo.Video
 import io.kotest.assertions.withClue
@@ -32,7 +29,7 @@ class AppTest: ReactComponentTestBase() {
                     Video(1, "Learning Kotlin"),
                     Video(2, "Unlearning Java")
                 )
-                VideoService.setFetchURLToPromiseResponseFunction(createPromiseResponseFetchFunction(videoList))
+                val videoService = createVideoService(videoList)
                 ForComponentCallingCoroutines(App) {
                     waitUntilElementGone("[data-code-element-handle='loading']")
                     val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatched-video-title']")
@@ -56,7 +53,7 @@ class AppTest: ReactComponentTestBase() {
                     createPromiseResponseFetchFunction(videoList)(url)
                 }
 
-                VideoService.setFetchURLToPromiseResponseFunction(controlledFetchFunction)
+                //VideoService.setFetchURLToPromiseResponseFunction(controlledFetchFunction)
                 ForComponentCallingCoroutines(App) {
                     val actualVideoListsElement = container.querySelector("[data-code-element-handle='videoLists']")
                     withClue("video lists element") {
