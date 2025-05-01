@@ -28,12 +28,13 @@ open class ReactShouldSpecBase : ShouldSpec() {
         }
     }
 
-    protected suspend fun renderReactComponent(componentUnderTest: FC<Props>) {
+    protected suspend fun <P : Props> renderReactComponent(componentUnderTest: FC<P>,
+                                               propsBuilder: P.() -> Unit = {}) {
         val root = createRoot(container)
         act {
             root.render(KodeinProvider.create {
                 di = testDI
-                +componentUnderTest.create {}
+                +componentUnderTest.create(propsBuilder)
             })
         }
     }
