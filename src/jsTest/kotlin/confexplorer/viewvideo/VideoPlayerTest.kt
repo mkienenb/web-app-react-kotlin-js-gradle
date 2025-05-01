@@ -1,20 +1,15 @@
 package confexplorer.viewvideo
 
-import browserOnlyCode
-import io.kotest.assertions.withClue
-import io.kotest.matchers.shouldBe
-import kotest.ReactComponentTestBase
+import reactdi.ReactShouldSpecBase
 
-class VideoPlayerTest : ReactComponentTestBase() {
+class VideoPlayerTest : ReactShouldSpecBase() {
     init {
-        browserOnlyCode {
-            xshould("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
-                TODO()
-            }
+        xshould("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
+            TODO()
+        }
 
-            xshould("show 'Learning react' as video detail title when 'Learning react' video is selected") {
-                TODO()
-            }
+        xshould("show 'Learning react' as video detail title when 'Learning react' video is selected") {
+            TODO()
         }
     }
 }
