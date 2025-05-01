@@ -20,7 +20,8 @@ class AppTestShouldSpecBaseCustomDiAndSuspendSetupExerciseVerify : ReactShouldSp
 
     init {
         should("have page header of 'Conference Explorer'") {
-            suspendSetup(object {}).exercise {
+            suspendSetup(object {})
+            .exercise {
                 renderReactComponent(App)
                 container.querySelector("h1")?.textContent
             }.verify { pageHeader: String? ->
