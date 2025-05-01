@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotest)
     alias(libs.plugins.jspackage)
-    id("com.zegreatrob.testmints.logs.mint-logs") version "12.2.10"
 }
 
 group = "org.example"
@@ -64,9 +63,6 @@ kotlin {
             dependencies {
                 implementation(libs.kotest.assertions.core)
                 implementation(libs.kotlinx.coroutines.test)
-                implementation("com.zegreatrob.testmints:standard:12.2.10")
-                implementation("com.zegreatrob.testmints:async:12.2.10")
-                implementation(kotlin("test"))
             }
         }
         val jsMain by getting {
@@ -87,8 +83,6 @@ kotlin {
                 implementation(libs.kotlin.user.event.testing.library.js)
                 implementation(npm("jsdom", "26.1.0"))
                 implementation(npm("global-jsdom", "26.0.0"))
-                implementation("com.zegreatrob.testmints:standard-js:12.2.10")
-                implementation(kotlin("test-js"))
 
                 implementation(npm("puppeteer", libs.versions.puppeteer.get()))
             }
