@@ -1,10 +1,15 @@
 package confexplorer.viewvideo
 
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
+
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.suspendSetup
+import org.w3c.dom.HTMLElement
 import reactdi.ReactShouldSpecBase
 
 class VideoListTest : ReactShouldSpecBase() {
@@ -54,12 +59,23 @@ class VideoListTest : ReactShouldSpecBase() {
             }()
         }
 
-        xshould("show video selection symbol when 'Learning react' video is selected") {
+        should("show video selection symbol when 'Learning react' video is selected") {
             suspendSetup(object {
                 val videoList = listOf(Video(1, "Learning Kotlin"), Video(2, "Learning react"))
+                val user = UserEvent.setup()
             }).exercise {
-                TODO()
-            }
+                renderReactComponent(VideoList) {
+                    videos = videoList
+                }
+                val htmlElementBefore = screen.getByText("Learning react")
+                user.click(htmlElementBefore)
+                val title = screen.getByText("Learning react")
+                title.closest("[data-code-element-handle='video-selection-indicator']")
+            }.verify { indicatorNode:  HTMLElement? ->
+                withClue("video-selection-indicator element") {
+                    indicatorNode.shouldNotBeNull()
+                }
+            }()
         }
     }
 }
