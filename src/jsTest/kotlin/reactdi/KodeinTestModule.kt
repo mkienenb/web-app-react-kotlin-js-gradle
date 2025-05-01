@@ -3,6 +3,8 @@ package reactdi
 import api.URLToPromiseResponseFunction
 import api.UrlProvider
 import api.VideoService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -19,7 +21,7 @@ fun nodeTestModule(
     baseUrl: String,
     videoService: VideoService = VideoService(fetchMock, object : UrlProvider {
         override fun getBaseUrl(): String = baseUrl
-    })
+    }), scope : CoroutineScope = MainScope()
 ) = DI.Module("nodeTest") {
     bind<URLToPromiseResponseFunction>() with singleton { fetchMock}
     bind<UrlProvider>() with singleton {
@@ -29,6 +31,7 @@ fun nodeTestModule(
     }
 
     bind<VideoService> {singleton { VideoService(instance(), instance()) }}
+    bind<CoroutineScope>() with instance(scope)
 }
 
 
@@ -38,9 +41,9 @@ fun createTestDi(
         val responseInit = ResponseInit(status = 404)
         Promise.resolve(Response(blob, responseInit))
     },
-    baseUrl: String = "http://localhost"): DI {
-
-    return DI {
-        import(nodeTestModule(videoServiceFetchFunction, baseUrl))
+    baseUrl: String = "http://localhost",
+    scope: CoroutineScope = MainScope()): DI {
+        return DI {
+            import(nodeTestModule(videoServiceFetchFunction, baseUrl, scope = scope))
+        }
     }
-}
