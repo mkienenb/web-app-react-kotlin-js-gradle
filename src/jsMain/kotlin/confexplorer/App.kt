@@ -4,7 +4,9 @@ import api.VideoService
 import confexplorer.viewvideo.Video
 import confexplorer.viewvideo.VideoList
 import confexplorer.viewvideo.VideoPlayer
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
 import react.*
@@ -19,9 +21,10 @@ val App = FC<Props> {
     var videoList: List<Video> by useState(emptyList())
     val di = use(DIContext)!!
     val videoService: VideoService by di.instance()
+    val scope: CoroutineScope by di.instance()
 
     useEffectOnce {
-        MainScope().launch {
+        scope.launch {
             videoList = videoService.getVideos()
         }
     }

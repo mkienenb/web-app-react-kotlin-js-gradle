@@ -8,8 +8,10 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import org.kodein.di.DI
+import org.w3c.fetch.Response
 import react.FC
 import react.Props
 import react.act
@@ -19,10 +21,11 @@ import reactdi.KodeinProvider
 import reactdi.createTestDi
 import web.dom.document
 import web.html.HTMLDivElement
+import kotlin.js.Promise
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
-class AppTest : ShouldSpec({
+class AppTestShouldSpec : ShouldSpec({
     lateinit var container: HTMLDivElement
 
     suspend fun waitUntil(
@@ -81,7 +84,7 @@ class AppTest : ShouldSpec({
     }
 
     should("show 'Conference Explorer' on page") {
-        actRenderComponentWithDI(createTestDi(), App)
+        actRenderComponentWithDI(createTestDi(scope=MainScope()), App)
         val pageHeader = container.querySelector("h1")?.textContent
         withClue("page header") {
             pageHeader shouldBe "Conference Explorer"
@@ -93,7 +96,7 @@ class AppTest : ShouldSpec({
             Video(1, "Learning Kotlin"),
             Video(2, "Unlearning Java")
         )
-        actRenderComponentWithDI(createTestDi(createPromiseResponseFetchFunction(videoList)), App)
+        actRenderComponentWithDI(createTestDi(scope=MainScope(), videoServiceFetchFunction=createPromiseResponseFetchFunction(videoList)), App)
         waitUntilElementGone("[data-code-element-handle='loading']")
         val actualUnwatchedVideoTitlesList = container.querySelectorAll("[data-code-element-handle='unwatched-video-title']")
             .asList()
@@ -109,10 +112,11 @@ class AppTest : ShouldSpec({
             Video(2, "Unlearning Java")
         )
         val fetchGate = CompletableDeferred<Unit>()
-        actRenderComponentWithDI(createTestDi({ url ->
+        val videoServiceFetchFunction: suspend (String) -> Promise<Response> = { url ->
             fetchGate.await()
             createPromiseResponseFetchFunction(videoList)(url)
-        }), App)
+        }
+        actRenderComponentWithDI(createTestDi(scope=MainScope(), videoServiceFetchFunction=videoServiceFetchFunction), App)
         val actualVideoListsElement = container.querySelector("[data-code-element-handle='videoLists']")
         withClue("video lists element") {
             actualVideoListsElement?.textContent shouldBe "Loading..."
