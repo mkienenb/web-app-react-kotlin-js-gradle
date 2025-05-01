@@ -5,8 +5,6 @@ import confexplorer.viewvideo.Video
 import confexplorer.viewvideo.VideoList
 import confexplorer.viewvideo.VideoPlayer
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.kodein.di.instance
 import react.*
