@@ -1,12 +1,14 @@
 package api
 
+import confexplorer.productionModule
 import confexplorer.viewvideo.Video
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.kodein.di.DI
+import org.kodein.di.instance
 import org.w3c.fetch.Response
 import org.w3c.fetch.ResponseInit
 import org.w3c.files.Blob
@@ -80,9 +82,18 @@ class VideoServiceTest : ShouldSpec({
             requestedUrls.shouldContain("https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1")
         }
     }
-    xshould("fetch video with title of 'Learning Kotlin' from url 'https://good.videos/kotlin-hands-on/kotlinconf-json/videos/1' using environment variable") {
-        setServiceVideoUrlEnvironmentVariable("https://good.videos")
-        TODO()
+    should("fetch video with title of 'Learning Kotlin' from url 'https://okay.videos/kotlin-hands-on/kotlinconf-json/videos/1' using environment variable") {
+        setServiceVideoUrlEnvironmentVariable("https://okay.videos")
+        val requestedUrls = mutableListOf<String>()
+        val prodDI = DI {
+            import(productionModule)
+        }
+        val videoService = prodDI.di.instance<VideoService>() as VideoService
+        videoService.getVideos()
+        withClue("requested video url") {
+            requestedUrls.shouldContain("https://okay.videos/kotlin-hands-on/kotlinconf-json/videos/1")
+        }
+
     }
 })
 
