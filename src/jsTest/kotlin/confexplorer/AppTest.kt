@@ -119,4 +119,12 @@ class AppTest : ShouldSpec({
         }
         fetchGate.complete(Unit)  // then run the suspendable test code
     }
+
+    xshould("not show video player when there is no video selected") {
+        TODO()
+    }
+
+    xshould("show 'Learning react' video when 'Learning react' video is selected") {
+        TODO()
+    }
 })
