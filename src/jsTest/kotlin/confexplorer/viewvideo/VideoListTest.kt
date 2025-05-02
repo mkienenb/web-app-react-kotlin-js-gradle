@@ -11,8 +11,10 @@ import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.suspendSetup
 import org.w3c.dom.HTMLElement
+import react.FC
+import react.Props
+import react.useState
 import reactdi.ReactShouldSpecBase
-import web.dom.Element
 
 class VideoListTest : ReactShouldSpecBase() {
     init {
@@ -22,6 +24,7 @@ class VideoListTest : ReactShouldSpecBase() {
             }).exercise {
                 renderReactComponent(VideoList) {
                     videos = videoList
+                    selectedVideo = null
                 }
                 container.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent
             }.verify {firstVideoTitle: String? ->
@@ -37,6 +40,7 @@ class VideoListTest : ReactShouldSpecBase() {
             }).exercise {
                 renderReactComponent(VideoList) {
                     videos = videoList
+                    selectedVideo = null
                 }
                 container.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent
             }.verify {firstVideoTitle: String? ->
@@ -52,6 +56,7 @@ class VideoListTest : ReactShouldSpecBase() {
             }).exercise {
                 renderReactComponent(VideoList) {
                     videos = videoList
+                    selectedVideo = null
                 }
                 container.querySelectorAll("[data-code-element-handle='unwatched-video-title']").asList().map { it.textContent }
             }.verify {actualVideoTitles: List<String>? ->
@@ -61,14 +66,22 @@ class VideoListTest : ReactShouldSpecBase() {
             }()
         }
 
-        should("show video selection symbol when 'Learning react' video is selected") {
+        should("show video selection symbol when 'Learning kotlin' video is selected") {
             suspendSetup(object {
-                val videoList = listOf(Video(1, "Learning kotlin"), Video(2, "Learning react"))
+                val videoList = listOf(Video(1, "Learning react"), Video(2, "Learning kotlin"))
                 val user = UserEvent.setup()
-            }).exercise {
-                renderReactComponent(VideoList) {
-                    videos = videoList
+
+                val VideoListTestHarness = FC<Props> {
+                    val (selectedVideo, setSelectedVideo) = useState<Video?>(null)
+
+                    VideoList {
+                        videos = videoList
+                        this.selectedVideo = selectedVideo
+                        onSelectVideo = { video -> setSelectedVideo(video) }
+                    }
                 }
+            }).exercise {
+                renderReactComponent(VideoListTestHarness)
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
                 user.click(htmlElementBefore)
                 screen.getByRole("option", RoleOptions("Learning kotlin", true))
@@ -78,5 +91,56 @@ class VideoListTest : ReactShouldSpecBase() {
                 }
             }()
         }
+
+        should("show video selection symbol when 'Learning react' video is selected") {
+            suspendSetup(object {
+                val videoList = listOf(Video(1, "Learning react"), Video(2, "Learning kotlin"))
+                val user = UserEvent.setup()
+
+                val VideoListTestHarness = FC<Props> {
+                    val (selectedVideo, setSelectedVideo) = useState<Video?>(null)
+
+                    VideoList {
+                        videos = videoList
+                        this.selectedVideo = selectedVideo
+                        onSelectVideo = { video -> setSelectedVideo(video) }
+                    }
+                }
+            }).exercise {
+                renderReactComponent(VideoListTestHarness)
+                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+                user.click(htmlElementBefore)
+                screen.getByRole("option", RoleOptions("Learning react", true))
+            }.verify { selectedVideoElement:  HTMLElement? ->
+                withClue("selectedVideoElement") {
+                    selectedVideoElement.shouldNotBeNull()
+                }
+            }()
+        }
+
+//        should("show video selection symbol when 'Learning react' video is selected") {
+//            suspendSetup(object {
+//                var currentSelectedVideo : Video? by useState { null }
+//                val videoList = listOf(Video(1, "Learning kotlin"), Video(2, "Learning react"))
+//                val user = UserEvent.setup()
+//            }).exercise {
+//                renderReactComponent(VideoList) {
+//                    videos = videoList
+//                    selectedVideo = currentSelectedVideo
+//                    onSelectVideo = { video ->
+//                        currentSelectedVideo = video
+//                    }
+//                }
+//                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+//                println("Before click")
+//                user.click(htmlElementBefore)
+//                println("After click")
+//                screen.getByRole("option", RoleOptions("Learning react", true))
+//            }.verify { selectedVideoElement:  HTMLElement? ->
+//                withClue("selectedVideoElement") {
+//                    selectedVideoElement.shouldNotBeNull()
+//                }
+//            }()
+//        }
     }
 }
