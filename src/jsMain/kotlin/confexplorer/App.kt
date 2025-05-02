@@ -35,6 +35,7 @@ val App = FC<Props> {
         if (videoList.isNotEmpty()) {
             VideoList {
                 videos = videoList
+                selectedVideo = null
             }
         } else {
             p {
