@@ -45,6 +45,6 @@ val App = FC<Props> {
     }
 
     VideoPlayer {
-
+        video = Video(1, "Learning kotlin", "www.youtube.com/learning-kotlin")
     }
 }
