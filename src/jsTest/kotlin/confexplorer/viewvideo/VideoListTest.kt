@@ -1,5 +1,6 @@
 package confexplorer.viewvideo
 
+import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 
@@ -11,6 +12,7 @@ import js.array.asList
 import kotest.suspendSetup
 import org.w3c.dom.HTMLElement
 import reactdi.ReactShouldSpecBase
+import web.dom.Element
 
 class VideoListTest : ReactShouldSpecBase() {
     init {
@@ -61,19 +63,18 @@ class VideoListTest : ReactShouldSpecBase() {
 
         should("show video selection symbol when 'Learning react' video is selected") {
             suspendSetup(object {
-                val videoList = listOf(Video(1, "Learning Kotlin"), Video(2, "Learning react"))
+                val videoList = listOf(Video(1, "Learning kotlin"), Video(2, "Learning react"))
                 val user = UserEvent.setup()
             }).exercise {
                 renderReactComponent(VideoList) {
                     videos = videoList
                 }
-                val htmlElementBefore = screen.getByText("Learning react")
+                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
                 user.click(htmlElementBefore)
-                val title = screen.getByText("Learning react")
-                title.closest("[data-code-element-handle='video-selection-indicator']")
-            }.verify { indicatorNode:  HTMLElement? ->
-                withClue("video-selection-indicator element") {
-                    indicatorNode.shouldNotBeNull()
+                screen.getByRole("option", RoleOptions("Learning kotlin", true))
+            }.verify { selectedVideoElement:  HTMLElement? ->
+                withClue("selectedVideoElement") {
+                    selectedVideoElement.shouldNotBeNull()
                 }
             }()
         }
