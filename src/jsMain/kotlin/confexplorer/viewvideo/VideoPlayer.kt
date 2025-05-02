@@ -7,7 +7,11 @@ import react.dom.html.ReactHTML.h3
 import react.dom.html.ReactHTML.span
 import testsupport.dataCodeElementHandleAttribute
 
-val VideoPlayer = FC<Props> {
+external interface VideoPlayerProps : Props {
+    var video: Video
+}
+
+val VideoPlayer = FC<VideoPlayerProps> {
     div {
         h3 {
             dataCodeElementHandleAttribute = "video-detail-title"
