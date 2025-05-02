@@ -8,7 +8,9 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldContainExactly
 import kotlinx.serialization.json.Json
 import org.kodein.di.DI
+import org.kodein.di.bind
 import org.kodein.di.instance
+import org.kodein.di.singleton
 import org.w3c.fetch.Response
 import org.w3c.fetch.ResponseInit
 import org.w3c.files.Blob
@@ -87,13 +89,17 @@ class VideoServiceTest : ShouldSpec({
         val requestedUrls = mutableListOf<String>()
         val prodDI = DI {
             import(productionModule)
+            import(DI.Module("fetch function override"){
+                bind<URLToPromiseResponseFunction>(overrides = true) with singleton {
+                    createURLVerificationFetchFunction(requestedUrls)
+                }
+            }, allowOverride = true)
         }
-        val videoService = prodDI.di.instance<VideoService>() as VideoService
+        val videoService by prodDI.di.instance<VideoService>()
         videoService.getVideos()
         withClue("requested video url") {
             requestedUrls.shouldContain("https://okay.videos/kotlin-hands-on/kotlinconf-json/videos/1")
         }
-
     }
 })
 
