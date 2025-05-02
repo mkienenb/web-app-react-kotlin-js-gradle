@@ -11,7 +11,7 @@ external interface VideoPlayerProps : Props {
     var video: Video
 }
 
-val VideoPlayer = FC<VideoPlayerProps> {
+val VideoPlayer = FC<VideoPlayerProps> { props ->
     div {
         h3 {
             dataCodeElementHandleAttribute = "video-detail-title"
@@ -19,7 +19,7 @@ val VideoPlayer = FC<VideoPlayerProps> {
         }
         span {
             dataCodeElementHandleAttribute = "react-player-url"
-            +"www.youtube.com/learning-kotlin"
+            +props.video.videoUrl
         }
     }
 }
