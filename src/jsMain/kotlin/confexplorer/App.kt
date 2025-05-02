@@ -17,6 +17,7 @@ import testsupport.dataCodeElementHandleAttribute
 
 val App = FC<Props> {
     var videoList: List<Video> by useState(emptyList())
+    val (getSelectedVideo, setSelectedVideo) = useState<Video?>(null)
     val di = use(DIContext)!!
     val videoService: VideoService by di.instance()
     val scope: CoroutineScope by di.instance()
@@ -35,7 +36,8 @@ val App = FC<Props> {
         if (videoList.isNotEmpty()) {
             VideoList {
                 videos = videoList
-                selectedVideo = null
+                this.selectedVideo = getSelectedVideo
+                onSelectVideo = { video -> setSelectedVideo(video) }
             }
         } else {
             p {
