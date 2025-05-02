@@ -1,10 +1,9 @@
 package api
 
 object Env {
-    val serviceVideoUrl: String
+    val serviceVideoUrl: String?
         get() = testServiceVideoUrl
-            ?: (js("process.env.URL") as? String
-                 ?: error("URL is not set"))
+            ?: (js("process.env.URL") as? String?)
 
     var testServiceVideoUrl: String? = null
 }
