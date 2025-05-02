@@ -1,5 +1,6 @@
 package confexplorer
 
+import api.Env
 import api.URLToPromiseResponseFunction
 import api.UrlProvider
 import api.VideoService
@@ -17,7 +18,7 @@ val productionModule = DI.Module("production") {
     }
     bind<UrlProvider>() with singleton {
         object : UrlProvider {
-            override fun getBaseUrl(): String = "https://my-json-server.typicode.com"
+            override fun getBaseUrl(): String = Env.serviceVideoUrl ?: "https://my-json-server.typicode.com"
         }
     }
     bind<CoroutineScope>() with instance(MainScope())
