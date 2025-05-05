@@ -1,6 +1,10 @@
 package confexplorer.viewvideo
 
 import api.createPromiseResponseFetchFunction
+import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
+import confexplorer.App
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 import kotest.suspendSetup
@@ -11,10 +15,13 @@ class VideoPlayerTest : ReactShouldSpecBase() {
         should("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
             suspendSetup( object {
                 var learningReactVideo = Video(1, "Learning react", videoUrl = "www.youtube.com/learning-react")
-            }).exercise {
-                renderReactComponent(VideoPlayer) {
-                    video = learningReactVideo
-                }
+                val user = UserEvent.setup()
+            }).withDI {
+                it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
+            }.exercise {
+                renderReactComponent(App)
+                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+                user.click(htmlElementBefore)
                 container.querySelector("[data-code-element-handle='react-player-url']")?.textContent
             }.verify { reactPlayerUrl : String ->
                 withClue("react player url") {
