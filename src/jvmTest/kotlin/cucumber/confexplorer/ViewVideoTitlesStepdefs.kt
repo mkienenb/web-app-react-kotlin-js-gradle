@@ -87,10 +87,11 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
         }
     }
 
-    @Then("I should see the selection indicator next to the {string} video")
-    fun iShouldSeeTheSelectionIndicatorNextToTheVideo (videoName: String) {
+    @Then("I should only see the selection indicator next to the {string} video")
+    fun iShouldOnlySeeTheSelectionIndicatorNextToTheVideo (videoName: String) {
         scenarioContext.withViewVideoPage {
             selectedVideoTitle shouldBe videoName
         }
+        TODO(" Only 1 indicator should exist")
     }
 }

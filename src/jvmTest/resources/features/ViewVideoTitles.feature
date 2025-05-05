@@ -20,4 +20,4 @@ Scenario: Select unwatched video and show details
   And I select the video "Learning kotlin" from the unwatched list
   Then I should see that the video player has queued "www.youtube.com/learning-kotlin" url
   And I should see the video title "Learning kotlin" in the video details
-  And I should see the selection indicator next to the "Learning kotlin" video
+  And I should only see the selection indicator next to the "Learning kotlin" video
