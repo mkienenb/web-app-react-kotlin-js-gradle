@@ -15,7 +15,7 @@ val VideoPlayer = FC<VideoPlayerProps> { props ->
     div {
         h3 {
             dataCodeElementHandleAttribute = "video-detail-title"
-            +"Learning kotlin"
+            +props.video.title
         }
         span {
             dataCodeElementHandleAttribute = "react-player-url"
