@@ -5,6 +5,7 @@ import confexplorer.viewvideo.Video
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainExactly
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotlinx.coroutines.CompletableDeferred
@@ -120,11 +121,21 @@ class AppTest : ShouldSpec({
         fetchGate.complete(Unit)  // then run the suspendable test code
     }
 
-    xshould("not show video player when there is no video selected") {
-        TODO()
-    }
+    should("not show video player when there is no video selected") {
+        val videoList = listOf(
+            Video(1, "Learning Kotlin"),
+            Video(2, "Unlearning Java")
+        )
+        actRenderComponentWithDI(createTestDi({ url ->
+            createPromiseResponseFetchFunction(videoList)(url)
+        }), App)
 
-    xshould("show 'Learning react' video when 'Learning react' video is selected") {
-        TODO()
+        waitUntilElementGone("[data-code-element-handle='loading']")
+
+        // verify
+        val actualVideoTitleElement = container.querySelector("[data-code-element-handle='video-detail-title']")
+        withClue("react player video title") {
+            actualVideoTitleElement.shouldBeNull()
+        }
     }
 })
