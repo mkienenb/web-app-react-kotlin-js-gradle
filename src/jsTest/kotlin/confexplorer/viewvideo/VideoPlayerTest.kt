@@ -30,8 +30,22 @@ class VideoPlayerTest : ReactShouldSpecBase() {
             }()
         }
 
-        xshould("show 'Learning react' as video detail title when 'Learning react' video is selected") {
-            TODO()
+        should("show 'Learning react' as video detail title when 'Learning react' video is selected") {
+            suspendSetup( object {
+                var learningReactVideo = Video(1, "Learning react", videoUrl = "www.youtube.com/learning-react")
+                val user = UserEvent.setup()
+            }).withDI {
+                it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
+            }.exercise {
+                renderReactComponent(App)
+                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+                user.click(htmlElementBefore)
+                container.querySelector("[data-code-element-handle='video-detail-title']")?.textContent
+            }.verify { reactPlayerTitle : String ->
+                withClue("react player url") {
+                    reactPlayerTitle shouldBe "Learning react"
+                }
+            }()
         }
     }
 }
