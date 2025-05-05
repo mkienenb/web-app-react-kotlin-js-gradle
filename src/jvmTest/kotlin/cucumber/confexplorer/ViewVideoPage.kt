@@ -26,8 +26,8 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     val videoDetailTitle: String
         get() = getWebElementByCodeElementHandle("video-detail-title").text
 
-    val videoPlayerUrl: String
-        get() = getWebElementByCodeElementHandle("react-player-url").text
+    val videoPlayerUrl: String?
+        get() = getWebElementByCodeElementHandle("react-player").findElement(By.tagName("iframe")).getDomAttribute("src")
 
     val selectedVideoTitle: String?
         get() {
