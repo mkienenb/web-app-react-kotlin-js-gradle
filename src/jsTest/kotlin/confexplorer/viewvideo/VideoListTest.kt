@@ -84,10 +84,10 @@ class VideoListTest : ReactShouldSpecBase() {
                 renderReactComponent(VideoListTestHarness)
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
                 user.click(htmlElementBefore)
-                screen.getByRole("option", RoleOptions("Learning kotlin", true))
-            }.verify { selectedVideoElement:  HTMLElement? ->
-                withClue("selectedVideoElement") {
-                    selectedVideoElement.shouldNotBeNull()
+                screen.getAllByRole("option", RoleOptions(selected = true))
+            }.verify { selectedVideoElements: Array<HTMLElement> ->
+                withClue("selectedVideoElements") {
+                    selectedVideoElements.map { it.textContent }.shouldContainExactly("Learning kotlin")
                 }
             }()
         }
