@@ -7,7 +7,10 @@ import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.suspendSetup
+import kotlinx.coroutines.CompletableDeferred
+import org.w3c.dom.Element
 import reactdi.ReactShouldSpecBase
+import kotlin.coroutines.CoroutineContext
 
 class AppTest : ReactShouldSpecBase () {
     init {
@@ -45,23 +48,30 @@ class AppTest : ReactShouldSpecBase () {
             }
         }
 
-        /*should("show 'Loading...' when video list is still loading") {
-            val videoList = listOf(
-                Video(1, "Learning Kotlin"),
-                Video(2, "Unlearning Java")
-            )
-            val fetchGate = CompletableDeferred<Unit>()
-            actRenderComponentWithDI(createTestDi({ url ->
-                fetchGate.await()
-                createPromiseResponseFetchFunction(videoList)(url)
-            }), App)
-            val actualVideoListsElement = container.querySelector("[data-code-element-handle='videoLists']")
-            withClue("video lists element") {
-                actualVideoListsElement?.textContent shouldBe "Loading..."
+        should("show 'Loading...' when video list is still loading") {
+            suspendSetup(object {
+                val videoList: List<Video> = listOf(
+                    Video(1, "Learning Kotlin"),
+                    Video(2, "Unlearning Java")
+                )
+                val fetchGate = CompletableDeferred<Unit>()
+            }).withDI {
+                it.videoServiceFetchFunction = { url ->
+                    fetchGate.await()
+                    createPromiseResponseFetchFunction(videoList)(url)
+                }
+            }.exercise {
+                renderReactComponent(App)
+                container.querySelector("[data-code-element-handle='loading']")
+            }.verify { actualVideoListsElement : Element? ->
+                withClue("loading element") {
+                    actualVideoListsElement?.textContent shouldBe "Loading..."
+                }
+                fetchGate.complete(Unit)  // then run the suspendable test code
             }
-            fetchGate.complete(Unit)  // then run the suspendable test code
         }
 
+        /*
         should("not show video player when there is no video selected") {
             val videoList = listOf(
                 Video(1, "Learning Kotlin"),
