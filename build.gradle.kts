@@ -72,6 +72,7 @@ kotlin {
                 implementation(libs.kotlin.react.dom)
                 implementation(libs.kotlinx.serialization.json)
                 implementation("org.kodein.di:kodein-di-js:7.25.0")
+                implementation(npm("react-player", "2.12.0"))
             }
         }
         val jsTest by getting {
