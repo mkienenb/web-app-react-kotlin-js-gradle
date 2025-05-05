@@ -12,6 +12,7 @@ import io.cucumber.java.en.Then
 import io.cucumber.java.en.When
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 
 
@@ -91,6 +92,13 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     fun iShouldOnlySeeTheSelectionIndicatorNextToTheVideo (videoName: String) {
         scenarioContext.withViewVideoPage {
             selectedVideoTitle shouldBe videoName
+        }
+    }
+
+    @Then("I should see no video selected")
+    fun iShouldSeeNoVideoSelected () {
+        scenarioContext.withViewVideoPage {
+            selectedVideoTitle.shouldBeNull()
         }
     }
 }

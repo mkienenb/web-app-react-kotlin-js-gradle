@@ -4,7 +4,7 @@ import confexplorer.ElementLocator.UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPAT
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
 import io.kotest.assertions.withClue
-import io.kotest.matchers.shouldBe
+import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -29,13 +29,13 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     val videoPlayerUrl: String
         get() = getWebElementByCodeElementHandle("react-player-url").text
 
-    val selectedVideoTitle: String
+    val selectedVideoTitle: String?
         get() {
             val elements = driver.findElements(By.xpath(UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION))
             withClue("number of selected videos") {
-                elements.size shouldBe 1
+                elements.size shouldBeLessThanOrEqual 1
             }
-            return elements[0].text
+            return elements.firstOrNull()?.text
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =

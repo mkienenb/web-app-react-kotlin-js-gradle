@@ -14,6 +14,7 @@ Scenario: See list of unwatched videos
     | Learning koin       |
     | Learning kotest     |
     | Learning react      |
+  And I should see no video selected
 
 Scenario: Select unwatched video and show details
   When I go to the conference explorer page
