@@ -3,6 +3,8 @@ package cucumber.confexplorer
 import confexplorer.ElementLocator.UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
+import io.kotest.assertions.withClue
+import io.kotest.matchers.shouldBe
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -29,7 +31,11 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String
         get() {
-            return driver.findElement(By.xpath(UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION)).text
+            val elements = driver.findElements(By.xpath(UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION))
+            withClue("number of selected videos") {
+                elements.size shouldBe 1
+            }
+            return elements[0].text
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
