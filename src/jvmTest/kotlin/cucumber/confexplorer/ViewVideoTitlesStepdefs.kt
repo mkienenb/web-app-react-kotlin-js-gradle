@@ -92,6 +92,5 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
         scenarioContext.withViewVideoPage {
             selectedVideoTitle shouldBe videoName
         }
-        TODO(" Only 1 indicator should exist")
     }
 }
