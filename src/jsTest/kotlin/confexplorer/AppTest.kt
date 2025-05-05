@@ -9,6 +9,9 @@ import io.kotest.matchers.shouldBe
 import js.array.asList
 import kotest.suspendSetup
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.test.StandardTestDispatcher
 import org.w3c.dom.Element
 import reactdi.ReactShouldSpecBase
 import kotlin.coroutines.CoroutineContext
@@ -61,6 +64,7 @@ class AppTest : ReactShouldSpecBase () {
                     fetchGate.await()
                     createPromiseResponseFetchFunction(videoList)(url)
                 }
+                it.scope = CoroutineScope(Job() + StandardTestDispatcher())
             }.exercise {
                 renderReactComponent(App)
                 container.querySelector("[data-code-element-handle='loading']")
