@@ -18,8 +18,7 @@ val VideoList = FC<VideoListProps> { props ->
         props.videos.forEach { video ->
             li {
                 role= AriaRole.option
-//                ariaSelected = video == props.selectedVideo
-                  ariaSelected = true
+                ariaSelected = video == props.selectedVideo
                 onClick = {
                     props.onSelectVideo(video)
                 }
