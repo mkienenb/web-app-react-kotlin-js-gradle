@@ -14,7 +14,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.StandardTestDispatcher
 import org.w3c.dom.Element
 import reactdi.ReactShouldSpecBase
-import kotlin.coroutines.CoroutineContext
 
 class AppTest : ReactShouldSpecBase () {
     init {

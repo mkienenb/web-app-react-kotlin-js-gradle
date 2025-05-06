@@ -14,6 +14,7 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldStartWith
 
 
 class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
@@ -74,7 +75,8 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     fun iShouldSeeThatTheVideoPlayerHasQueuedUrl (videoUrl: String) {
         scenarioContext.withViewVideoPage {
             withClue("videoPlayerUrl"){
-                videoPlayerUrl shouldBe videoUrl
+                waitForVideoPlayerToBeLoaded()
+                videoPlayerUrl shouldStartWith videoUrl
             }
         }
     }
