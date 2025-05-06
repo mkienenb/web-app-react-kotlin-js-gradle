@@ -39,4 +39,14 @@ open class ReactShouldSpecBase : ShouldSpec() {
     protected fun runningInBrowser(): Boolean {
         return js("typeof window.fetch !== 'undefined'") as Boolean
     }
+
+    protected suspend fun waitUntilElementExists(
+        container: HTMLDivElement,
+        selector: String,
+        timeout: Duration = 5000.milliseconds
+    ) {
+        waitUntil(timeout) {
+            container.querySelector(selector) != null
+        }
+    }
 }
