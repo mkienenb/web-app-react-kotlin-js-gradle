@@ -27,7 +27,10 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getWebElementByCodeElementHandle("video-detail-title").text
 
     val videoPlayerUrl: String?
-        get() = getWebElementByCodeElementHandle("react-player").findElement(By.cssSelector("iframe")).getDomAttribute("src")
+        get() = videoPlayerIFrameElement().getDomAttribute("src")
+
+    private fun videoPlayerIFrameElement(): WebElement =
+        getWebElementByCodeElementHandle("react-player").findElement(By.cssSelector("iframe"))
 
     val selectedVideoTitle: String?
         get() {
@@ -58,6 +61,16 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         wait.until(
             ExpectedConditions.invisibilityOfElementLocated
                 (By.cssSelector("[data-code-element-handle='loading']"))
+        )
+    }
+
+    fun waitForVideoPlayerToBeLoaded(
+        timeout: Duration = 5000.milliseconds
+    ) {
+        val wait = WebDriverWait(driver, timeout.toJavaDuration())
+        wait.until(
+            ExpectedConditions.visibilityOfElementLocated
+                (By.cssSelector("iframe"))
         )
     }
 }
