@@ -63,4 +63,14 @@ open class ReactShouldSpecBase : ShouldSpec() {
             container.querySelector(selector) == null
         }
     }
+
+    protected suspend fun waitUntilElementExists(
+        container: HTMLDivElement,
+        selector: String,
+        timeout: Duration = 5000.milliseconds
+    ) {
+        waitUntil(timeout) {
+            container.querySelector(selector) != null
+        }
+    }
 }
