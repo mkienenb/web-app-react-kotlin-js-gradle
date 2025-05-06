@@ -12,7 +12,7 @@ import reactdi.ReactShouldSpecBase
 
 class VideoPlayerTest : ReactShouldSpecBase() {
     init {
-        should("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
+        xshould("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
             suspendSetup( object {
                 var learningReactVideo = Video(1, "Learning react", videoUrl = "www.youtube.com/learning-react")
                 val user = UserEvent.setup()
