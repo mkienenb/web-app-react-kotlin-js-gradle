@@ -73,4 +73,9 @@ open class ReactShouldSpecBase : ShouldSpec() {
             container.querySelector(selector) != null
         }
     }
+
+    protected fun runningInBrowser(): Boolean {
+        val isNode = js("typeof window.process !== 'undefined' && window.process.versions != null && window.process.versions.node != null") as Boolean
+        return !isNode
+    }
 }

@@ -7,27 +7,36 @@ import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.App
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldStartWith
 import kotest.suspendSetup
+import kotlinx.coroutines.delay
 import reactdi.ReactShouldSpecBase
 
 class VideoPlayerTest : ReactShouldSpecBase() {
     init {
-        xshould("set url 'www.youtube.com/learning-react' in react player when 'learning react' video is queued") {
-            suspendSetup( object {
-                var learningReactVideo = Video(1, "Learning react", videoUrl = "www.youtube.com/learning-react")
-                val user = UserEvent.setup()
-            }).withDI {
-                it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
-            }.exercise {
-                renderReactComponent(App)
-                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
-                user.click(htmlElementBefore)
-                container.querySelector("[data-code-element-handle='react-player-url']")?.textContent
-            }.verify { reactPlayerUrl : String ->
-                withClue("react player url") {
-                    reactPlayerUrl shouldBe "www.youtube.com/learning-react"
-                }
-            }()
+        if (runningInBrowser()) {
+            // This test requires both window.fetch support as well as real iframe support, neither of which are available under node js
+            should("set url 'www.youtube.com/learning-kodein' in react player when 'learning kodein' video is queued") {
+                suspendSetup( object {
+                    var learningReactVideo = Video(1, "Learning react", videoUrl = "https://www.youtube.com/watch?v=kodein56215")
+                    val user = UserEvent.setup()
+                }).withDI {
+                    it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
+                }.exercise {
+                    renderReactComponent(App)
+                    waitUntilElementGone(container,"[data-code-element-handle='loading']")
+                    val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+                    user.click(htmlElementBefore)
+                    println("before delay: ${container.innerHTML}")
+                    delay(5000)
+                    println("after delay: ${container.innerHTML}")
+                    container.querySelector("[data-code-element-handle='react-player'] iframe")?.getAttribute("src")
+                }.verify { reactPlayerUrl : String ->
+                    withClue("react player url") {
+                        reactPlayerUrl shouldStartWith "https://www.youtube.com/embed/kodein56215"
+                    }
+                }()
+            }
         }
 
         should("show 'Learning react' as video detail title when 'Learning react' video is selected") {
@@ -38,6 +47,7 @@ class VideoPlayerTest : ReactShouldSpecBase() {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
             }.exercise {
                 renderReactComponent(App)
+                waitUntilElementGone(container,"[data-code-element-handle='loading']")
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
                 user.click(htmlElementBefore)
                 container.querySelector("[data-code-element-handle='video-detail-title']")?.textContent
