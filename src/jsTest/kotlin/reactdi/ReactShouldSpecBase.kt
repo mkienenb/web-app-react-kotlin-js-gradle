@@ -51,7 +51,6 @@ open class ReactShouldSpecBase : ShouldSpec() {
     }
 
     protected fun runningInBrowser(): Boolean {
-        val isNode = js("typeof window.process !== 'undefined' && window.process.versions != null && window.process.versions.node != null") as Boolean
-        return !isNode
+        return js("typeof window.fetch !== 'undefined'") as Boolean
     }
 }
