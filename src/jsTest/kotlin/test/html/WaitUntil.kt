@@ -20,7 +20,7 @@ private suspend fun waitUntil(
     }
 }
 
-suspend fun HTMLElement.waitUntilElementGone(
+suspend fun HTMLElement.waitUntilElementDoesNotExist(
     selector: String,
     timeout: Duration = 5000.milliseconds
 ) {

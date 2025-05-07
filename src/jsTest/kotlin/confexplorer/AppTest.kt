@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.StandardTestDispatcher
 import org.w3c.dom.Element
-import test.html.waitUntilElementGone
+import test.html.waitUntilElementDoesNotExist
 
 class AppTest : ConfExplorerTestBase () {
     init {
@@ -40,7 +40,7 @@ class AppTest : ConfExplorerTestBase () {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(videoList)
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementGone("[data-code-element-handle='loading']")
+                container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
                     container.querySelectorAll("[data-code-element-handle='unwatched-video-title']")
                         .asList()
                         .map { it.textContent }
@@ -85,7 +85,7 @@ class AppTest : ConfExplorerTestBase () {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(videoList)
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementGone("[data-code-element-handle='loading']")
+                container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
                 container.querySelector("[data-code-element-handle='video-detail-title']")
             }.verify {actualVideoTitleElement: Element? ->
                 withClue("react player video title") {
