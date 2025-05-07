@@ -19,7 +19,7 @@ val VideoPlayer = FC<VideoPlayerProps> { props ->
         }
         span {
             dataCodeElementHandleAttribute = "react-player"
-            ReactPlayer {
+            ReactPlayerHolder {
                 url = props.video.videoUrl
                 controls = true
             }
