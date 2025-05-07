@@ -1,6 +1,8 @@
 package cucumber.confexplorer
 
 import confexplorer.ElementLocator.UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION
+import cucumber.common.driver.waitUntilSelectorElementIsInvisible
+import cucumber.common.driver.waitUntilSelectorElementIsVisible
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
 import io.kotest.assertions.withClue
@@ -9,11 +11,8 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.PageFactory
-import org.openqa.selenium.support.ui.ExpectedConditions
-import org.openqa.selenium.support.ui.WebDriverWait
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.toJavaDuration
 
 
 @GenerateCucumberPageHelper
@@ -57,20 +56,12 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     fun waitUntilDoneLoading(
         timeout: Duration = 5000.milliseconds
     ) {
-        val wait = WebDriverWait(driver, timeout.toJavaDuration())
-        wait.until(
-            ExpectedConditions.invisibilityOfElementLocated
-                (By.cssSelector("[data-code-element-handle='loading']"))
-        )
+        driver.waitUntilSelectorElementIsInvisible("[data-code-element-handle='loading']", timeout)
     }
 
     fun waitForVideoPlayerToBeLoaded(
         timeout: Duration = 5000.milliseconds
     ) {
-        val wait = WebDriverWait(driver, timeout.toJavaDuration())
-        wait.until(
-            ExpectedConditions.visibilityOfElementLocated
-                (By.cssSelector("iframe"))
-        )
+        driver.waitUntilSelectorElementIsVisible("iframe", timeout)
     }
 }
