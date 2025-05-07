@@ -5,13 +5,13 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.App
+import confexplorer.ConfExplorerTestBase
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotest.suspendSetup
-import reactdi.ReactShouldSpecBase
 
-class VideoPlayerTest : ReactShouldSpecBase() {
+class VideoPlayerTest : ConfExplorerTestBase() {
     init {
         if (runningInBrowser()) {
             // This test requires both window.fetch support as well as real iframe support, neither of which are available under node js
