@@ -3,7 +3,8 @@
 
 package confexplorer.viewvideo
 
-import react.*
+import react.FC
+import react.Props
 
 @JsName("default")
 external val ReactPlayer: FC<ReactPlayerProps>
