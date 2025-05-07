@@ -9,7 +9,6 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotest.suspendSetup
-import kotlinx.coroutines.delay
 import reactdi.ReactShouldSpecBase
 
 class VideoPlayerTest : ReactShouldSpecBase() {
@@ -27,10 +26,9 @@ class VideoPlayerTest : ReactShouldSpecBase() {
                     waitUntilElementGone(container,"[data-code-element-handle='loading']")
                     val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
                     user.click(htmlElementBefore)
-                    println("before delay: ${container.innerHTML}")
-                    delay(5000)
-                    println("after delay: ${container.innerHTML}")
-                    container.querySelector("[data-code-element-handle='react-player'] iframe")?.getAttribute("src")
+                    val iframeSelector = "[data-code-element-handle='react-player'] iframe"
+                    waitUntilElementExists(container, iframeSelector)
+                    container.querySelector(iframeSelector)?.getAttribute("src")
                 }.verify { reactPlayerUrl : String ->
                     withClue("react player url") {
                         reactPlayerUrl shouldStartWith "https://www.youtube.com/embed/kodein56215"
