@@ -11,7 +11,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotest.suspendSetup
 import test.html.waitUntilElementExists
-import test.html.waitUntilElementGone
+import test.html.waitUntilElementDoesNotExist
 
 class VideoPlayerTest : ConfExplorerTestBase() {
     init {
@@ -25,7 +25,7 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                     it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
                 }.exercise {
                     renderReactComponent(App)
-                    container.waitUntilElementGone("[data-code-element-handle='loading']")
+                    container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
                     val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kodein"))
                     user.click(htmlElementBefore)
                     val iframeSelector = "[data-code-element-handle='react-player'] iframe"
@@ -47,7 +47,7 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementGone("[data-code-element-handle='loading']")
+                container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
                 user.click(htmlElementBefore)
                 container.querySelector("[data-code-element-handle='video-detail-title']")?.textContent
