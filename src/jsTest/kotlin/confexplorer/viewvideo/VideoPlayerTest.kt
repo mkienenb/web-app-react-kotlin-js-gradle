@@ -17,14 +17,14 @@ class VideoPlayerTest : ReactShouldSpecBase() {
             // This test requires both window.fetch support as well as real iframe support, neither of which are available under node js
             should("set url 'www.youtube.com/learning-kodein' in react player when 'learning kodein' video is queued") {
                 suspendSetup( object {
-                    var learningReactVideo = Video(1, "Learning react", videoUrl = "https://www.youtube.com/watch?v=kodein56215")
+                    var learningReactVideo = Video(1, "Learning kodein", videoUrl = "https://www.youtube.com/watch?v=kodein56215")
                     val user = UserEvent.setup()
                 }).withDI {
                     it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
                 }.exercise {
                     renderReactComponent(App)
                     waitUntilElementGone(container,"[data-code-element-handle='loading']")
-                    val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+                    val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kodein"))
                     user.click(htmlElementBefore)
                     val iframeSelector = "[data-code-element-handle='react-player'] iframe"
                     waitUntilElementExists(container, iframeSelector)
