@@ -13,9 +13,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.StandardTestDispatcher
 import org.w3c.dom.Element
-import reactdi.ReactShouldSpecBase
 
-class AppTest : ReactShouldSpecBase () {
+class AppTest : ConfExplorerTestBase () {
     init {
         should("show 'Conference Explorer' on page") {
             suspendSetup(object {

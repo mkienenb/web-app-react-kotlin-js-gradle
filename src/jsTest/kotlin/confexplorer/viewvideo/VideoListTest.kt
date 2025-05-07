@@ -3,7 +3,7 @@ package confexplorer.viewvideo
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
-
+import confexplorer.ConfExplorerTestBase
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -14,9 +14,8 @@ import org.w3c.dom.HTMLElement
 import react.FC
 import react.Props
 import react.useState
-import reactdi.ReactShouldSpecBase
 
-class VideoListTest : ReactShouldSpecBase() {
+class VideoListTest : ConfExplorerTestBase() {
     init {
         should("show Learning kotlin video") {
             suspendSetup(object {
