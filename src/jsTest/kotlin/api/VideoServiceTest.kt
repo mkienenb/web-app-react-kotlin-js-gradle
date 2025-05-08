@@ -20,7 +20,7 @@ import kotlin.js.Promise
 class VideoServiceTest : ShouldSpec({
 
     beforeTest() {
-        setServiceVideoUrlEnvironmentVariable("http://localhost")
+        js("process.env.URL = 'http://localhost'")
     }
     should("fetch video title Strings of 'Learning Kotlin' and 'Unlearning Java'") {
         val videoList = listOf(
@@ -62,7 +62,7 @@ class VideoServiceTest : ShouldSpec({
 
     should("fetch video with title of 'Learning Kotlin' from url 'https://shady.videos/kotlin-hands-on/kotlinconf-json/videos/1'") {
         val requestedUrls = mutableListOf<String>()
-        setServiceVideoUrlEnvironmentVariable("https://shady.videos")
+        js("process.env.URL = 'https://shady.videos'")
         val videoService = VideoService(createURLVerificationFetchFunction(requestedUrls),
             object : UrlProvider {
                 override fun getBaseUrl(): String = "https://shady.videos"
@@ -85,7 +85,7 @@ class VideoServiceTest : ShouldSpec({
         }
     }
     should("fetch video with title of 'Learning Kotlin' from url 'https://okay.videos/kotlin-hands-on/kotlinconf-json/videos/1' using environment variable") {
-        setServiceVideoUrlEnvironmentVariable("https://okay.videos")
+        js("process.env.URL = 'https://okay.videos'")
         val requestedUrls = mutableListOf<String>()
         val prodDI = DI {
             import(productionModule)
@@ -117,10 +117,6 @@ fun createVideoService(videoList: List<Video>) =
         object : UrlProvider {
             override fun getBaseUrl(): String = "http://localhost"
         })
-
-private fun setServiceVideoUrlEnvironmentVariable(value: String) {
-    Env.testServiceVideoUrl = value
-}
 
 fun createPromiseResponseFetchFunction(videoList: List<Video>): URLToPromiseResponseFunction {
     return {
