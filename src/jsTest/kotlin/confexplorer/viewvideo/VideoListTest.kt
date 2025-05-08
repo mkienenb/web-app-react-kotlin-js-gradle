@@ -94,7 +94,37 @@ class VideoListTest : ConfExplorerTestBase() {
             }()
         }
 
-        xshould("show that only the selected video has the video selection symbol ")
+        should("show that only the selected video has the video selection symbol") {
+            suspendSetup(object {
+                val videoList = listOf(Video(1, "Learning react"), Video(2, "Learning kotlin"))
+                val user = UserEvent.setup()
+
+                val VideoListTestHarness = FC<Props> {
+                    val (selectedVideo, setSelectedVideo) = useState<Video?>(null)
+
+                    VideoList {
+                        videos = videoList
+                        this.selectedVideo = selectedVideo
+                        onSelectVideo = { video -> setSelectedVideo(video) }
+                    }
+                }
+            }).exercise {
+                renderReactComponent(VideoListTestHarness)
+                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
+                user.click(htmlElementBefore)
+                screen.getAllByRole("option")
+            }.verify { videoElements: Array<HTMLElement> ->
+                withClue("videoElements") {
+                    videoElements.filter { it.textContent?.contains("$VIDEO_SELECTOR_SYMBOL") ?: false }
+                        .map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
+                        .shouldContainExactly("Learning kotlin")
+
+                    videoElements.filter { !(it.textContent?.contains("$VIDEO_SELECTOR_SYMBOL") ?: false) }
+                        .map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
+                        .shouldContainExactly("Learning react")
+                }
+            }()
+        }
 
         should("show video selection symbol when 'Learning react' video is selected") {
             suspendSetup(object {
