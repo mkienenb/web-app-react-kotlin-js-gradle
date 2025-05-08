@@ -24,9 +24,11 @@ val VideoList = FC<VideoListProps> { props ->
                 onClick = {
                     props.onSelectVideo(video)
                 }
-                span {
-                    ariaHidden = true
-                    +"$VIDEO_SELECTOR_SYMBOL "
+                if(video == props.selectedVideo) {
+                    span {
+                        ariaHidden = true
+                        +"$VIDEO_SELECTOR_SYMBOL "
+                    }
                 }
                 span {
                     dataCodeElementHandleAttribute = "unwatched-video-title"
