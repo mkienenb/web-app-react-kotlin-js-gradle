@@ -115,11 +115,11 @@ class VideoListTest : ConfExplorerTestBase() {
                 screen.getAllByRole("option")
             }.verify { videoElements: Array<HTMLElement> ->
                 withClue("videoElements") {
-                    videoElements.filter { it.textContent?.contains("$VIDEO_SELECTOR_SYMBOL") ?: false }
+                    videoElements.filter { it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false }
                         .map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
                         .shouldContainExactly("Learning kotlin")
 
-                    videoElements.filter { !(it.textContent?.contains("$VIDEO_SELECTOR_SYMBOL") ?: false) }
+                    videoElements.filter { !(it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false) }
                         .map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
                         .shouldContainExactly("Learning react")
                 }
