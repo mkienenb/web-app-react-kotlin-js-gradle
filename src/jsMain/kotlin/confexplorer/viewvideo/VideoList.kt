@@ -1,9 +1,11 @@
 package confexplorer.viewvideo
 
+import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import react.FC
 import react.Props
 import react.dom.aria.AriaRole
 import react.dom.html.ReactHTML.li
+import react.dom.html.ReactHTML.span
 import react.dom.html.ReactHTML.ul
 import testsupport.dataCodeElementHandleAttribute
 
@@ -22,8 +24,14 @@ val VideoList = FC<VideoListProps> { props ->
                 onClick = {
                     props.onSelectVideo(video)
                 }
-                dataCodeElementHandleAttribute = "unwatched-video-title"
-                +video.title
+                span {
+                    ariaHidden = true
+                    +"$VIDEO_SELECTOR_SYMBOL "
+                }
+                span {
+                    dataCodeElementHandleAttribute = "unwatched-video-title"
+                    +video.title
+                }
             }
         }
     }
