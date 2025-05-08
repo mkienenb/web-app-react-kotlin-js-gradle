@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.StandardTestDispatcher
 import org.w3c.dom.Element
+import test.html.getCodeElementHandle
 import test.html.waitUntilElementDoesNotExist
 
 class AppTest : ConfExplorerTestBase () {
@@ -40,8 +41,8 @@ class AppTest : ConfExplorerTestBase () {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(videoList)
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
-                    container.querySelectorAll("[data-code-element-handle='unwatched-video-title']")
+                container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
+                    container.querySelectorAll(getCodeElementHandle("unwatched-video-title"))
                         .asList()
                         .map { it.textContent }
             }.verify {  actualUnwatchedVideoTitlesList: List<String> ->
@@ -66,7 +67,7 @@ class AppTest : ConfExplorerTestBase () {
                 it.scope = CoroutineScope(Job() + StandardTestDispatcher())
             }.exercise {
                 renderReactComponent(App)
-                container.querySelector("[data-code-element-handle='loading']")
+                container.querySelector(getCodeElementHandle("loading"))
             }.verify { actualVideoListsElement: Element? ->
                 withClue("loading element") {
                     actualVideoListsElement?.textContent shouldBe "Loading..."
@@ -85,8 +86,8 @@ class AppTest : ConfExplorerTestBase () {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(videoList)
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
-                container.querySelector("[data-code-element-handle='video-detail-title']")
+                container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
+                container.querySelector(getCodeElementHandle("video-detail-title"))
             }.verify {actualVideoTitleElement: Element? ->
                 withClue("react player video title") {
                     actualVideoTitleElement.shouldBeNull()

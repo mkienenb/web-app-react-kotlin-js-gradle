@@ -56,7 +56,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     fun waitUntilDoneLoading(
         timeout: Duration = 5000.milliseconds
     ) {
-        driver.waitUntilSelectorElementIsInvisible("[data-code-element-handle='loading']", timeout)
+        driver.waitUntilSelectorElementIsInvisible(getCodeElementHandle("loading"), timeout)
     }
 
     fun waitForVideoPlayerToBeLoaded(
