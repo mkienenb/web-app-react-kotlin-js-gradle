@@ -10,6 +10,7 @@ import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotest.suspendSetup
+import test.html.getCodeElementHandle
 import test.html.waitUntilElementExists
 import test.html.waitUntilElementDoesNotExist
 
@@ -25,10 +26,10 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                     it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
                 }.exercise {
                     renderReactComponent(App)
-                    container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
+                    container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
                     val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kodein"))
                     user.click(htmlElementBefore)
-                    val iframeSelector = "[data-code-element-handle='react-player'] iframe"
+                    val iframeSelector = "${getCodeElementHandle("react-player")} iframe"
                     container.waitUntilElementExists(iframeSelector)
                     container.querySelector(iframeSelector)?.getAttribute("src")
                 }.verify { reactPlayerUrl : String ->
@@ -47,10 +48,10 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementDoesNotExist("[data-code-element-handle='loading']")
+                container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
                 user.click(htmlElementBefore)
-                container.querySelector("[data-code-element-handle='video-detail-title']")?.textContent
+                container.querySelector(getCodeElementHandle("video-detail-title"))?.textContent
             }.verify { reactPlayerTitle : String ->
                 withClue("react player url") {
                     reactPlayerTitle shouldBe "Learning react"
