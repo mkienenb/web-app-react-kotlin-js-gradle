@@ -15,6 +15,7 @@ import org.w3c.dom.HTMLElement
 import react.FC
 import react.Props
 import react.useState
+import test.html.getCodeElementHandle
 
 class VideoListTest : ConfExplorerTestBase() {
     init {
@@ -26,7 +27,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                container.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent
+                container.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent
             }.verify {firstVideoTitle: String? ->
                 withClue("unordered list") {
                     firstVideoTitle shouldBe "Learning kotlin"
@@ -42,7 +43,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                container.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent
+                container.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent
             }.verify {firstVideoTitle: String? ->
                 withClue("unordered list") {
                     firstVideoTitle shouldBe "Unlearning Java"
@@ -58,7 +59,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                container.querySelectorAll("[data-code-element-handle='unwatched-video-title']").asList().map { it.textContent }
+                container.querySelectorAll(getCodeElementHandle("unwatched-video-title")).asList().map { it.textContent }
             }.verify {actualVideoTitles: List<String>? ->
                 withClue("unordered list") {
                     actualVideoTitles shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
@@ -87,7 +88,7 @@ class VideoListTest : ConfExplorerTestBase() {
                 screen.getAllByRole("option", RoleOptions(selected = true))
             }.verify { selectedVideoElements: Array<HTMLElement> ->
                 withClue("selectedVideoElements") {
-                    selectedVideoElements.map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
+                    selectedVideoElements.map { it.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent }
                         .shouldContainExactly("Learning kotlin")
                     selectedVideoElements.map { it.textContent }.shouldContainExactly("$VIDEO_SELECTOR_SYMBOL Learning kotlin")
                 }
@@ -116,11 +117,11 @@ class VideoListTest : ConfExplorerTestBase() {
             }.verify { videoElements: Array<HTMLElement> ->
                 withClue("videoElements") {
                     videoElements.filter { it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false }
-                        .map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
+                        .map { it.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent }
                         .shouldContainExactly("Learning kotlin")
 
                     videoElements.filter { !(it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false) }
-                        .map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
+                        .map { it.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent }
                         .shouldContainExactly("Learning react")
                 }
             }()
@@ -152,4 +153,6 @@ class VideoListTest : ConfExplorerTestBase() {
             }()
         }
     }
+
 }
+
