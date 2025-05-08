@@ -4,6 +4,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.ConfExplorerTestBase
+import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -86,10 +87,14 @@ class VideoListTest : ConfExplorerTestBase() {
                 screen.getAllByRole("option", RoleOptions(selected = true))
             }.verify { selectedVideoElements: Array<HTMLElement> ->
                 withClue("selectedVideoElements") {
-                    selectedVideoElements.map { it.textContent }.shouldContainExactly("Learning kotlin")
+                    selectedVideoElements.map { it.querySelector("[data-code-element-handle='unwatched-video-title']")?.textContent }
+                        .shouldContainExactly("Learning kotlin")
+                    selectedVideoElements.map { it.textContent }.shouldContainExactly("$VIDEO_SELECTOR_SYMBOL Learning kotlin")
                 }
             }()
         }
+
+        xshould("show that only the selected video has the video selection symbol ")
 
         should("show video selection symbol when 'Learning react' video is selected") {
             suspendSetup(object {
