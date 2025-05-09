@@ -4,6 +4,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.ConfExplorerTestBase
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_TITLE
 import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
@@ -15,7 +16,7 @@ import org.w3c.dom.HTMLElement
 import react.FC
 import react.Props
 import react.useState
-import test.html.getCodeElementHandle
+import confexplorer.getCodeElementHandle
 
 class VideoListTest : ConfExplorerTestBase() {
     init {
@@ -27,7 +28,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                container.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent
+                container.querySelector(getCodeElementHandle(UNWATCHED_VIDEO_TITLE))?.textContent
             }.verify {firstVideoTitle: String? ->
                 withClue("unordered list") {
                     firstVideoTitle shouldBe "Learning kotlin"
@@ -43,7 +44,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                container.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent
+                container.querySelector(getCodeElementHandle(UNWATCHED_VIDEO_TITLE))?.textContent
             }.verify {firstVideoTitle: String? ->
                 withClue("unordered list") {
                     firstVideoTitle shouldBe "Unlearning Java"
@@ -59,7 +60,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                container.querySelectorAll(getCodeElementHandle("unwatched-video-title")).asList().map { it.textContent }
+                container.querySelectorAll(getCodeElementHandle(UNWATCHED_VIDEO_TITLE)).asList().map { it.textContent }
             }.verify {actualVideoTitles: List<String>? ->
                 withClue("unordered list") {
                     actualVideoTitles shouldContainExactly listOf("Learning Kotlin", "Unlearning Java")
@@ -88,7 +89,7 @@ class VideoListTest : ConfExplorerTestBase() {
                 screen.getAllByRole("option", RoleOptions(selected = true))
             }.verify { selectedVideoElements: Array<HTMLElement> ->
                 withClue("selectedVideoElements") {
-                    selectedVideoElements.map { it.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent }
+                    selectedVideoElements.map { it.querySelector(getCodeElementHandle(UNWATCHED_VIDEO_TITLE))?.textContent }
                         .shouldContainExactly("Learning kotlin")
                     selectedVideoElements.map { it.textContent }.shouldContainExactly("$VIDEO_SELECTOR_SYMBOL Learning kotlin")
                 }
@@ -117,11 +118,11 @@ class VideoListTest : ConfExplorerTestBase() {
             }.verify { videoElements: Array<HTMLElement> ->
                 withClue("videoElements") {
                     videoElements.filter { it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false }
-                        .map { it.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent }
+                        .map { it.querySelector(getCodeElementHandle(UNWATCHED_VIDEO_TITLE))?.textContent }
                         .shouldContainExactly("Learning kotlin")
 
                     videoElements.filter { !(it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false) }
-                        .map { it.querySelector(getCodeElementHandle("unwatched-video-title"))?.textContent }
+                        .map { it.querySelector(getCodeElementHandle(UNWATCHED_VIDEO_TITLE))?.textContent }
                         .shouldContainExactly("Learning react")
                 }
             }()
