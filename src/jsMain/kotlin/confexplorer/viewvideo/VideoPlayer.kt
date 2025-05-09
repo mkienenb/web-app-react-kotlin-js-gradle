@@ -1,5 +1,7 @@
 package confexplorer.viewvideo
 
+import confexplorer.ElementHandle.REACT_PLAYER
+import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -14,11 +16,11 @@ external interface VideoPlayerProps : Props {
 val VideoPlayer = FC<VideoPlayerProps> { props ->
     div {
         h3 {
-            dataCodeElementHandleAttribute = "video-detail-title"
+            dataCodeElementHandleAttribute = VIDEO_DETAIL_TITLE
             +props.video.title
         }
         span {
-            dataCodeElementHandleAttribute = "react-player"
+            dataCodeElementHandleAttribute = REACT_PLAYER
             ReactPlayerHolder {
                 url = props.video.videoUrl
                 controls = true

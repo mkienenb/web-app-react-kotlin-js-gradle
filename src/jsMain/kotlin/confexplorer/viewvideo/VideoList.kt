@@ -1,5 +1,6 @@
 package confexplorer.viewvideo
 
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_TITLE
 import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import react.FC
 import react.Props
@@ -31,7 +32,7 @@ val VideoList = FC<VideoListProps> { props ->
                     }
                 }
                 span {
-                    dataCodeElementHandleAttribute = "unwatched-video-title"
+                    dataCodeElementHandleAttribute = UNWATCHED_VIDEO_TITLE
                     +video.title
                 }
             }

@@ -1,6 +1,11 @@
 package cucumber.confexplorer
 
-import confexplorer.ElementLocator.UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION
+import confexplorer.ElementHandle.LOADING
+import confexplorer.ElementHandle.REACT_PLAYER
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_TITLE
+import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
+import confexplorer.ElementLocator.UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_CSS_SELECTOR
+import confexplorer.getCodeElementHandle
 import cucumber.common.driver.waitUntilSelectorElementIsInvisible
 import cucumber.common.driver.waitUntilSelectorElementIsVisible
 import cucumber.common.page.BasePage
@@ -23,17 +28,17 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getUnwatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String
-        get() = getWebElementByCodeElementHandle("video-detail-title").text
+        get() = getWebElementByCodeElementHandle(VIDEO_DETAIL_TITLE).text
 
     val videoPlayerUrl: String?
         get() = videoPlayerIFrameElement().getDomAttribute("src")
 
     private fun videoPlayerIFrameElement(): WebElement =
-        getWebElementByCodeElementHandle("react-player").findElement(By.cssSelector("iframe"))
+        getWebElementByCodeElementHandle(REACT_PLAYER).findElement(By.cssSelector("iframe"))
 
     val selectedVideoTitle: String?
         get() {
-            val elements = driver.findElements(By.xpath(UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION))
+            val elements = driver.findElements(By.cssSelector(UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_CSS_SELECTOR))
             withClue("number of selected videos") {
                 elements.size shouldBeLessThanOrEqual 1
             }
@@ -41,7 +46,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        getWebElementsByCodeElementHandle("unwatched-video-title")
+        getWebElementsByCodeElementHandle(UNWATCHED_VIDEO_TITLE)
 
     init {
         PageFactory.initElements(driver, this)
@@ -56,7 +61,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     fun waitUntilDoneLoading(
         timeout: Duration = 5000.milliseconds
     ) {
-        driver.waitUntilSelectorElementIsInvisible(getCodeElementHandle("loading"), timeout)
+        driver.waitUntilSelectorElementIsInvisible(getCodeElementHandle(LOADING), timeout)
     }
 
     fun waitForVideoPlayerToBeLoaded(

@@ -1,6 +1,9 @@
 package confexplorer
 
 import api.createPromiseResponseFetchFunction
+import confexplorer.ElementHandle.LOADING
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_TITLE
+import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import confexplorer.viewvideo.Video
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
@@ -13,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.StandardTestDispatcher
 import org.w3c.dom.Element
-import test.html.getCodeElementHandle
 import test.html.waitUntilElementDoesNotExist
 
 class AppTest : ConfExplorerTestBase () {
@@ -41,8 +43,8 @@ class AppTest : ConfExplorerTestBase () {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(videoList)
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
-                    container.querySelectorAll(getCodeElementHandle("unwatched-video-title"))
+                container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
+                    container.querySelectorAll(getCodeElementHandle(UNWATCHED_VIDEO_TITLE))
                         .asList()
                         .map { it.textContent }
             }.verify {  actualUnwatchedVideoTitlesList: List<String> ->
@@ -67,7 +69,7 @@ class AppTest : ConfExplorerTestBase () {
                 it.scope = CoroutineScope(Job() + StandardTestDispatcher())
             }.exercise {
                 renderReactComponent(App)
-                container.querySelector(getCodeElementHandle("loading"))
+                container.querySelector(getCodeElementHandle(LOADING))
             }.verify { actualVideoListsElement: Element? ->
                 withClue("loading element") {
                     actualVideoListsElement?.textContent shouldBe "Loading..."
@@ -86,8 +88,8 @@ class AppTest : ConfExplorerTestBase () {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(videoList)
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
-                container.querySelector(getCodeElementHandle("video-detail-title"))
+                container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
+                container.querySelector(getCodeElementHandle(VIDEO_DETAIL_TITLE))
             }.verify {actualVideoTitleElement: Element? ->
                 withClue("react player video title") {
                     actualVideoTitleElement.shouldBeNull()

@@ -6,11 +6,14 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.App
 import confexplorer.ConfExplorerTestBase
+import confexplorer.ElementHandle.LOADING
+import confexplorer.ElementHandle.REACT_PLAYER
+import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotest.suspendSetup
-import test.html.getCodeElementHandle
+import confexplorer.getCodeElementHandle
 import test.html.waitUntilElementExists
 import test.html.waitUntilElementDoesNotExist
 
@@ -26,10 +29,10 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                     it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
                 }.exercise {
                     renderReactComponent(App)
-                    container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
+                    container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
                     val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kodein"))
                     user.click(htmlElementBefore)
-                    val iframeSelector = "${getCodeElementHandle("react-player")} iframe"
+                    val iframeSelector = "${getCodeElementHandle(REACT_PLAYER)} iframe"
                     container.waitUntilElementExists(iframeSelector)
                     container.querySelector(iframeSelector)?.getAttribute("src")
                 }.verify { reactPlayerUrl : String ->
@@ -48,10 +51,10 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementDoesNotExist(getCodeElementHandle("loading"))
+                container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
                 user.click(htmlElementBefore)
-                container.querySelector(getCodeElementHandle("video-detail-title"))?.textContent
+                container.querySelector(getCodeElementHandle(VIDEO_DETAIL_TITLE))?.textContent
             }.verify { reactPlayerTitle : String ->
                 withClue("react player url") {
                     reactPlayerTitle shouldBe "Learning react"

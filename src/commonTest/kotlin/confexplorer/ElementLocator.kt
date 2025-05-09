@@ -1,6 +1,8 @@
 package confexplorer
 
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_TITLE
+
 object ElementLocator {
-    const val UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_XPATH_EXPRESSION = """
-                    //*[@role='option' and @aria-selected='true']"""
+    val UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_CSS_SELECTOR =
+        "[role='option'][aria-selected='true'] ${getCodeElementHandle(UNWATCHED_VIDEO_TITLE)}"
 }

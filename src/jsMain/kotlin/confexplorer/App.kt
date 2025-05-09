@@ -1,6 +1,7 @@
 package confexplorer
 
 import api.VideoService
+import confexplorer.ElementHandle.LOADING
 import confexplorer.viewvideo.Video
 import confexplorer.viewvideo.VideoList
 import confexplorer.viewvideo.VideoPlayer
@@ -32,7 +33,7 @@ val App = FC<Props> {
     }
 
     div {
-        dataCodeElementHandleAttribute="videoLists"
+        dataCodeElementHandleAttribute = "videoLists"
         if (videoList.isNotEmpty()) {
             VideoList {
                 videos = videoList
@@ -41,7 +42,7 @@ val App = FC<Props> {
             }
         } else {
             p {
-                dataCodeElementHandleAttribute="loading"
+                dataCodeElementHandleAttribute = LOADING
                 +"Loading..."
             }
         }
