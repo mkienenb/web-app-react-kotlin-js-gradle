@@ -3,6 +3,7 @@ package confexplorer.viewvideo
 import api.createPromiseResponseFetchFunction
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.App
 import confexplorer.ConfExplorerTestBase
@@ -54,7 +55,7 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
                 user.click(htmlElementBefore)
-                container.querySelector(getCodeElementHandle(VIDEO_DETAIL_TITLE))?.textContent
+                screen.getByRole("region", RoleOptions("Video Player Title")).textContent
             }.verify { reactPlayerTitle : String ->
                 withClue("react player url") {
                     reactPlayerTitle shouldBe "Learning react"
