@@ -46,7 +46,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        getWebElementsByCodeElementHandle(UNWATCHED_VIDEO_TITLE)
+        driver.findElements(By.cssSelector("li[role^=option]"))
 
     init {
         PageFactory.initElements(driver, this)
