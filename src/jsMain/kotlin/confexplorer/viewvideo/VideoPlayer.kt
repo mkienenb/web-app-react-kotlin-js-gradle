@@ -17,9 +17,7 @@ external interface VideoPlayerProps : Props {
 val VideoPlayer = FC<VideoPlayerProps> { props ->
     div {
         h3 {
-            role = AriaRole.region
-            ariaLabel = "Video Player Title"
-            dataCodeElementHandleAttribute = VIDEO_DETAIL_TITLE
+            ariaLabel = VIDEO_DETAIL_TITLE
             +props.video.title
         }
         span {

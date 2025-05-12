@@ -55,7 +55,7 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
                 user.click(htmlElementBefore)
-                screen.getByRole("region", RoleOptions("Video Player Title")).textContent
+                screen.getByLabelText(VIDEO_DETAIL_TITLE).textContent
             }.verify { reactPlayerTitle : String ->
                 withClue("react player url") {
                     reactPlayerTitle shouldBe "Learning react"
