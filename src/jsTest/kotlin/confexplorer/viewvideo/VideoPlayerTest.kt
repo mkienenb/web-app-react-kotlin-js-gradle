@@ -33,9 +33,9 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                     container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
                     val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kodein"))
                     user.click(htmlElementBefore)
-                    val iframeSelector = "${getCodeElementHandle(REACT_PLAYER)} iframe"
-                    container.waitUntilElementExists(iframeSelector)
-                    container.querySelector(iframeSelector)?.getAttribute("src")
+                    val reactPlayer = screen.findByLabelText(REACT_PLAYER)
+                    reactPlayer.waitUntilElementExists("iframe")
+                    reactPlayer.querySelector("iframe")?.getAttribute("src")
                 }.verify { reactPlayerUrl : String ->
                     withClue("react player url") {
                         reactPlayerUrl shouldStartWith "https://www.youtube.com/embed/kodein56215"

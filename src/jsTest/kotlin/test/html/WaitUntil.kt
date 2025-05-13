@@ -37,3 +37,12 @@ suspend fun HTMLElement.waitUntilElementExists(
         querySelector(selector) != null
     }
 }
+
+suspend fun org.w3c.dom.HTMLElement.waitUntilElementExists(
+    selector: String,
+    timeout: Duration = 5000.milliseconds
+) {
+    waitUntil(timeout) {
+        querySelector(selector) != null
+    }
+}
