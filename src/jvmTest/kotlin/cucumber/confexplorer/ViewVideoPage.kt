@@ -8,9 +8,10 @@ import cucumber.common.driver.waitUntilSelectorElementIsInvisible
 import cucumber.common.driver.waitUntilSelectorElementIsVisible
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
+import cucumber.common.screen.RoleOptions
+import cucumber.common.screen.getAllByRole
 import cucumber.common.screen.getByLabelText
-import io.kotest.assertions.withClue
-import io.kotest.matchers.ints.shouldBeLessThanOrEqual
+import cucumber.common.screen.queryByRole
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -37,15 +38,12 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String?
         get() {
-            val elements = driver.findElements(By.cssSelector("[role='option'][aria-selected='true']"))
-            withClue("number of selected videos") {
-                elements.size shouldBeLessThanOrEqual 1
-            }
-            return elements.firstOrNull()?.getDomAttribute("aria-label")
+            return driver.queryByRole("option", RoleOptions(selected = true))
+                ?.getDomAttribute("aria-label")
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        driver.findElements(By.cssSelector("[role^=option]"))
+        driver.getAllByRole("option").toMutableList()
 
     init {
         PageFactory.initElements(driver, this)
