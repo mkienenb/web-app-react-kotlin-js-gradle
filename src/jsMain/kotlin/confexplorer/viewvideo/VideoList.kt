@@ -1,6 +1,6 @@
 package confexplorer.viewvideo
 
-import confexplorer.ElementHandle.UNWATCHED_VIDEO_TITLE
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
 import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import react.FC
 import react.Props
@@ -8,7 +8,6 @@ import react.dom.aria.AriaRole
 import react.dom.html.ReactHTML.li
 import react.dom.html.ReactHTML.span
 import react.dom.html.ReactHTML.ul
-import testsupport.dataCodeElementHandleAttribute
 
 external interface VideoListProps : Props {
     var videos: List<Video>
@@ -18,6 +17,7 @@ external interface VideoListProps : Props {
 
 val VideoList = FC<VideoListProps> { props ->
     ul {
+        ariaLabel = UNWATCHED_VIDEO_LIST
         props.videos.forEach { video ->
             li {
                 role= AriaRole.option
