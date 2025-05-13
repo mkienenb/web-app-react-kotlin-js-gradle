@@ -30,8 +30,7 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                     it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
                 }.exercise {
                     renderReactComponent(App)
-                    container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
-                    val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kodein"))
+                    val htmlElementBefore = screen.findByRole("option", RoleOptions("Learning kodein"))
                     user.click(htmlElementBefore)
                     val reactPlayer = screen.findByLabelText(REACT_PLAYER)
                     reactPlayer.waitUntilElementExists("iframe")
@@ -52,8 +51,7 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
             }.exercise {
                 renderReactComponent(App)
-                container.waitUntilElementDoesNotExist(getCodeElementHandle(LOADING))
-                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+                val htmlElementBefore = screen.findByRole("option", RoleOptions("Learning react"))
                 user.click(htmlElementBefore)
                 screen.getByLabelText(VIDEO_DETAIL_TITLE).textContent
             }.verify { reactPlayerTitle : String ->
