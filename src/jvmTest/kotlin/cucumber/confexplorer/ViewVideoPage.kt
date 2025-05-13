@@ -1,6 +1,7 @@
 package cucumber.confexplorer
 
 import confexplorer.ElementHandle.LOADING
+import confexplorer.ElementHandle.MARK_AS_WATCHED_BUTTON
 import confexplorer.ElementHandle.REACT_PLAYER
 import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import confexplorer.getCodeElementHandle
@@ -8,10 +9,8 @@ import cucumber.common.driver.waitUntilSelectorElementIsInvisible
 import cucumber.common.driver.waitUntilSelectorElementIsVisible
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
-import cucumber.common.screen.RoleOptions
-import cucumber.common.screen.getAllByRole
+import cucumber.common.screen.*
 import cucumber.common.screen.getByLabelText
-import cucumber.common.screen.queryByRole
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -44,6 +43,10 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
         driver.getAllByRole("option").toMutableList()
+
+    fun markSelectedVideoAsWatched() {
+        driver.findByLabelText(MARK_AS_WATCHED_BUTTON).click()
+    }
 
     init {
         PageFactory.initElements(driver, this)

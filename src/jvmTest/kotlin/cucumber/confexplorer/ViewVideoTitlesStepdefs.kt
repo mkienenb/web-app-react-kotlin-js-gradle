@@ -119,9 +119,8 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
 
     @Then("I mark the selected video as watched")
     fun iMarkTheSelectedVideoAsWatched() {
-        TODO("select the marked video as watched button")
-//        scenarioContext.withViewVideoPage {
-//            selectedVideoTitle.shouldBeNull()
-//        }
+        scenarioContext.withViewVideoPage {
+            markSelectedVideoAsWatched()
+        }
     }
 }

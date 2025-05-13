@@ -6,4 +6,5 @@ object ElementHandle {
     const val REACT_PLAYER = "video player"
     const val LOADING = "loading"
     const val UNWATCHED_VIDEO_LIST = "unwatched video list"
+    const val MARK_AS_WATCHED_BUTTON = "mark as watched button"
 }
