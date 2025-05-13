@@ -21,7 +21,7 @@ val VideoPlayer = FC<VideoPlayerProps> { props ->
             +props.video.title
         }
         span {
-            dataCodeElementHandleAttribute = REACT_PLAYER
+            ariaLabel = REACT_PLAYER
             ReactPlayerHolder {
                 url = props.video.videoUrl
                 controls = true
