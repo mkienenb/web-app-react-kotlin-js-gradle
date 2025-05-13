@@ -63,6 +63,19 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
         }
     }
 
+    @Then("I should see the following list of watched videos:")
+    fun iShouldSeeTheFollowingListOfWatchedVideos(dataTable: DataTable) {
+        scenarioContext.withViewVideoPage {
+            val expectedUnwatchedVideoList = dataTable.asList()
+            waitUntilDoneLoading()
+
+            withClue("watched video list") {
+                TODO("use watched videos list")
+//                unwatchedVideoNameList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
+            }
+        }
+    }
+
     @When("I select the video {string} from the unwatched list")
     fun iSelectTheVideoFromTheUnwatchedList (videoName: String) {
         scenarioContext.withViewVideoPage {
@@ -102,5 +115,13 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
         scenarioContext.withViewVideoPage {
             selectedVideoTitle.shouldBeNull()
         }
+    }
+
+    @Then("I mark the selected video as watched")
+    fun iMarkTheSelectedVideoAsWatched() {
+        TODO("select the marked video as watched button")
+//        scenarioContext.withViewVideoPage {
+//            selectedVideoTitle.shouldBeNull()
+//        }
     }
 }

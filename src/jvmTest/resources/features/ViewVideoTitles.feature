@@ -22,3 +22,15 @@ Scenario: Select unwatched video and show details
   Then I should see that the video player has queued "https://www.youtube.com/embed/kotlin78901" url
   And I should see the video title "Learning kotlin" in the video details
   And I should only see the selection indicator next to the "Learning kotlin" video
+
+Scenario: Select unwatched video, click mark as watched button, and move video to watched video list
+  When I go to the conference explorer page
+  And I select the video "Learning kotlin" from the unwatched list
+  And I mark the selected video as watched
+  Then I should see the following list of unwatched videos:
+    | Learning koin   |
+    | Learning kotest |
+    | Learning react  |
+  And I should see the following list of watched videos:
+    | Learning kotlin |
+  And I should only see the selection indicator next to the "Learning kotlin" video
