@@ -2,8 +2,10 @@ package confexplorer.viewvideo
 
 import com.zegreatrob.wrapper.testinglibrary.react.RoleOptions
 import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.screen
+import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.ConfExplorerTestBase
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
 import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
@@ -25,7 +27,8 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                screen.getByRole("option", RoleOptions("Learning kotlin")).textContent
+                within(screen.getByLabelText(UNWATCHED_VIDEO_LIST))
+                    .getByRole("option", RoleOptions("Learning kotlin")).textContent
             }.verify {firstVideoTitle: String? ->
                 withClue("unordered list") {
                     firstVideoTitle shouldBe "Learning kotlin"
