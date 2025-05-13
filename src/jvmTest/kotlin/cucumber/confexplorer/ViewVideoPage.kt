@@ -2,9 +2,6 @@ package cucumber.confexplorer
 
 import confexplorer.ElementHandle.LOADING
 import confexplorer.ElementHandle.REACT_PLAYER
-import confexplorer.ElementHandle.UNWATCHED_VIDEO_TITLE
-import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
-import confexplorer.ElementLocator.UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_CSS_SELECTOR
 import confexplorer.getCodeElementHandle
 import cucumber.common.driver.waitUntilSelectorElementIsInvisible
 import cucumber.common.driver.waitUntilSelectorElementIsVisible
@@ -27,8 +24,8 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     val unwatchedVideoNameList: List<String>
         get() = getUnwatchedVideoElements().map { it.text }
 
-    val videoDetailTitle: String
-        get() = getWebElementByCodeElementHandle(VIDEO_DETAIL_TITLE).text
+    val videoDetailTitle: String?
+        get() = driver.findElement(By.cssSelector("[aria-label='video-detail-title']")).text
 
     val videoPlayerUrl: String?
         get() = videoPlayerIFrameElement().getDomAttribute("src")
@@ -38,15 +35,15 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String?
         get() {
-            val elements = driver.findElements(By.cssSelector(UNWATCHED_VIDEO_TITLE_FOR_SELECTED_VIDEO_CSS_SELECTOR))
+            val elements = driver.findElements(By.cssSelector("[role='option'][aria-selected='true']"))
             withClue("number of selected videos") {
                 elements.size shouldBeLessThanOrEqual 1
             }
-            return elements.firstOrNull()?.text
+            return elements.firstOrNull()?.getDomAttribute("aria-label")
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        driver.findElements(By.cssSelector("li[role^=option]"))
+        driver.findElements(By.cssSelector("[role^=option]"))
 
     init {
         PageFactory.initElements(driver, this)
