@@ -117,13 +117,12 @@ class VideoListTest : ConfExplorerTestBase() {
                 screen.getAllByRole("option")
             }.verify { videoElements: Array<HTMLElement> ->
                 withClue("videoElements") {
-                    TODO("should not abuse aria-label")
                     videoElements.filter { it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false }
-                        .map { it.getAttribute("aria-label") }
+                        .map { within(it).getByLabelText(VIDEO_TITLE).textContent }
                         .shouldContainExactly("Learning kotlin")
 
                     videoElements.filter { !(it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false) }
-                        .map { it.getAttribute("aria-label") }
+                        .map { within(it).getByLabelText(VIDEO_TITLE).textContent }
                         .shouldContainExactly("Learning react")
                 }
             }()
