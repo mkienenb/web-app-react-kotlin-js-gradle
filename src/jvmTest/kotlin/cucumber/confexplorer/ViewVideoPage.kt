@@ -27,7 +27,10 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getUnwatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String?
-        get() = driver.getByLabelText(VIDEO_DETAIL_TITLE).text
+        get() {
+            TODO("should not abuse aria-label")
+            driver.getByLabelText(VIDEO_DETAIL_TITLE).text
+        }
 
     val videoPlayerUrl: String?
         get() = videoPlayerIFrameElement().getDomAttribute("src")

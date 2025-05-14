@@ -93,6 +93,7 @@ class VideoListTest : ConfExplorerTestBase() {
                 a
             }.verify { selectedVideoElements: Array<HTMLElement> ->
                 withClue("selectedVideoElements") {
+                    TODO("should not abuse aria-label")
                     selectedVideoElements.map { it.getAttribute("aria-label") }
                         .shouldContainExactly("Learning kotlin")
                     selectedVideoElements.map { it.textContent }.shouldContainExactly("$VIDEO_SELECTOR_SYMBOL Learning kotlin")
@@ -121,6 +122,7 @@ class VideoListTest : ConfExplorerTestBase() {
                 screen.getAllByRole("option")
             }.verify { videoElements: Array<HTMLElement> ->
                 withClue("videoElements") {
+                    TODO("should not abuse aria-label")
                     videoElements.filter { it.textContent?.contains(VIDEO_SELECTOR_SYMBOL) ?: false }
                         .map { it.getAttribute("aria-label") }
                         .shouldContainExactly("Learning kotlin")
