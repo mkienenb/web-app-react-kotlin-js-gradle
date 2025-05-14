@@ -28,7 +28,6 @@ val VideoList = FC<VideoListProps> { props ->
                 }
                 if(video == props.selectedVideo) {
                     span {
-                        ariaHidden = true
                         +"$VIDEO_SELECTOR_SYMBOL "
                     }
                 }
