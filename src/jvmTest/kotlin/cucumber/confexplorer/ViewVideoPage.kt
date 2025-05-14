@@ -3,6 +3,7 @@ package cucumber.confexplorer
 import confexplorer.ElementHandle.LOADING
 import confexplorer.ElementHandle.MARK_AS_WATCHED_BUTTON
 import confexplorer.ElementHandle.REACT_PLAYER
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
 import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import confexplorer.ElementHandle.VIDEO_TITLE
 import confexplorer.getCodeElementHandle
@@ -23,7 +24,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        driver.getAllByLabelText(VIDEO_TITLE).toMutableList()
+        driver.getAllByLabelText(UNWATCHED_VIDEO_LIST).flatMap { it.getAllByLabelText(VIDEO_TITLE) }.toMutableList()
 
     val unwatchedVideoNameList: List<String>
         get() = getUnwatchedVideoElements().map { it.text }
