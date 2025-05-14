@@ -10,11 +10,13 @@ import confexplorer.ConfExplorerTestBase
 import confexplorer.ElementHandle.LOADING
 import confexplorer.ElementHandle.REACT_PLAYER
 import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
+import confexplorer.ElementHandle.VIDEO_TITLE
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldStartWith
 import kotest.suspendSetup
 import confexplorer.getCodeElementHandle
+import io.kotest.matchers.nulls.shouldNotBeNull
 import test.html.waitUntilElementExists
 import test.html.waitUntilElementDoesNotExist
 
@@ -51,7 +53,11 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
             }.exercise {
                 renderReactComponent(App)
-                val htmlElementBefore = screen.findByRole("option", RoleOptions("Learning react"))
+                val listItems = screen.getAllByRole("option")
+                val htmlElementBefore = listItems.firstOrNull() { within(it).getByLabelText(VIDEO_TITLE).textContent == "Learning react"  }
+                withClue("Learning react list item") {
+                    htmlElementBefore.shouldNotBeNull()
+                }
                 user.click(htmlElementBefore)
                 screen.getByLabelText(VIDEO_DETAIL_TITLE).textContent
             }.verify { reactPlayerTitle : String ->
