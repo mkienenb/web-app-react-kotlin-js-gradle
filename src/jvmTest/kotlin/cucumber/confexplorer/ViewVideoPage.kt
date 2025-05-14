@@ -40,6 +40,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String?
         get() {
+            TODO("should not abuse aria-label")
             return driver.queryByRole("option", RoleOptions(selected = true))
                 ?.getDomAttribute("aria-label")
         }
