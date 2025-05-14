@@ -36,7 +36,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String?
         get() {
-            return driver.queryByRole("option", RoleOptions(selected = true))?.findElement(By.cssSelector("[aria-label=$VIDEO_TITLE]"))?.text
+            return driver.queryByRole("option", RoleOptions(selected = true))?.findElement(By.cssSelector("[aria-label='$VIDEO_TITLE']"))?.text
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
