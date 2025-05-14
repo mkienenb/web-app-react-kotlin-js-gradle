@@ -22,6 +22,9 @@ import kotlin.time.Duration.Companion.milliseconds
 @GenerateCucumberPageHelper
 class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
+    private fun getUnwatchedVideoElements(): MutableList<WebElement> =
+        driver.getAllByLabelText(VIDEO_TITLE).toMutableList()
+
     val unwatchedVideoNameList: List<String>
         get() = getUnwatchedVideoElements().map { it.text }
 
@@ -38,9 +41,6 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() {
             return driver.queryByRole("option", RoleOptions(selected = true))?.findElement(By.cssSelector("[aria-label='$VIDEO_TITLE']"))?.text
         }
-
-    private fun getUnwatchedVideoElements(): MutableList<WebElement> =
-        driver.getAllByRole("option").toMutableList()
 
     fun markSelectedVideoAsWatched() {
         driver.findByLabelText(MARK_AS_WATCHED_BUTTON).click()
