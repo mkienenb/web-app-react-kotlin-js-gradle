@@ -86,11 +86,7 @@ class VideoListTest : ConfExplorerTestBase() {
                 renderReactComponent(VideoListTestHarness)
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
                 user.click(htmlElementBefore)
-                val a = screen.getAllByRole("option", RoleOptions(selected = true))
-                a.forEach {
-                    println(it.innerHTML)
-                }
-                a
+                screen.getAllByRole("option", RoleOptions(selected = true))
             }.verify { selectedVideoElements: Array<HTMLElement> ->
                 withClue("selectedVideoElements") {
                     TODO("should not abuse aria-label")
