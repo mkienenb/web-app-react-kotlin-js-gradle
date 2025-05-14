@@ -1,6 +1,7 @@
 package confexplorer.viewvideo
 
 import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
+import confexplorer.ElementHandle.VIDEO_TITLE
 import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import react.FC
 import react.Props
@@ -32,6 +33,7 @@ val VideoList = FC<VideoListProps> { props ->
                     }
                 }
                 span {
+                    ariaLabel = VIDEO_TITLE
                     +video.title
                 }
             }
