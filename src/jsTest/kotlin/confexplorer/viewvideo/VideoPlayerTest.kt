@@ -9,6 +9,7 @@ import confexplorer.App
 import confexplorer.ConfExplorerTestBase
 import confexplorer.ElementHandle.LOADING
 import confexplorer.ElementHandle.REACT_PLAYER
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
 import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import confexplorer.ElementHandle.VIDEO_TITLE
 import io.kotest.assertions.withClue
@@ -32,7 +33,11 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                     it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
                 }.exercise {
                     renderReactComponent(App)
-                    val htmlElementBefore = screen.findByRole("option", RoleOptions("Learning kodein"))
+                    val listItems = within( screen.findByLabelText(UNWATCHED_VIDEO_LIST)).getAllByRole("option")
+                    val htmlElementBefore = listItems.firstOrNull() { within(it).getByLabelText(VIDEO_TITLE).textContent == "Learning kodein"  }
+                    withClue("Learning kodein list item") {
+                        htmlElementBefore.shouldNotBeNull()
+                    }
                     user.click(htmlElementBefore)
                     val reactPlayer = screen.findByLabelText(REACT_PLAYER)
                     reactPlayer.waitUntilElementExists("iframe")
@@ -53,7 +58,7 @@ class VideoPlayerTest : ConfExplorerTestBase() {
                 it.videoServiceFetchFunction = createPromiseResponseFetchFunction(listOf(learningReactVideo))
             }.exercise {
                 renderReactComponent(App)
-                val listItems = screen.getAllByRole("option")
+                val listItems = within( screen.findByLabelText(UNWATCHED_VIDEO_LIST)).getAllByRole("option")
                 val htmlElementBefore = listItems.firstOrNull() { within(it).getByLabelText(VIDEO_TITLE).textContent == "Learning react"  }
                 withClue("Learning react list item") {
                     htmlElementBefore.shouldNotBeNull()
