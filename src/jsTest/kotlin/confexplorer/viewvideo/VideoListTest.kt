@@ -28,8 +28,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                within(screen.getByLabelText(UNWATCHED_VIDEO_LIST))
-                    .getByRole("option", RoleOptions("Learning kotlin")).textContent
+                screen.getByLabelText(VIDEO_TITLE).textContent
             }.verify {firstVideoTitle: String? ->
                 withClue("unordered list") {
                     firstVideoTitle shouldBe "Learning kotlin"
@@ -45,7 +44,7 @@ class VideoListTest : ConfExplorerTestBase() {
                     videos = videoList
                     selectedVideo = null
                 }
-                screen.getByRole("option", RoleOptions("Unlearning Java")).textContent
+                screen.getByLabelText(VIDEO_TITLE).textContent
             }.verify {firstVideoTitle: String? ->
                 withClue("unordered list") {
                     firstVideoTitle shouldBe "Unlearning Java"
@@ -85,7 +84,11 @@ class VideoListTest : ConfExplorerTestBase() {
                 }
             }).exercise {
                 renderReactComponent(VideoListTestHarness)
-                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
+                val listItems = screen.getAllByRole("option")
+                val htmlElementBefore = listItems.firstOrNull() { within(it).getByLabelText(VIDEO_TITLE).textContent == "Learning kotlin"  }
+                withClue("learning kotlin list item") {
+                    htmlElementBefore.shouldNotBeNull()
+                }
                 user.click(htmlElementBefore)
                 screen.getByRole("option", RoleOptions(selected = true))
             }.verify { selectedVideo: HTMLElement ->
