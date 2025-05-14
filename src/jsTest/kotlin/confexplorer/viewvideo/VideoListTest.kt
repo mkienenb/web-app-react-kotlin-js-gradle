@@ -115,7 +115,11 @@ class VideoListTest : ConfExplorerTestBase() {
                 }
             }).exercise {
                 renderReactComponent(VideoListTestHarness)
-                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
+                val listItems = screen.getAllByRole("option")
+                val htmlElementBefore = listItems.firstOrNull() { within(it).getByLabelText(VIDEO_TITLE).textContent == "Learning kotlin"  }
+                withClue("learning kotlin list item") {
+                    htmlElementBefore.shouldNotBeNull()
+                }
                 user.click(htmlElementBefore)
                 screen.getAllByRole("option")
             }.verify { videoElements: Array<HTMLElement> ->
@@ -147,12 +151,17 @@ class VideoListTest : ConfExplorerTestBase() {
                 }
             }).exercise {
                 renderReactComponent(VideoListTestHarness)
-                val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning react"))
+                val listItems = screen.getAllByRole("option")
+                val htmlElementBefore = listItems.firstOrNull() { within(it).getByLabelText(VIDEO_TITLE).textContent == "Learning react"  }
+                withClue("learning react list item") {
+                    htmlElementBefore.shouldNotBeNull()
+                }
                 user.click(htmlElementBefore)
-                screen.getByRole("option", RoleOptions("Learning react", true))
+                screen.getByRole("option", RoleOptions(selected = true))
             }.verify { selectedVideoElement:  HTMLElement? ->
                 withClue("selectedVideoElement") {
-                    selectedVideoElement.shouldNotBeNull()
+                    within(selectedVideoElement).getByLabelText(VIDEO_TITLE).textContent shouldBe "Learning react"
+                    selectedVideoElement?.textContent shouldBe "$VIDEO_SELECTOR_SYMBOL Learning react"
                 }
             }()
         }
