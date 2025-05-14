@@ -22,15 +22,11 @@ import kotlin.time.Duration.Companion.milliseconds
 @GenerateCucumberPageHelper
 class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
-    // TODO: revisit if @FindBy works if element is found
     val unwatchedVideoNameList: List<String>
         get() = getUnwatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String?
-        get() {
-            TODO("should not abuse aria-label")
-            driver.getByLabelText(VIDEO_DETAIL_TITLE).text
-        }
+        get() = driver.getByLabelText("video title").text
 
     val videoPlayerUrl: String?
         get() = videoPlayerIFrameElement().getDomAttribute("src")
@@ -40,9 +36,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String?
         get() {
-            TODO("should not abuse aria-label")
-            return driver.queryByRole("option", RoleOptions(selected = true))
-                ?.getDomAttribute("aria-label")
+            return driver.queryByRole("option", RoleOptions(selected = true))?.findElement(By.cssSelector("[aria-label='video title']"))?.text
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
