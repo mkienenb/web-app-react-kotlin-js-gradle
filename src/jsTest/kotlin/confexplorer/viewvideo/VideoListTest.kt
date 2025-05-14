@@ -6,6 +6,7 @@ import com.zegreatrob.wrapper.testinglibrary.react.TestingLibraryReact.within
 import com.zegreatrob.wrapper.testinglibrary.userevent.UserEvent
 import confexplorer.ConfExplorerTestBase
 import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
+import confexplorer.ElementHandle.VIDEO_TITLE
 import confexplorer.UISymbol.VIDEO_SELECTOR_SYMBOL
 import io.kotest.assertions.withClue
 import io.kotest.matchers.collections.shouldContainExactly
@@ -89,8 +90,7 @@ class VideoListTest : ConfExplorerTestBase() {
                 screen.getAllByRole("option", RoleOptions(selected = true))
             }.verify { selectedVideoElements: Array<HTMLElement> ->
                 withClue("selectedVideoElements") {
-                    TODO("should not abuse aria-label")
-                    selectedVideoElements.map { it.getAttribute("aria-label") }
+                    selectedVideoElements.map { it.querySelector("span[aria-label='$VIDEO_TITLE']")?.textContent }
                         .shouldContainExactly("Learning kotlin")
                     selectedVideoElements.map { it.textContent }.shouldContainExactly("$VIDEO_SELECTOR_SYMBOL Learning kotlin")
                 }
