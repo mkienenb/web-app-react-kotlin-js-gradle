@@ -3,7 +3,7 @@ package cucumber.confexplorer
 import confexplorer.ElementHandle.LOADING
 import confexplorer.ElementHandle.MARK_AS_WATCHED_BUTTON
 import confexplorer.ElementHandle.REACT_PLAYER
-import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
+import confexplorer.ElementHandle.VIDEO_TITLE
 import confexplorer.getCodeElementHandle
 import cucumber.common.driver.waitUntilSelectorElementIsInvisible
 import cucumber.common.driver.waitUntilSelectorElementIsVisible
@@ -19,6 +19,8 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
 
+
+
 @GenerateCucumberPageHelper
 class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
@@ -26,7 +28,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getUnwatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String?
-        get() = driver.getByLabelText("video title").text
+        get() = driver.getByLabelText(VIDEO_TITLE).text
 
     val videoPlayerUrl: String?
         get() = videoPlayerIFrameElement().getDomAttribute("src")
@@ -36,7 +38,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
 
     val selectedVideoTitle: String?
         get() {
-            return driver.queryByRole("option", RoleOptions(selected = true))?.findElement(By.cssSelector("[aria-label='video title']"))?.text
+            return driver.queryByRole("option", RoleOptions(selected = true))?.findElement(By.cssSelector("[aria-label=$VIDEO_TITLE]"))?.text
         }
 
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
