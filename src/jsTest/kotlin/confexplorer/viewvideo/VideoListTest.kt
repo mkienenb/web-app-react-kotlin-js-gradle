@@ -87,12 +87,11 @@ class VideoListTest : ConfExplorerTestBase() {
                 renderReactComponent(VideoListTestHarness)
                 val htmlElementBefore = screen.getByRole("option", RoleOptions("Learning kotlin"))
                 user.click(htmlElementBefore)
-                screen.getAllByRole("option", RoleOptions(selected = true))
-            }.verify { selectedVideoElements: Array<HTMLElement> ->
-                withClue("selectedVideoElements") {
-                    selectedVideoElements.map { it.querySelector("span[aria-label='$VIDEO_TITLE']")?.textContent }
-                        .shouldContainExactly("Learning kotlin")
-                    selectedVideoElements.map { it.textContent }.shouldContainExactly("$VIDEO_SELECTOR_SYMBOL Learning kotlin")
+                screen.getByRole("option", RoleOptions(selected = true))
+            }.verify { selectedVideo: HTMLElement ->
+                withClue("selectedVideo") {
+                    within(selectedVideo).getByLabelText(VIDEO_TITLE).textContent shouldBe "Learning kotlin"
+                    selectedVideo.textContent shouldBe "$VIDEO_SELECTOR_SYMBOL Learning kotlin"
                 }
             }()
         }
