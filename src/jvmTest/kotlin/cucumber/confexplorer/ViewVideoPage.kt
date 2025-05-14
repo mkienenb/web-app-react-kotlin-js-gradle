@@ -6,6 +6,7 @@ import confexplorer.ElementHandle.REACT_PLAYER
 import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
 import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import confexplorer.ElementHandle.VIDEO_TITLE
+import confexplorer.ElementHandle.WATCHED_VIDEO_LIST
 import confexplorer.getCodeElementHandle
 import cucumber.common.driver.waitUntilSelectorElementIsInvisible
 import cucumber.common.driver.waitUntilSelectorElementIsVisible
@@ -26,8 +27,14 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
     private fun getUnwatchedVideoElements(): MutableList<WebElement> =
         driver.getAllByLabelText(UNWATCHED_VIDEO_LIST).flatMap { it.getAllByLabelText(VIDEO_TITLE) }.toMutableList()
 
+    private fun getWatchedVideoElements(): MutableList<WebElement> =
+        driver.getAllByLabelText(WATCHED_VIDEO_LIST).flatMap { it.getAllByLabelText(VIDEO_TITLE) }.toMutableList()
+
     val unwatchedVideoNameList: List<String>
         get() = getUnwatchedVideoElements().map { it.text }
+
+    val watchedVideoNameList: List<String>
+        get() = getWatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String?
         get() = driver.getByLabelText(VIDEO_DETAIL_TITLE).text

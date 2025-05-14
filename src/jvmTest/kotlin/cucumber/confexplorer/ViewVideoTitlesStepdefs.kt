@@ -66,12 +66,11 @@ class ViewVideoTitlesStepdefs(var scenarioContext: ScenarioContext) {
     @Then("I should see the following list of watched videos:")
     fun iShouldSeeTheFollowingListOfWatchedVideos(dataTable: DataTable) {
         scenarioContext.withViewVideoPage {
-            val expectedUnwatchedVideoList = dataTable.asList()
+            val expectedWatchedVideoList = dataTable.asList()
             waitUntilDoneLoading()
 
             withClue("watched video list") {
-                TODO("use watched videos list")
-//                unwatchedVideoNameList.shouldContainExactlyInAnyOrder(expectedUnwatchedVideoList)
+                watchedVideoNameList.shouldContainExactlyInAnyOrder(expectedWatchedVideoList)
             }
         }
     }
