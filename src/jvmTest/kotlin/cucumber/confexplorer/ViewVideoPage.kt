@@ -3,6 +3,7 @@ package cucumber.confexplorer
 import confexplorer.ElementHandle.LOADING
 import confexplorer.ElementHandle.MARK_AS_WATCHED_BUTTON
 import confexplorer.ElementHandle.REACT_PLAYER
+import confexplorer.ElementHandle.VIDEO_DETAIL_TITLE
 import confexplorer.ElementHandle.VIDEO_TITLE
 import confexplorer.getCodeElementHandle
 import cucumber.common.driver.waitUntilSelectorElementIsInvisible
@@ -10,15 +11,12 @@ import cucumber.common.driver.waitUntilSelectorElementIsVisible
 import cucumber.common.page.BasePage
 import cucumber.common.page.GenerateCucumberPageHelper
 import cucumber.common.screen.*
-import cucumber.common.screen.getByLabelText
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.support.PageFactory
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-
-
 
 
 @GenerateCucumberPageHelper
@@ -28,7 +26,7 @@ class ViewVideoPage(driver: WebDriver) : BasePage(driver) {
         get() = getUnwatchedVideoElements().map { it.text }
 
     val videoDetailTitle: String?
-        get() = driver.getByLabelText(VIDEO_TITLE).text
+        get() = driver.getByLabelText(VIDEO_DETAIL_TITLE).text
 
     val videoPlayerUrl: String?
         get() = videoPlayerIFrameElement().getDomAttribute("src")
