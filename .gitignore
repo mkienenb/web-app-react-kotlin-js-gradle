@@ -6,3 +6,5 @@
 
 /buildSrc/.gradle/
 /buildSrc/build/
+/.kotlin/metadata/kotlinTransformedMetadataLibraries/
+/.kotlin/errors/
