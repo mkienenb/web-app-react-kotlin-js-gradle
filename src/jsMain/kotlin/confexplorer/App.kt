@@ -2,6 +2,8 @@ package confexplorer
 
 import api.VideoService
 import confexplorer.ElementHandle.LOADING
+import confexplorer.ElementHandle.UNWATCHED_VIDEO_LIST
+import confexplorer.ElementHandle.WATCHED_VIDEO_LIST
 import confexplorer.viewvideo.Video
 import confexplorer.viewvideo.VideoList
 import confexplorer.viewvideo.VideoPlayer
@@ -17,7 +19,8 @@ import testsupport.dataCodeElementHandleAttribute
 
 
 val App = FC<Props> {
-    var videoList: List<Video> by useState(emptyList())
+    var unwatchedVideoList: List<Video> by useState(emptyList())
+    var watchedVideoList: List<Video> by useState(emptyList())
     val (getSelectedVideo, setSelectedVideo) = useState<Video?>(null)
     val di = use(DIContext)!!
     val videoService: VideoService by di.instance()
@@ -25,7 +28,7 @@ val App = FC<Props> {
 
     useEffectOnce {
         scope.launch {
-            videoList = videoService.getVideos()
+            unwatchedVideoList = videoService.getVideos()
         }
     }
     h1 {
@@ -34,9 +37,16 @@ val App = FC<Props> {
 
     div {
         dataCodeElementHandleAttribute = "videoLists"
-        if (videoList.isNotEmpty()) {
+        if (unwatchedVideoList.isNotEmpty()) {
             VideoList {
-                videos = videoList
+                videoListLabel = UNWATCHED_VIDEO_LIST
+                videos = unwatchedVideoList
+                this.selectedVideo = getSelectedVideo
+                onSelectVideo = { video -> setSelectedVideo(video) }
+            }
+            VideoList {
+                videoListLabel = WATCHED_VIDEO_LIST
+                videos = watchedVideoList
                 this.selectedVideo = getSelectedVideo
                 onSelectVideo = { video -> setSelectedVideo(video) }
             }
@@ -51,6 +61,10 @@ val App = FC<Props> {
     getSelectedVideo?.let { selectedVideo ->
         VideoPlayer {
             video = selectedVideo
+            onMarkAsWatched = { video ->
+                unwatchedVideoList -= video
+                watchedVideoList += video
+            }
         }
     }
 

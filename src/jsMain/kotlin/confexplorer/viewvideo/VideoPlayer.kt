@@ -14,6 +14,7 @@ import testsupport.dataCodeElementHandleAttribute
 
 external interface VideoPlayerProps : Props {
     var video: Video
+    var onMarkAsWatched: (Video) -> Unit
 }
 
 val VideoPlayer = FC<VideoPlayerProps> { props ->
@@ -24,6 +25,10 @@ val VideoPlayer = FC<VideoPlayerProps> { props ->
         }
         button {
             ariaLabel = MARK_AS_WATCHED_BUTTON
+            onClick = {
+                props.onMarkAsWatched(props.video)
+            }
+
         }
         span {
             ariaLabel = REACT_PLAYER

@@ -14,11 +14,12 @@ external interface VideoListProps : Props {
     var videos: List<Video>
     var selectedVideo : Video?
     var onSelectVideo: (Video) -> Unit
+    var videoListLabel: String
 }
 
 val VideoList = FC<VideoListProps> { props ->
     ul {
-        ariaLabel = UNWATCHED_VIDEO_LIST
+        ariaLabel = props.videoListLabel
         props.videos.forEach { video ->
             li {
                 role= AriaRole.option
